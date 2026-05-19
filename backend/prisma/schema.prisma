@@ -22,7 +22,7 @@ model Seller {
   password  String
 
   otp             String?
-  otpExpiresAt    DateTime?   // ⭐ expiry time
+  otpExpiresAt    DateTime?   // ⭐ expiry timee
   otpVerified     Boolean     @default(false)
 
   businessDetails Business[]
