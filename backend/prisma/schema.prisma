@@ -27,6 +27,7 @@ model Seller {
 
   businessDetails Business[]
   bankDetails     Bank?
+  addresses     Address[]
   role Role @default(CUSTOMER)
   gstIn      String?  
   accountStatus Account @default(PENDING_VERIFICATION)  
@@ -60,6 +61,17 @@ model Bank {
   seller      Seller   @relation(fields: [sellerId], references: [id])
 }
 
+model Address {
+  id          String   @id @default(uuid())
+  sellerId    String
+
+  locality String
+  pinCode Int
+  state String
+  address String
+
+  seller      Seller   @relation(fields: [sellerId], references: [id])
+}
 
 
 enum Role{
