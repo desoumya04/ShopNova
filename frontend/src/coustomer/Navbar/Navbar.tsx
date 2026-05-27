@@ -1,6 +1,6 @@
-import { Login, Search, ShoppingCart, Close, Menu, Storefront, Home } from "@mui/icons-material";
+import { Login, Search, ShoppingCart, Close, Menu as MenuIcon, Storefront, Home, ReceiptLong, Person, Logout } from "@mui/icons-material";
 import { useState, useEffect, useRef } from "react";
-import { Badge } from "@mui/material";
+import { Avatar, Badge, Divider, Menu, MenuItem, ListItemIcon } from "@mui/material";
 
 const NAV_LINKS = [
   { label: "Home", href: "#" },
@@ -11,7 +11,12 @@ const NAV_LINKS = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
+  const isLoggedIn = "true";
+  const userName = localStorage.getItem("userName") || "User";
+  const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
+  const isUserMenuOpen = Boolean(userMenuAnchor);
 
   // Close drawer on outside click
   useEffect(() => {
@@ -30,6 +35,21 @@ const Navbar = () => {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setUserMenuAnchor(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setUserMenuAnchor(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLogin");
+    localStorage.removeItem("userName");
+    handleCloseUserMenu();
+    window.location.reload();
+  };
+
   return (
     <>
       
@@ -43,7 +63,7 @@ const Navbar = () => {
             aria-label="Open menu"
             onClick={() => setMobileOpen(true)}
           >
-            <Menu />
+            <MenuIcon />
           </button>
 
           {/* Brand */}
@@ -95,10 +115,23 @@ const Navbar = () => {
 
           {/* Desktop actions */}
           <div className="nb-actions">
-            <button className="nb-icon-btn" aria-label="Login">
-              <Login />
-              <span>Login</span>
-            </button>
+            {isLoggedIn ? (
+              <button
+                className="nb-icon-btn"
+                aria-label="User profile"
+                onClick={handleOpenUserMenu}
+              >
+                <Avatar sx={{ width: 32, height: 32, fontSize: 14 }}>
+                  {userInitial}
+                </Avatar>
+                <span>{userName}</span>
+              </button>
+            ) : (
+              <button className="nb-icon-btn" aria-label="Login">
+                <Login />
+                <span>Login</span>
+              </button>
+            )}
 
             <button className="nb-icon-btn" aria-label="Cart">
               <Badge badgeContent={3} color="error">
@@ -110,6 +143,37 @@ const Navbar = () => {
           </div>
         </div>
       </header>
+
+      <Menu
+        anchorEl={userMenuAnchor}
+        open={isUserMenuOpen}
+        onClose={handleCloseUserMenu}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <MenuItem onClick={handleCloseUserMenu}>
+          <ListItemIcon>
+            <ReceiptLong fontSize="small" />
+          </ListItemIcon>
+          Order
+        </MenuItem>
+
+        <MenuItem onClick={handleCloseUserMenu}>
+          <ListItemIcon>
+            <Person fontSize="small" />
+          </ListItemIcon>
+          Profile
+        </MenuItem>
+
+        <Divider />
+
+        <MenuItem onClick={handleLogout}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
+      </Menu>
 
       {/* ── Mobile overlay ── */}
       <div
@@ -159,8 +223,19 @@ const Navbar = () => {
           <div className="nb-drawer-divider" />
 
           <button className="nb-drawer-action">
-            <Login />
-            Login / Sign up
+            {isLoggedIn ? (
+              <>
+                <Avatar sx={{ width: 28, height: 28, fontSize: 12 }}>
+                  {userInitial}
+                </Avatar>
+                {userName}
+              </>
+            ) : (
+              <>
+                <Login />
+                Login / Sign up
+              </>
+            )}
           </button>
 
           <button className="nb-drawer-action">
