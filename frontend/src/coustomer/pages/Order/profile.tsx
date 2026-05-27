@@ -3,6 +3,7 @@ import { Avatar, Typography } from '@mui/material';
 import { ReceiptLong, Person, Logout } from '@mui/icons-material';
 
 import Order from './Order';
+import OrderDetails from './Orderdetails';
 
 const ORDERS = [
   {
@@ -95,7 +96,8 @@ const Profile = () => {
               Orders
             </Typography>
             <div className="space-y-4">
-              <Order/>
+              {/* <Order /> */}
+              <OrderDetails />
             </div>
           </section>
         )}

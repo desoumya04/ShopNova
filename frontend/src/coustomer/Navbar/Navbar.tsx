@@ -20,7 +20,7 @@ const NAV_LINKS = [
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
-  const isLoggedIn = localStorage.getItem("isLogin") === "true";
+  const isLoggedIn = "true";
   const userName = localStorage.getItem("userName") || "User";
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
 
