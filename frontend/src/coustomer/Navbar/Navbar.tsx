@@ -1,6 +1,14 @@
-import { Login, Search, ShoppingCart, Close, Menu as MenuIcon, Storefront, Home, ReceiptLong, Person, Logout } from "@mui/icons-material";
+import {
+  Login,
+  Search,
+  ShoppingCart,
+  Close,
+  Menu as MenuIcon,
+  Storefront,
+  Home,
+} from "@mui/icons-material";
 import { useState, useEffect, useRef } from "react";
-import { Avatar, Badge, Divider, Menu, MenuItem, ListItemIcon } from "@mui/material";
+import { Avatar, Badge } from "@mui/material";
 
 const NAV_LINKS = [
   { label: "Home", href: "#" },
@@ -11,12 +19,10 @@ const NAV_LINKS = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
-  const isLoggedIn = "true";
+  const isLoggedIn = localStorage.getItem("isLogin") === "true";
   const userName = localStorage.getItem("userName") || "User";
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
-  const isUserMenuOpen = Boolean(userMenuAnchor);
 
   // Close drawer on outside click
   useEffect(() => {
@@ -32,28 +38,23 @@ const Navbar = () => {
   // Lock body scroll when drawer is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setUserMenuAnchor(event.currentTarget);
+  const goToProfile = () => {
+    window.history.pushState({}, "", "/profile");
+    window.dispatchEvent(new PopStateEvent("popstate"));
   };
 
-  const handleCloseUserMenu = () => {
-    setUserMenuAnchor(null);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("isLogin");
-    localStorage.removeItem("userName");
-    handleCloseUserMenu();
-    window.location.reload();
+  const goToOrder = () => {
+    window.history.pushState({}, "", "/order");
+    window.dispatchEvent(new PopStateEvent("popstate"));
   };
 
   return (
     <>
-      
-
       {/* ── Navbar root ── */}
       <header className="nb-root">
         <div className={`nb-top ${mobileOpen ? "mobile-open" : ""}`}>
@@ -86,7 +87,11 @@ const Navbar = () => {
               <Home />
             </button>
 
-            <button className="nb-mobile-icon-btn" aria-label="Cart">
+            <button
+              className="nb-mobile-icon-btn"
+              aria-label="Cart"
+              onClick={goToOrder}
+            >
               <Badge badgeContent={3} color="error">
                 <ShoppingCart />
               </Badge>
@@ -119,7 +124,7 @@ const Navbar = () => {
               <button
                 className="nb-icon-btn"
                 aria-label="User profile"
-                onClick={handleOpenUserMenu}
+                onClick={goToProfile}
               >
                 <Avatar sx={{ width: 32, height: 32, fontSize: 14 }}>
                   {userInitial}
@@ -133,7 +138,7 @@ const Navbar = () => {
               </button>
             )}
 
-            <button className="nb-icon-btn" aria-label="Cart">
+            <button className="nb-icon-btn" aria-label="Cart" onClick={goToOrder}>
               <Badge badgeContent={3} color="error">
                 <ShoppingCart />
               </Badge>
@@ -143,37 +148,6 @@ const Navbar = () => {
           </div>
         </div>
       </header>
-
-      <Menu
-        anchorEl={userMenuAnchor}
-        open={isUserMenuOpen}
-        onClose={handleCloseUserMenu}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <MenuItem onClick={handleCloseUserMenu}>
-          <ListItemIcon>
-            <ReceiptLong fontSize="small" />
-          </ListItemIcon>
-          Order
-        </MenuItem>
-
-        <MenuItem onClick={handleCloseUserMenu}>
-          <ListItemIcon>
-            <Person fontSize="small" />
-          </ListItemIcon>
-          Profile
-        </MenuItem>
-
-        <Divider />
-
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
 
       {/* ── Mobile overlay ── */}
       <div
@@ -193,36 +167,35 @@ const Navbar = () => {
         {/* Drawer header */}
         <div className="nb-drawer-head">
           <div className="nb-drawer-head-main">
-            <a href="#" className="nb-drawer-brand" onClick={() => setMobileOpen(false)}>
+            <a
+              href="#"
+              className="nb-drawer-brand"
+              onClick={() => setMobileOpen(false)}
+            >
               SOP<span>NOVA</span>
             </a>
 
-            <a href="#" className="nb-drawer-home" aria-label="Home" onClick={() => setMobileOpen(false)}>
+            <a
+              href="#"
+              className="nb-drawer-home"
+              aria-label="Home"
+              onClick={() => setMobileOpen(false)}
+            >
               <Home />
             </a>
           </div>
 
-          <button className="nb-close-btn" aria-label="Close menu" onClick={() => setMobileOpen(false)}>
+          <button
+            className="nb-close-btn"
+            aria-label="Close menu"
+            onClick={() => setMobileOpen(false)}
+          >
             <Close />
           </button>
         </div>
 
         {/* Drawer nav links */}
-        <nav className="nb-drawer-nav" aria-label="Mobile primary">
-          {NAV_LINKS.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              className="nb-drawer-link"
-              onClick={() => setMobileOpen(false)}
-            >
-              {l.label}
-            </a>
-          ))}
-
-          <div className="nb-drawer-divider" />
-
-          <button className="nb-drawer-action">
+        <button className="nb-drawer-action" onClick={goToProfile}>
             {isLoggedIn ? (
               <>
                 <Avatar sx={{ width: 28, height: 28, fontSize: 12 }}>
@@ -237,8 +210,23 @@ const Navbar = () => {
               </>
             )}
           </button>
+        <nav className="nb-drawer-nav" aria-label="Mobile primary">
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              className="nb-drawer-link"
+              onClick={() => setMobileOpen(false)}
+            >
+              {l.label}
+            </a>
+          ))}
 
-          <button className="nb-drawer-action">
+          <div className="nb-drawer-divider" />
+
+          
+
+          <button className="nb-drawer-action" onClick={goToOrder}>
             <Badge badgeContent={3} color="error">
               <ShoppingCart />
             </Badge>
