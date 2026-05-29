@@ -1,8 +1,10 @@
+import Orederstep from './Orederstep';
+
 const OrderDetails = () => {
   return (
     <section className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-        <div className="space-y-5">
+                  <div className="space-y-5">
           <div className="space-y-2">
             <div className="grid gap-5 md:grid-cols-[280px_minmax(0,1fr)]">
               <img
@@ -27,6 +29,8 @@ const OrderDetails = () => {
                 </div>
 
                 <div className="space-y-5">
+                  <Orederstep status="Delivered" />
+
                   <div className="rounded-2xl bg-slate-50 p-4">
                     <p className="text-sm font-medium text-slate-500">Price</p>
                     <p className="mt-1 text-2xl font-bold text-slate-900">₹1,299</p>
