@@ -2,11 +2,10 @@ import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
-import {colors} from "../../../../../data/filter/color";
-import {price} from "../../../../../data/filter/price";
-import {discount} from "../../../../../data/filter/discount";
+import { colors } from "../../../../data/filter/color";
+import { price } from "../../../../data/filter/price";
+import { discount } from "../../../../data/filter/discount";
 import React, { useState } from "react";
-import { PriceChange } from "@mui/icons-material";
 
 const FilterSection = () => {
   const [expandColor, setExpandColor] = useState(false);
@@ -52,6 +51,7 @@ const FilterSection = () => {
             >
              {colors.slice(0, expandColor ? colors.length : 5).map((items)=>(
                <FormControlLabel
+                key={items.name}
                 value={items.name}
                 control={<Radio />}
                 label={items.name}
@@ -84,6 +84,7 @@ const FilterSection = () => {
             >
              {price.slice(0, expandPrice ? price.length : 5).map((items)=>(
                <FormControlLabel
+                key={items.name}
                 value={items.value}
                 control={<Radio />}
                 label={items.name}
@@ -115,6 +116,7 @@ const FilterSection = () => {
             >
              {discount.slice(0, expandDiscount ? discount.length : 5).map((items)=>(
                <FormControlLabel
+                key={items.name}
                 value={items.value}
                 control={<Radio />}
                 label={items.name}
