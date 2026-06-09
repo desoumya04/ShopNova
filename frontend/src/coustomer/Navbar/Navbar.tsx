@@ -9,12 +9,15 @@ import {
 } from "@mui/icons-material";
 import { useState, useEffect, useRef } from "react";
 import { Avatar, Badge } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 const NAV_LINKS = [
-  { label: "Home", href: "#" },
-  { label: "Electronics", href: "#" },
-  { label: "Fashion", href: "#" },
-  { label: "Grocery", href: "#" },
+  { label: "Electronics", to: "/electronics" },
+  { label: "Fashion", to: "/fashion" },
+  { label: "Grocery", to: "/grocery" },
+  { label: "Home", to: "/" },
 ];
 
 const Navbar = () => {
@@ -23,7 +26,7 @@ const Navbar = () => {
   const isLoggedIn = "true";
   const userName = localStorage.getItem("userName") || "User";
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
-
+  const navigate = useNavigate();
   // Close drawer on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -42,17 +45,6 @@ const Navbar = () => {
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
-
-  const goToProfile = () => {
-    window.history.pushState({}, "", "/profile");
-    window.dispatchEvent(new PopStateEvent("popstate"));
-  };
-
-  const goToOrder = () => {
-    window.history.pushState({}, "", "/order");
-    window.dispatchEvent(new PopStateEvent("popstate"));
-  };
-
   return (
     <>
       {/* ── Navbar root ── */}
@@ -68,7 +60,7 @@ const Navbar = () => {
           </button>
 
           {/* Brand */}
-          <a href="#" className="nb-brand">
+          <a href="/" className="nb-brand">
             SOP<span>NOVA</span>
           </a>
 
@@ -90,7 +82,7 @@ const Navbar = () => {
             <button
               className="nb-mobile-icon-btn"
               aria-label="Cart"
-              onClick={goToOrder}
+              onClick={() => navigate("/order")}
             >
               <Badge badgeContent={3} color="error">
                 <ShoppingCart />
@@ -112,9 +104,9 @@ const Navbar = () => {
           {/* Desktop nav links */}
           <nav className="nb-links" aria-label="Primary">
             {NAV_LINKS.map((l) => (
-              <a key={l.label} href={l.href} className="nb-link">
+              <Link key={l.to} to={l.to} className="nb-link">
                 {l.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -124,7 +116,7 @@ const Navbar = () => {
               <button
                 className="nb-icon-btn"
                 aria-label="User profile"
-                onClick={goToProfile}
+                onClick={() => navigate("/account")}
               >
                 <Avatar sx={{ width: 32, height: 32, fontSize: 14 }}>
                   {userInitial}
@@ -138,7 +130,7 @@ const Navbar = () => {
               </button>
             )}
 
-            <button className="nb-icon-btn" aria-label="Cart" onClick={goToOrder}>
+            <button className="nb-icon-btn" aria-label="Cart" onClick={() => navigate("/order")}>
               <Badge badgeContent={3} color="error">
                 <ShoppingCart />
               </Badge>
@@ -167,16 +159,13 @@ const Navbar = () => {
         {/* Drawer header */}
         <div className="nb-drawer-head">
           <div className="nb-drawer-head-main">
-            <a
-              href="#"
-              className="nb-drawer-brand"
-              onClick={() => setMobileOpen(false)}
-            >
+            
+            <button onClick={() => navigate("/")} >
               SOP<span>NOVA</span>
-            </a>
+            </button>
 
             <a
-              href="#"
+              href={"/Home"}
               className="nb-drawer-home"
               aria-label="Home"
               onClick={() => setMobileOpen(false)}
@@ -195,7 +184,7 @@ const Navbar = () => {
         </div>
 
         {/* Drawer nav links */}
-        <button className="nb-drawer-action" onClick={goToProfile}>
+        <button className="nb-drawer-action" onClick={() => navigate("/account")}>
             {isLoggedIn ? (
               <>
                 <Avatar sx={{ width: 28, height: 28, fontSize: 12 }}>
@@ -212,21 +201,21 @@ const Navbar = () => {
           </button>
         <nav className="nb-drawer-nav" aria-label="Mobile primary">
           {NAV_LINKS.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
+            <Link
+              key={l.to}
+              to={l.to}
               className="nb-drawer-link"
               onClick={() => setMobileOpen(false)}
             >
               {l.label}
-            </a>
+            </Link>
           ))}
 
           <div className="nb-drawer-divider" />
 
           
 
-          <button className="nb-drawer-action" onClick={goToOrder}>
+          <button className="nb-drawer-action" onClick={() => navigate("/order")}>
             <Badge badgeContent={3} color="error">
               <ShoppingCart />
             </Badge>

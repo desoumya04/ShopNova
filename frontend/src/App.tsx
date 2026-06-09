@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router';
 import Home from './coustomer/pages/home/home';
 import Product from './coustomer/pages/product/Product';
 import ProductDetails from './coustomer/pages/product/ProductDetails/ProductDetails';
+import UserDetails from './coustomer/pages/account/UserDetails';
 
 
 function App() {
@@ -33,9 +34,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/products/:CategoryId" element={<Product />} />
          <Route path="/product-details/:CategoryId/:name/:productId" element={<ProductDetails />} />
-        <Route path="/profile/*" element={<Profile />} />
-        <Route path="/order" element={<Order />} />
+        <Route path="/account/*" element={<Profile />} />
+        
         <Route path="/checkout/address" element={<Checkout />} />
+        
       </Routes>
     </ThemeProvider>
     </>
