@@ -1,31 +1,92 @@
-import { useState } from 'react';
+import { type ReactNode } from 'react';
 import { Avatar, Typography } from '@mui/material';
-import { ReceiptLong, Person, Logout } from '@mui/icons-material';
+import { Logout, Person, ReceiptLong } from '@mui/icons-material';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import Order from './Order';
-import OrderDetails from './Orderdetails';
+import ProfileDetails from '../account/UserDetails';
 
-const ORDERS = [
+type MenuItem = {
+  label: string;
+  action?: 'logout';
+  icon: ReactNode;
+  path: string;
+};
+
+type AccountPage = {
+  path: string;
+  element: ReactNode;
+};
+
+const menuItems: MenuItem[] = [
   {
-    title: 'Josh Bager',
-    seller: 'Jio Mart Private Limited',
-    image: 'https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/v/w/q/free-fandy-vivan-fab-unstitched-original-imahgzzh6vyqbzsw.jpeg?q=90',
-    price: '₹1,299',
-    quantity: 2,
-    status: 'Delivered',
+    label: 'Orders',
+    icon: <ReceiptLong />,
+    path: '/account/orders',
   },
   {
-    title: 'Noise Headphones',
-    seller: 'Noise India',
-    image: 'https://rukminim2.flixcart.com/image/312/312/xif0q/headphone/g/r/1/-original-imagyqg3k3zjz2rn.jpeg?q=70',
-    price: '₹2,499',
-    quantity: 1,
-    status: 'Shipped',
+    label: 'Profile',
+    icon: <Person />,
+    path: '/account/profile',
+  },
+  {
+    label: 'Saved items',
+    icon: <Person />,
+    path: '/account/saved',
+  },
+  {
+    label: 'Logout',
+    action: 'logout',
+    icon: <Logout />,
+    path: '/account/logout',
+  },
+];
+
+const accountPages: AccountPage[] = [
+  {
+    path: 'profile',
+    element: (
+      <section>
+        <Typography variant="h5" gutterBottom>
+          Profile
+        </Typography>
+        <div className="space-y-4">
+          <ProfileDetails />
+        </div>
+      </section>
+    ),
+  },
+  {
+    path: 'saved',
+    element: (
+      <section>
+        <Typography variant="h5" gutterBottom>
+          Saved Items
+        </Typography>
+        <div className="space-y-4">
+          <Order />
+        </div>
+      </section>
+    ),
+  },
+  {
+    path: 'orders',
+    element: (
+      <section className="space-y-4">
+        <Typography variant="h5" gutterBottom>
+          Orders
+        </Typography>
+        <div className="space-y-4">
+          <Order />
+        </div>
+      </section>
+    ),
   },
 ];
 
 const Profile = () => {
-  const [view, setView] = useState<'profile' | 'orders'>('profile');
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const userName = localStorage.getItem('userName') || 'User';
   const userInitial = userName.trim().charAt(0).toUpperCase() || 'U';
@@ -33,18 +94,19 @@ const Profile = () => {
   const handleLogout = () => {
     localStorage.removeItem('isLogin');
     localStorage.removeItem('userName');
-    window.location.href = '/';
+    navigate('/');
   };
 
   return (
     <section className="flex flex-col gap-4 p-4 lg:flex-row">
-      {/* Left menu (aside) */}
       <aside className="w-full rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:w-64">
         <div className="mb-3 flex items-center gap-3">
           <Avatar className="h-14 w-14">{userInitial}</Avatar>
           <div>
             <Typography variant="h6">{userName}</Typography>
-            <Typography variant="body2" color="text.secondary">Member</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Member
+            </Typography>
           </div>
         </div>
 
@@ -52,55 +114,41 @@ const Profile = () => {
 
         <nav aria-label="Profile navigation">
           <div className="flex flex-col gap-1">
-            <button
-              aria-pressed={view === 'orders'}
-              onClick={() => setView('orders')}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition hover:bg-slate-100 ${view === 'orders' ? 'bg-slate-100' : ''}`}
-            >
-              <ReceiptLong />
-              <span>Orders</span>
-            </button>
+            {menuItems.map((item) => {
+              const isActive = item.action !== 'logout' && location.pathname.startsWith(item.path);
 
-            <button
-              aria-pressed={view === 'profile'}
-              onClick={() => setView('profile')}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition hover:bg-slate-100 ${view === 'profile' ? 'bg-slate-100' : ''}`}
-            >
-              <Person />
-              <span>Profile</span>
-            </button>
+              return (
+              <button
+                key={item.label}
+                type="button"
+                onClick={() => {
+                  if (item.action === 'logout') {
+                    handleLogout();
+                    return;
+                  }
 
-            <button
-              onClick={handleLogout}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition hover:bg-slate-100"
-            >
-              <Logout />
-              <span>Logout</span>
-            </button>
+                  navigate(item.path);
+                }}
+                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left transition hover:bg-slate-100 ${
+                  isActive ? 'bg-slate-100' : ''
+                }`}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </button>
+              );
+            })}
           </div>
         </nav>
       </aside>
 
-      {/* Right content (main) */}
       <main className="flex-1 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:p-6">
-        {view === 'profile' ? (
-          <section>
-            <Typography variant="h5" gutterBottom>
-              Profile
-            </Typography>
-            <Typography>Placeholder for profile details and editable fields.</Typography>
-          </section>
-        ) : (
-          <section className="space-y-4">
-            <Typography variant="h5" gutterBottom>
-              Orders
-            </Typography>
-            <div className="space-y-4">
-              {/* <Order /> */}
-              <OrderDetails />
-            </div>
-          </section>
-        )}
+        <Routes>
+          {accountPages.map((page) => (
+            <Route key={page.path} path={page.path} element={page.element} />
+          ))}
+          <Route index element={<Navigate to="orders" replace />} />
+        </Routes>
       </main>
     </section>
   );

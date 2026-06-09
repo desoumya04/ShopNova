@@ -1,3 +1,4 @@
+import React from "react";
 type OrderCardProps = {
   title: string;
   seller: string;
@@ -6,10 +7,14 @@ type OrderCardProps = {
   quantity: number;
   status: string;
 };
+import { useNavigate } from "react-router-dom";
 
 const Ordercard = ({ title, seller, image, price, quantity, status }: OrderCardProps) => {
+  const navigate = useNavigate();
+
   return (
-    <article className="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
+    
+    <div  onClick={() => navigate('/account/order/1/item/1')} className="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
       <div className="flex gap-4">
         <img
           className="h-24 w-24 rounded-xl object-cover ring-1 ring-slate-200"
@@ -41,7 +46,7 @@ const Ordercard = ({ title, seller, image, price, quantity, status }: OrderCardP
         <span className="text-sm text-slate-500">Total</span>
         <span className="text-lg font-bold text-slate-900">{price}</span>
       </div>
-    </article>
+    </div>
   );
 };
 
