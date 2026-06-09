@@ -5,7 +5,6 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-
 
 import Order from './Order';
 import ProfileDetails from '../account/UserDetails';
-import OrderDetails from './Orderdetails';
 
 type MenuItem = {
   label: string;
@@ -41,7 +40,6 @@ const menuItems: MenuItem[] = [
     icon: <Logout />,
     path: '/account/logout',
   },
-
 ];
 
 const accountPages: AccountPage[] = [
@@ -149,7 +147,7 @@ const Profile = () => {
           {accountPages.map((page) => (
             <Route key={page.path} path={page.path} element={page.element} />
           ))}
-          <Route path="/order/:orderId/item/:itemId" element={<OrderDetails />} />
+          <Route index element={<Navigate to="orders" replace />} />
         </Routes>
       </main>
     </section>
