@@ -9,6 +9,7 @@ type OrderCardProps = {
 };
 import { useNavigate } from "react-router-dom";
 
+
 const Ordercard = ({ title, seller, image, price, quantity, status }: OrderCardProps) => {
   const navigate = useNavigate();
 
