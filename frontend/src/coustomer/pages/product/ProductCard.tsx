@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ProductCard.css"
+import { useNavigate } from "react-router";
 
 const Productcard = ({ item }: any) => {
   const[currentImage, setCurrentImage] = useState(3)
@@ -18,9 +19,13 @@ const Productcard = ({ item }: any) => {
     return () => clearInterval(interval)
   },[hover,item.images.length])
 
+  const navigate = useNavigate()
+  const handleClick=()=>{
+    navigate(`/product-details/${item.categoryId}/${item.seller?.businessDetails?.businessName}/${item.productId}`)
+  }
  
   return (
-    <div className="group px-4 relative">
+    <div onClick={handleClick} className="group px-4 relative">
       <div
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
