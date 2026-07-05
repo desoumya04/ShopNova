@@ -1,0 +1,222 @@
+export const electricProducts = [
+  {
+    id: 1,
+    name: "Electric Kettle",
+    brand: "Philips",
+    price: 39.99,
+    description: "1.7L stainless steel electric kettle with auto shut-off.",
+    image: "/images/products/kettle.jpg",
+    rating: 4.5,
+    stock: 25,
+    category: "Kitchen Appliances"
+  },
+  {
+    id: 2,
+    name: "Air Fryer",
+    brand: "Prestige",
+    price: 129.99,
+    description: "Healthy cooking with 8 preset cooking modes.",
+    image: "/images/products/airfryer.jpg",
+    rating: 4.7,
+    stock: 18,
+    category: "Kitchen Appliances"
+  },
+  {
+    id: 3,
+    name: "Mixer Grinder",
+    brand: "Bajaj",
+    price: 89.99,
+    description: "750W mixer grinder with 3 stainless steel jars.",
+    image: "/images/products/mixer.jpg",
+    rating: 4.4,
+    stock: 30,
+    category: "Kitchen Appliances"
+  },
+  {
+    id: 4,
+    name: "Coffee Maker",
+    brand: "Morphy Richards",
+    price: 74.99,
+    description: "Automatic drip coffee maker with glass carafe.",
+    image: "/images/products/coffee.jpg",
+    rating: 4.6,
+    stock: 15,
+    category: "Kitchen Appliances"
+  },
+  {
+    id: 5,
+    name: "Microwave Oven",
+    brand: "Samsung",
+    price: 189.99,
+    description: "23L convection microwave oven with smart cooking.",
+    image: "/images/products/microwave.jpg",
+    rating: 4.8,
+    stock: 12,
+    category: "Kitchen Appliances"
+  },
+  {
+    id: 6,
+    name: "Induction Cooktop",
+    brand: "Prestige",
+    price: 69.99,
+    description: "Energy-efficient induction cooktop with touch controls.",
+    image: "/images/products/induction.jpg",
+    rating: 4.5,
+    stock: 20,
+    category: "Kitchen Appliances"
+  },
+  {
+    id: 7,
+    name: "Steam Iron",
+    brand: "Philips",
+    price: 49.99,
+    description: "Non-stick soleplate with continuous steam output.",
+    image: "/images/products/iron.jpg",
+    rating: 4.4,
+    stock: 28,
+    category: "Home Appliances"
+  },
+  {
+    id: 8,
+    name: "Vacuum Cleaner",
+    brand: "Dyson",
+    price: 349.99,
+    description: "Powerful cordless vacuum cleaner with HEPA filter.",
+    image: "/images/products/vacuum.jpg",
+    rating: 4.9,
+    stock: 8,
+    category: "Home Appliances"
+  },
+  {
+    id: 9,
+    name: "Room Heater",
+    brand: "Havells",
+    price: 59.99,
+    description: "2000W room heater with overheat protection.",
+    image: "/images/products/heater.jpg",
+    rating: 4.3,
+    stock: 22,
+    category: "Home Appliances"
+  },
+  {
+    id: 10,
+    name: "Ceiling Fan",
+    brand: "Orient",
+    price: 99.99,
+    description: "Energy-saving BLDC ceiling fan.",
+    image: "/images/products/fan.jpg",
+    rating: 4.6,
+    stock: 35,
+    category: "Home Appliances"
+  },
+  {
+    id: 11,
+    name: "LED Smart TV 43\"",
+    brand: "LG",
+    price: 499.99,
+    description: "4K Ultra HD Smart TV with webOS.",
+    image: "/images/products/tv.jpg",
+    rating: 4.8,
+    stock: 10,
+    category: "Electronics"
+  },
+  {
+    id: 12,
+    name: "Bluetooth Speaker",
+    brand: "JBL",
+    price: 89.99,
+    description: "Portable waterproof Bluetooth speaker.",
+    image: "/images/products/speaker.jpg",
+    rating: 4.7,
+    stock: 40,
+    category: "Electronics"
+  },
+  {
+    id: 13,
+    name: "Wireless Headphones",
+    brand: "Sony",
+    price: 149.99,
+    description: "Noise-cancelling wireless headphones.",
+    image: "/images/products/headphones.jpg",
+    rating: 4.9,
+    stock: 16,
+    category: "Electronics"
+  },
+  {
+    id: 14,
+    name: "Power Bank 20000mAh",
+    brand: "Anker",
+    price: 59.99,
+    description: "Fast charging USB-C power bank.",
+    image: "/images/products/powerbank.jpg",
+    rating: 4.8,
+    stock: 50,
+    category: "Accessories"
+  },
+  {
+    id: 15,
+    name: "Electric Rice Cooker",
+    brand: "Panasonic",
+    price: 69.99,
+    description: "Automatic rice cooker with keep-warm function.",
+    image: "/images/products/ricecooker.jpg",
+    rating: 4.5,
+    stock: 21,
+    category: "Kitchen Appliances"
+  },
+  {
+    id: 16,
+    name: "Sandwich Maker",
+    brand: "Wonderchef",
+    price: 39.99,
+    description: "Non-stick sandwich maker with cool-touch handle.",
+    image: "/images/products/sandwich.jpg",
+    rating: 4.3,
+    stock: 27,
+    category: "Kitchen Appliances"
+  },
+  {
+    id: 17,
+    name: "Hair Dryer",
+    brand: "Nova",
+    price: 29.99,
+    description: "1200W foldable hair dryer with heat settings.",
+    image: "/images/products/hairdryer.jpg",
+    rating: 4.2,
+    stock: 32,
+    category: "Personal Care"
+  },
+  {
+    id: 18,
+    name: "Electric Trimmer",
+    brand: "Philips",
+    price: 49.99,
+    description: "Rechargeable beard trimmer with precision settings.",
+    image: "/images/products/trimmer.jpg",
+    rating: 4.7,
+    stock: 26,
+    category: "Personal Care"
+  },
+  {
+    id: 19,
+    name: "Water Purifier",
+    brand: "Kent",
+    price: 249.99,
+    description: "RO + UV water purifier for safe drinking water.",
+    image: "/images/products/waterpurifier.jpg",
+    rating: 4.8,
+    stock: 11,
+    category: "Home Appliances"
+  },
+  {
+    id: 20,
+    name: "Air Purifier",
+    brand: "Xiaomi",
+    price: 179.99,
+    description: "Smart air purifier with HEPA filtration.",
+    image: "/images/products/airpurifier.jpg",
+    rating: 4.6,
+    stock: 14,
+    category: "Home Appliances"
+  }
+];
