@@ -7,11 +7,11 @@ import { EmailServiceInstance } from '../utils/sendEmail.js';
 
 class authService{
   async login (loginData: any){
-    const { email } = loginData;
-    const hasMissingField = [email].some(v => !v);
+    const { email,name,phone } = loginData;
+    const hasMissingField = [email,name,phone].some(v => !v);
     // check for missing fields
     if(hasMissingField){
-      throw new apiError(400, 'Missing required fields: email, password');
+      throw new apiError(400, 'Missing required fields: email,name,phone');
     }
     const existingSeller = await prisma.seller.findUnique({
       where:{ email: loginData.email}
