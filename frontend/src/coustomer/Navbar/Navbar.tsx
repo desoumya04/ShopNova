@@ -23,7 +23,7 @@ const NAV_LINKS = [
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
-  const isLoggedIn = "true";
+  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   const userName = localStorage.getItem("userName") || "User";
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
   const navigate = useNavigate();
@@ -126,7 +126,7 @@ const Navbar = () => {
             ) : (
               <button className="nb-icon-btn" aria-label="Login">
                 <Login />
-                <span>Login</span>
+                <span onClick={() => navigate("/signup")}>Signup</span>
               </button>
             )}
 
@@ -184,7 +184,7 @@ const Navbar = () => {
         </div>
 
         {/* Drawer nav links */}
-        <button className="nb-drawer-action" onClick={() => navigate("/account")}>
+        <button className="nb-drawer-action" onClick={() => navigate("/profile")}>
             {isLoggedIn ? (
               <>
                 <Avatar sx={{ width: 28, height: 28, fontSize: 12 }}>
