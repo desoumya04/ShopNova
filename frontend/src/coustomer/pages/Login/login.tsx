@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { sendLoginOtp, verifyLoginOtp } from "../../../Redux_toolkit/Auth/authSlice";
+import { login, sendLoginOtp } from "../../../Redux_toolkit/Auth/authSlice";
 
 function Login() {
 	const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ function Login() {
 		setMessage("");
 
 		try {
-			await verifyLoginOtp({ email, otp });
+			await login({ otp });
 			setMessage("Login successful.");
 		} catch {
 			setMessage("Invalid code. Please try again.");
