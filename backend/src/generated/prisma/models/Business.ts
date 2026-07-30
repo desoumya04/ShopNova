@@ -491,14 +491,6 @@ export type BusinessUncheckedUpdateManyWithoutSellerNestedInput = {
   deleteMany?: Prisma.BusinessScalarWhereInput | Prisma.BusinessScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type BusinessCreateWithoutSellerInput = {
   id?: string
   name: string

@@ -9,6 +9,7 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Seller.js'
+export type * from './models/User.js'
 export type * from './models/Business.js'
 export type * from './models/Bank.js'
 export type * from './commonInputTypes.js'

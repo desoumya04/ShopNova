@@ -10,9 +10,9 @@ class SellerService{
   async createsSeller(sellerData: any){
     
 
-    const  {name, mobile, email, password,gstIn} = sellerData;
+    const  {name, mobile, email, password } = sellerData;
     
-    const hasMissingField = [name, mobile, email, password, gstIn].some(v => !v);
+    const hasMissingField = [name, mobile, email, password].some(v => !v);
     // check for missing fields
     if(hasMissingField){
       throw new apiError(400, 'Missing required fields: name, mobile, email, password, gstIn');
