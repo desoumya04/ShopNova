@@ -11,12 +11,14 @@ const initialState = {
   otpSent: false
 };  
 
-export const sendLoginOtp = createAsyncThunk<any, { email: string }>(
+export const sendLoginOtp = createAsyncThunk<any, { name: string; mobile: string; email: string }>(
   "auth/sendLoginOtp",
-  async ({ email }, { rejectWithValue }) => {
+  async ({ name, mobile, email }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`${API_URL}/login`, {
-        email,
+      const response = await api.post(`${API_URL}/signup`, {
+        name,
+        mobile,
+        email
       });
 
       console.log("sendLoginOtp response:", response.data);

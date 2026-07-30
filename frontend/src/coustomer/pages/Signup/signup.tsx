@@ -9,14 +9,15 @@ function Signup() {
 
 	const [formData, setFormData] = useState({
 		name: "",
+		mobile: "",
 		email: "",
-		phone: "",
+		
 	});
 
 	const [otp, setOtp] = useState("");
 	
 	const updateField = (
-		field: "name" | "email" | "phone",
+		field: "name" | "email" | "mobile",
 		value: string
 	) => {
 		setFormData((prev) => ({
@@ -27,7 +28,7 @@ function Signup() {
 
 	const handleSendOtp = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		await dispatch(sendLoginOtp({ email: formData.email }));
+		await dispatch(sendLoginOtp({ name: formData.name, mobile: formData.mobile, email: formData.email }));
 	};
 
 	const handleVerifyOtp = async (e: FormEvent<HTMLFormElement>) => {
@@ -76,10 +77,10 @@ function Signup() {
 
 						<input
 							type="tel"
-							placeholder="Phone"
-							value={formData.phone}
+							placeholder="Mobile Number"
+							value={formData.mobile}
 							onChange={(e) =>
-								updateField("phone", e.target.value)
+								updateField("mobile", e.target.value)
 							}
 							className="w-full rounded border p-3"
 							required
