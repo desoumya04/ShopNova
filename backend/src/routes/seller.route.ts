@@ -9,6 +9,5 @@ router.post('/seller/add_bank_details', sellerController.addBankDetails )
 router.post('/seller/add_business_details', sellerController.addBusinessDetails)
 router.put('/seller/update', sellerController.updateSeller) 
 router.delete('/seller/delete', sellerController.deleteSeller)
-router.post('/auth/login',authController.login)
-router.post('/auth/verify_otp',authController.verifyOtp)
+
 export default router;

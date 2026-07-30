@@ -7,11 +7,11 @@ import { EmailServiceInstance } from '../utils/sendEmail.js';
 
 class authService{
   async login (loginData: any){
-    const { email,name,phone } = loginData;
-    const hasMissingField = [email,name,phone].some(v => !v);
+    const { email } = loginData;
+    const hasMissingField = [email].some(v => !v);
     // check for missing fields
     if(hasMissingField){
-      throw new apiError(400, 'Missing required fields: email,name,phone');
+      throw new apiError(400, 'Missing required fields: email');
     }
     const existingSeller = await prisma.seller.findUnique({
       where:{ email: loginData.email}
@@ -27,26 +27,26 @@ class authService{
     EmailServiceInstance.sendEmail(existingSeller.email, 'Your OTP Code', `Your OTP code is: ${otp}`);
     return otp;
   }
-
+  // verify otp for signup and login
   async verifyOtp(otpData: any){
     const { email, otp } = otpData;
-    const existingSeller = await prisma.seller.findUnique({
+    const existingUser = await prisma.user.findUnique({
       where:{ email: email}
     })    
-    if(!existingSeller){
-      throw new apiError(404, 'Seller not found');
+    if(!existingUser){
+      throw new apiError(404, 'User not found');
     }
-    if(existingSeller.otp !== otp){
+    if(existingUser.otp !== otp){
       throw new apiError(400, 'Invalid OTP');
     }
-    if(existingSeller.otpExpiresAt && existingSeller.otpExpiresAt < new Date()){
+    if(existingUser.otpExpiresAt && existingUser.otpExpiresAt < new Date()){
       throw new apiError(400, 'OTP expired');
     }
-    await prisma.seller.update({
+    await prisma.user.update({
       where: { email: email },
       data: { otpVerified: true, otp: null, otpExpiresAt: null}, // Mark OTP as verified and clear it
     })
-    const token = JWTProviderInstance.createToken({email: existingSeller.email, id: existingSeller.id});
+    const token = JWTProviderInstance.createToken({email: existingUser.email, id: existingUser.id});
     return { token };
   }
 

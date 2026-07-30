@@ -15,4 +15,9 @@ app.get('/', (req, res) => {
 import sellerRoutes from './routes/seller.route.js';
 app.use('/api/v1', sellerRoutes);
 
+
+
+import userRoutes from './routes/user.route.js';
+app.use('/api/v1', userRoutes);
+
 export default app;
