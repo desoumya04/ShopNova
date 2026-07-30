@@ -1,12 +1,13 @@
 import { useState, type FormEvent } from "react";
 import { login, sendLoginOtp } from "../../../Redux_toolkit/Auth/authSlice";
 import { useAppSelector, useAppDispatch } from "../../../Redux_toolkit/store";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
 	const {auth} = useAppSelector((state) => state);
 	const dispatch = useAppDispatch();
 
-
+	const navigate = useNavigate();
 	const [formData, setFormData] = useState({
 		name: "",
 		mobile: "",
@@ -37,8 +38,9 @@ function Signup() {
 	
 
 		try {
-			await dispatch(login({  otp }));
+			await dispatch(login({ email: formData.email, otp }));
 			console.log("OTP Verified");
+			navigate("/");
 		} finally {
 			
 		}
@@ -97,7 +99,12 @@ function Signup() {
 					</form>
 				) : (
 					<form onSubmit={handleVerifyOtp} className="space-y-4">
-
+						<input
+							type="text"
+							value={formData.email}
+							className="w-full rounded border p-3 text-center"
+							readOnly
+						/>
 						<input
 							type="text"
 							value={otp}

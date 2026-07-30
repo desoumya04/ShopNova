@@ -30,16 +30,16 @@ export const sendLoginOtp = createAsyncThunk<any, { name: string; mobile: string
   },
 );
 
-export const login = createAsyncThunk<any, { otp: string } >(
+export const login = createAsyncThunk<any, { email: string; otp: string } >(
   "auth/login",
-  async ({ otp }, { rejectWithValue }) => {
+  async ({ email, otp }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`${API_URL}/verify_otp`, { otp });
+      const response = await api.post(`${API_URL}/verify_otp`, { email, otp });
 
       console.log("login response:", response.data);
-      localStorage.setItem("jwt", response.data.jwt);
-      
-      return response.data;
+      console.log("JWT:", response.data.data.jwt);
+      localStorage.setItem("jwt", response.data.data.jwt);
+      return { jwt: response.data.data.jwt, role: response.data.data.role };
     } catch (error) {
       console.error("Error logging in:", error);
       return rejectWithValue(error);
@@ -85,7 +85,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-      
+        
       })
       
   },

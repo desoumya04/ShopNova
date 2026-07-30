@@ -47,7 +47,7 @@ class authService{
       data: { otpVerified: true, otp: null, otpExpiresAt: null}, // Mark OTP as verified and clear it
     })
     const token = JWTProviderInstance.createToken({email: existingUser.email, id: existingUser.id});
-    return { token };
+    return { jwt: token, role: existingUser.role};
   }
 
 }

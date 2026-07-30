@@ -22,7 +22,7 @@ class AuthController {
       res
       .status(200)
       .json(
-        new apiResponse(200, isOtpValid.token, 'OTP verified successfully')
+        new apiResponse(200, isOtpValid, 'OTP verified successfully')
       );
   })
 }
