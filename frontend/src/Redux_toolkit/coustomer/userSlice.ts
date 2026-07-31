@@ -39,6 +39,29 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
+export const updateUserData = createAsyncThunk(
+  "user/update",
+  async (userData: { name: string; phone: string }, { rejectWithValue }) => {
+    try {
+      const jwt = localStorage.getItem("jwt");
+      if (!jwt) {
+        throw new Error("JWT not found in localStorage");
+      }
+
+      const response = await api.post(`${API_URL}/profile/update`, userData, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+
+      console.log("updateUserData response:", response.data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name:"user",
   initialState:initialState,
@@ -58,6 +81,20 @@ const userSlice = createSlice({
   
     })
     .addCase(fetchUserData.rejected,(state,action)=>{
+      state.loading = false;
+      state.error = action.payload as string;
+    })
+    .addCase(updateUserData.pending,(state)=>{
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(updateUserData.fulfilled,(state,action)=>{
+      state.loading = false;
+      state.name = action.payload.name;
+      state.phone = action.payload.phone;
+     
+    })
+    .addCase(updateUserData.rejected,(state,action)=>{
       state.loading = false;
       state.error = action.payload as string;
     })

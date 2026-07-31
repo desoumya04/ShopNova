@@ -87,7 +87,7 @@ class UserService{
         mobile: userData.phone || existingUser.mobile,
       },
     })
-    return { name: updatedUser.name, email: updatedUser.email,joined: updatedUser.createdAt};
+    return { name: updatedUser.name, phone: updatedUser.mobile,joined: updatedUser.createdAt};
   }
 }
 

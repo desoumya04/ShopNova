@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { useAppDispatch } from '../../../Redux_toolkit/store'
+import { updateUserData } from '../../../Redux_toolkit/coustomer/userSlice'
 
 type User = {
   name?: string
@@ -13,6 +15,7 @@ type User = {
 const ProfileFiledCard = ( {user}: { user: User } ) => {
   const u = user 
   
+  const useDispatch = useAppDispatch();
 
   const [isEditing, setIsEditing] = useState(false)
   const [draft, setDraft] = useState<User>(u)
@@ -29,7 +32,8 @@ const ProfileFiledCard = ( {user}: { user: User } ) => {
   }
 
   const handleSave = () => {
-    
+    useDispatch(updateUserData( draft));
+    setIsEditing(false);
   }
 
   return (
