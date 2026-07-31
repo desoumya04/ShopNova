@@ -11,7 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { Avatar, Badge } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
+import { useAppSelector } from "../../Redux_toolkit/store";
 
 const NAV_LINKS = [
   { label: "Electronics", to: "/electronics" },
@@ -23,9 +23,16 @@ const NAV_LINKS = [
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-  const userName = localStorage.getItem("userName") || "User";
+
+  // Get user login status and details from localStorage
+  const jwt = useAppSelector((state)=>state.auth.jwt)
+  const name = useAppSelector((state)=>state.auth.name)
+
+  const isLoggedIn = jwt!== null;
+  const userName = name || "User";
+
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
+  
   const navigate = useNavigate();
   // Close drawer on outside click
   useEffect(() => {

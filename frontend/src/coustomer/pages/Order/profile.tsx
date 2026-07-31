@@ -66,7 +66,7 @@ const accountPages: AccountPage[] = [
           Saved Items
         </Typography>
         <div className="space-y-4">
-          <Order />
+          <ProfileDetails />
         </div>
       </section>
     ),

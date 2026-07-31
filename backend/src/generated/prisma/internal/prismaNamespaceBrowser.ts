@@ -54,7 +54,8 @@ export const ModelName = {
   Seller: 'Seller',
   User: 'User',
   Business: 'Business',
-  Bank: 'Bank'
+  Bank: 'Bank',
+  Address: 'Address'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -135,6 +136,18 @@ export const BankScalarFieldEnum = {
 } as const
 
 export type BankScalarFieldEnum = (typeof BankScalarFieldEnum)[keyof typeof BankScalarFieldEnum]
+
+
+export const AddressScalarFieldEnum = {
+  id: 'id',
+  sellerId: 'sellerId',
+  locality: 'locality',
+  pinCode: 'pinCode',
+  state: 'state',
+  address: 'address'
+} as const
+
+export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
 
 
 export const SortOrder = {
