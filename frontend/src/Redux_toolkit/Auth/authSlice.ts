@@ -6,6 +6,7 @@ const API_URL = "/auth";
 const initialState = {
   jwt: localStorage.getItem("jwt") || null,
   role: localStorage.getItem("role") || null,
+  name: localStorage.getItem("name") || null,
   loading: false,
   error: null,
   otpSent: false
@@ -36,10 +37,15 @@ export const login = createAsyncThunk<any, { email: string; otp: string } >(
     try {
       const response = await api.post(`${API_URL}/verify_otp`, { email, otp });
 
+      // Store JWT and user details in localStorage
       console.log("login response:", response.data);
       console.log("JWT:", response.data.data.jwt);
       localStorage.setItem("jwt", response.data.data.jwt);
-      return { jwt: response.data.data.jwt, role: response.data.data.role };
+      localStorage.setItem("role", response.data.data.role);
+      localStorage.setItem("name", response.data.data.name);
+
+
+      return { jwt: response.data.data.jwt, role: response.data.data.role, name: response.data.data.name };
     } catch (error) {
       console.error("Error logging in:", error);
       return rejectWithValue(error);
