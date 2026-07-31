@@ -7,20 +7,20 @@ const UserDetails = () => {
 
   const dispatch = useAppDispatch();
 
-  const user = useAppSelector(state => state.user.name);
-
+  const User = useAppSelector(state => state.user);
+  console.log("UserDetails component - User state:", User);
   useEffect(() => {
     dispatch(fetchUserData());
   }, [dispatch]);
 
-  if (!user) {
+  if (!User) {
     return <div>Loading user details...</div>;
   }
   
 
   return (
     
-          <ProfileFiledCard user={user} />
+          <ProfileFiledCard user={User} />
   )
 }
 

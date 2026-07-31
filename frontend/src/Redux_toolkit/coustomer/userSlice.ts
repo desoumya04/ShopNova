@@ -25,16 +25,15 @@ export const fetchUserData = createAsyncThunk(
         throw new Error("JWT not found in localStorage");
       }
 
-      const response = await api.get(`${API_URL}/profile`, {
+      const response = await api.get(`${API_URL}/profile`,{
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       });
 
       console.log("fetchUserData response:", response.data);
-      return response.data;
+      return response.data.data;
     } catch (error) {
-      console.error("Error fetching user data:", error);
       return rejectWithValue(error);
     }
   }
@@ -60,7 +59,7 @@ const userSlice = createSlice({
     })
     .addCase(fetchUserData.rejected,(state,action)=>{
       state.loading = false;
-      state.error = null;
+      state.error = action.payload as string;
     })
   }
 })

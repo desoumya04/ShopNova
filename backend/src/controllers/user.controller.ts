@@ -21,6 +21,39 @@ class UserController {
 
   })
 
+  userDetails = asyncHandler(async (req,res) =>{
+    const authHeader = req.headers.authorization;
+
+  const token =
+    req.cookies.token ||
+    (authHeader?.startsWith("Bearer ")
+      ? authHeader.split(" ")[1]
+      : undefined);
+    
+    if(!token){
+      throw new apiError(401, 'Unauthorized: No token provided');
+    }
+    const userDetails = await userService.userDetails(token);
+    res.status(200).json(new apiResponse(200,userDetails,'User details fetched successfully'));
+  })
+
+
+  updateUser = asyncHandler(async (req,res) =>{
+    const authHeader = req.headers.authorization;
+
+  const token =
+    req.cookies.token ||
+    (authHeader?.startsWith("Bearer ")
+      ? authHeader.split(" ")[1]
+      : undefined);
+    
+    if(!token){
+      throw new apiError(401, 'Unauthorized: No token provided');
+    }
+    console.log('req.body:',token, req.body);
+    const userDetails = await userService.updateUser(token,req.body);
+    res.status(200).json(new apiResponse(200,userDetails,'User details updated successfully'));
+  })
 }
 
 export const userController = new UserController();

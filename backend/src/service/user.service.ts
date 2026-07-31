@@ -5,8 +5,9 @@ import { JWTProviderInstance } from '../utils/jwtProvider.js';
 import { EmailServiceInstance } from '../utils/sendEmail.js';
 
 
-class UserService{
 
+class UserService{
+// create a new user
   async createUser(userData: any){
     const  {name, mobile, email} = userData;
     console.log('userData:', userData);
@@ -22,7 +23,7 @@ class UserService{
     const existingUser = await prisma.user.findUnique({
       where:{ email: userData.email}
     })
-    console.log('existingUser:', existingUser);
+  
     // check if user with the same email already exists
     if(existingUser){
       throw new apiError(400, 'User with this email already exists');
@@ -51,6 +52,43 @@ class UserService{
     return { newUser };
 
   } 
+
+  async userDetails(jwt: string){
+    const decoded = JWTProviderInstance.verifyToken(jwt);
+    if(!decoded){
+      throw new apiError(401, 'Invalid token');
+    }
+    const existingUser = await prisma.user.findUnique({
+      where:{ id: decoded.id}
+    })    
+    if(!existingUser){
+      throw new apiError(404, 'User not found');
+    } 
+    return { name: existingUser.name, email: existingUser.email, phone: existingUser.mobile, joined: existingUser.createdAt};
+  } 
+
+
+  async updateUser(jwt: string, userData: any){
+    const decoded = JWTProviderInstance.verifyToken(jwt);
+    if(!decoded){
+      throw new apiError(401, 'Invalid token');
+    }
+    const existingUser = await prisma.user.findUnique({
+      where:{ id: decoded.id}
+    })    
+    console.log('existingUser:', existingUser);
+    if(!existingUser){
+      throw new apiError(404, 'User not found');
+    } 
+    const updatedUser = await prisma.user.update({
+      where: { id: decoded.id },
+      data: {
+        name: userData.name || existingUser.name,
+        mobile: userData.phone || existingUser.mobile,
+      },
+    })
+    return { name: updatedUser.name, email: updatedUser.email,joined: updatedUser.createdAt};
+  }
 }
 
 
