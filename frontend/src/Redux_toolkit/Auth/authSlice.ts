@@ -4,8 +4,8 @@ import { api } from "../../config/api";
 const API_URL = "/auth";
 
 const initialState = {
-  jwt: null,
-  role: null,
+  jwt: localStorage.getItem("jwt") || null,
+  role: localStorage.getItem("role") || null,
   loading: false,
   error: null,
   otpSent: false
@@ -57,6 +57,7 @@ const authSlice = createSlice({
       state.jwt = null;
       state.role = null;
       localStorage.removeItem("jwt");
+      localStorage.removeItem("role");
       state.otpSent = false;
     }
   },
@@ -85,7 +86,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        
+        state.error = null;
       })
       
   },
