@@ -37,3 +37,8 @@ export type Business = Prisma.BusinessModel
  * 
  */
 export type Bank = Prisma.BankModel
+/**
+ * Model Address
+ * 
+ */
+export type Address = Prisma.AddressModel
