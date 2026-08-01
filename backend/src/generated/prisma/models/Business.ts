@@ -20,100 +20,70 @@ export type BusinessModel = runtime.Types.Result.DefaultSelection<Prisma.$Busine
 
 export type AggregateBusiness = {
   _count: BusinessCountAggregateOutputType | null
-  _avg: BusinessAvgAggregateOutputType | null
-  _sum: BusinessSumAggregateOutputType | null
   _min: BusinessMinAggregateOutputType | null
   _max: BusinessMaxAggregateOutputType | null
-}
-
-export type BusinessAvgAggregateOutputType = {
-  pinCode: number | null
-}
-
-export type BusinessSumAggregateOutputType = {
-  pinCode: number | null
 }
 
 export type BusinessMinAggregateOutputType = {
   id: string | null
   sellerId: string | null
   name: string | null
+  category: $Enums.BusinessCategory | null
   email: string | null
-  phone: string | null
-  locality: string | null
-  pinCode: number | null
-  state: string | null
-  address: string | null
+  mobile: string | null
+  gstIn: string | null
 }
 
 export type BusinessMaxAggregateOutputType = {
   id: string | null
   sellerId: string | null
   name: string | null
+  category: $Enums.BusinessCategory | null
   email: string | null
-  phone: string | null
-  locality: string | null
-  pinCode: number | null
-  state: string | null
-  address: string | null
+  mobile: string | null
+  gstIn: string | null
 }
 
 export type BusinessCountAggregateOutputType = {
   id: number
   sellerId: number
   name: number
+  category: number
   email: number
-  phone: number
-  locality: number
-  pinCode: number
-  state: number
-  address: number
+  mobile: number
+  gstIn: number
   _all: number
 }
 
-
-export type BusinessAvgAggregateInputType = {
-  pinCode?: true
-}
-
-export type BusinessSumAggregateInputType = {
-  pinCode?: true
-}
 
 export type BusinessMinAggregateInputType = {
   id?: true
   sellerId?: true
   name?: true
+  category?: true
   email?: true
-  phone?: true
-  locality?: true
-  pinCode?: true
-  state?: true
-  address?: true
+  mobile?: true
+  gstIn?: true
 }
 
 export type BusinessMaxAggregateInputType = {
   id?: true
   sellerId?: true
   name?: true
+  category?: true
   email?: true
-  phone?: true
-  locality?: true
-  pinCode?: true
-  state?: true
-  address?: true
+  mobile?: true
+  gstIn?: true
 }
 
 export type BusinessCountAggregateInputType = {
   id?: true
   sellerId?: true
   name?: true
+  category?: true
   email?: true
-  phone?: true
-  locality?: true
-  pinCode?: true
-  state?: true
-  address?: true
+  mobile?: true
+  gstIn?: true
   _all?: true
 }
 
@@ -155,18 +125,6 @@ export type BusinessAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: BusinessAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: BusinessSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: BusinessMinAggregateInputType
@@ -197,8 +155,6 @@ export type BusinessGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: BusinessCountAggregateInputType | true
-  _avg?: BusinessAvgAggregateInputType
-  _sum?: BusinessSumAggregateInputType
   _min?: BusinessMinAggregateInputType
   _max?: BusinessMaxAggregateInputType
 }
@@ -207,15 +163,11 @@ export type BusinessGroupByOutputType = {
   id: string
   sellerId: string
   name: string
-  email: string | null
-  phone: string | null
-  locality: string
-  pinCode: number
-  state: string
-  address: string
+  category: $Enums.BusinessCategory
+  email: string
+  mobile: string
+  gstIn: string | null
   _count: BusinessCountAggregateOutputType | null
-  _avg: BusinessAvgAggregateOutputType | null
-  _sum: BusinessSumAggregateOutputType | null
   _min: BusinessMinAggregateOutputType | null
   _max: BusinessMaxAggregateOutputType | null
 }
@@ -242,12 +194,11 @@ export type BusinessWhereInput = {
   id?: Prisma.StringFilter<"Business"> | string
   sellerId?: Prisma.StringFilter<"Business"> | string
   name?: Prisma.StringFilter<"Business"> | string
-  email?: Prisma.StringNullableFilter<"Business"> | string | null
-  phone?: Prisma.StringNullableFilter<"Business"> | string | null
-  locality?: Prisma.StringFilter<"Business"> | string
-  pinCode?: Prisma.IntFilter<"Business"> | number
-  state?: Prisma.StringFilter<"Business"> | string
-  address?: Prisma.StringFilter<"Business"> | string
+  category?: Prisma.EnumBusinessCategoryFilter<"Business"> | $Enums.BusinessCategory
+  email?: Prisma.StringFilter<"Business"> | string
+  mobile?: Prisma.StringFilter<"Business"> | string
+  gstIn?: Prisma.StringNullableFilter<"Business"> | string | null
+  address?: Prisma.XOR<Prisma.BusinessAddressNullableScalarRelationFilter, Prisma.BusinessAddressWhereInput> | null
   seller?: Prisma.XOR<Prisma.SellerScalarRelationFilter, Prisma.SellerWhereInput>
 }
 
@@ -255,46 +206,40 @@ export type BusinessOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  email?: Prisma.SortOrderInput | Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  locality?: Prisma.SortOrder
-  pinCode?: Prisma.SortOrder
-  state?: Prisma.SortOrder
-  address?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  mobile?: Prisma.SortOrder
+  gstIn?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.BusinessAddressOrderByWithRelationInput
   seller?: Prisma.SellerOrderByWithRelationInput
 }
 
 export type BusinessWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  sellerId?: string
   AND?: Prisma.BusinessWhereInput | Prisma.BusinessWhereInput[]
   OR?: Prisma.BusinessWhereInput[]
   NOT?: Prisma.BusinessWhereInput | Prisma.BusinessWhereInput[]
-  sellerId?: Prisma.StringFilter<"Business"> | string
   name?: Prisma.StringFilter<"Business"> | string
-  email?: Prisma.StringNullableFilter<"Business"> | string | null
-  phone?: Prisma.StringNullableFilter<"Business"> | string | null
-  locality?: Prisma.StringFilter<"Business"> | string
-  pinCode?: Prisma.IntFilter<"Business"> | number
-  state?: Prisma.StringFilter<"Business"> | string
-  address?: Prisma.StringFilter<"Business"> | string
+  category?: Prisma.EnumBusinessCategoryFilter<"Business"> | $Enums.BusinessCategory
+  email?: Prisma.StringFilter<"Business"> | string
+  mobile?: Prisma.StringFilter<"Business"> | string
+  gstIn?: Prisma.StringNullableFilter<"Business"> | string | null
+  address?: Prisma.XOR<Prisma.BusinessAddressNullableScalarRelationFilter, Prisma.BusinessAddressWhereInput> | null
   seller?: Prisma.XOR<Prisma.SellerScalarRelationFilter, Prisma.SellerWhereInput>
-}, "id">
+}, "id" | "sellerId">
 
 export type BusinessOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  email?: Prisma.SortOrderInput | Prisma.SortOrder
-  phone?: Prisma.SortOrderInput | Prisma.SortOrder
-  locality?: Prisma.SortOrder
-  pinCode?: Prisma.SortOrder
-  state?: Prisma.SortOrder
-  address?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  mobile?: Prisma.SortOrder
+  gstIn?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.BusinessCountOrderByAggregateInput
-  _avg?: Prisma.BusinessAvgOrderByAggregateInput
   _max?: Prisma.BusinessMaxOrderByAggregateInput
   _min?: Prisma.BusinessMinOrderByAggregateInput
-  _sum?: Prisma.BusinessSumOrderByAggregateInput
 }
 
 export type BusinessScalarWhereWithAggregatesInput = {
@@ -304,213 +249,193 @@ export type BusinessScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Business"> | string
   sellerId?: Prisma.StringWithAggregatesFilter<"Business"> | string
   name?: Prisma.StringWithAggregatesFilter<"Business"> | string
-  email?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
-  phone?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
-  locality?: Prisma.StringWithAggregatesFilter<"Business"> | string
-  pinCode?: Prisma.IntWithAggregatesFilter<"Business"> | number
-  state?: Prisma.StringWithAggregatesFilter<"Business"> | string
-  address?: Prisma.StringWithAggregatesFilter<"Business"> | string
+  category?: Prisma.EnumBusinessCategoryWithAggregatesFilter<"Business"> | $Enums.BusinessCategory
+  email?: Prisma.StringWithAggregatesFilter<"Business"> | string
+  mobile?: Prisma.StringWithAggregatesFilter<"Business"> | string
+  gstIn?: Prisma.StringNullableWithAggregatesFilter<"Business"> | string | null
 }
 
 export type BusinessCreateInput = {
   id?: string
   name: string
-  email?: string | null
-  phone?: string | null
-  locality: string
-  pinCode: number
-  state: string
-  address: string
-  seller: Prisma.SellerCreateNestedOneWithoutBusinessDetailsInput
+  category?: $Enums.BusinessCategory
+  email: string
+  mobile: string
+  gstIn?: string | null
+  address?: Prisma.BusinessAddressCreateNestedOneWithoutBusinessInput
+  seller: Prisma.SellerCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateInput = {
   id?: string
   sellerId: string
   name: string
-  email?: string | null
-  phone?: string | null
-  locality: string
-  pinCode: number
-  state: string
-  address: string
+  category?: $Enums.BusinessCategory
+  email: string
+  mobile: string
+  gstIn?: string | null
+  address?: Prisma.BusinessAddressUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locality?: Prisma.StringFieldUpdateOperationsInput | string
-  pinCode?: Prisma.IntFieldUpdateOperationsInput | number
-  state?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
-  seller?: Prisma.SellerUpdateOneRequiredWithoutBusinessDetailsNestedInput
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.BusinessAddressUpdateOneWithoutBusinessNestedInput
+  seller?: Prisma.SellerUpdateOneRequiredWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locality?: Prisma.StringFieldUpdateOperationsInput | string
-  pinCode?: Prisma.IntFieldUpdateOperationsInput | number
-  state?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.BusinessAddressUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessCreateManyInput = {
   id?: string
   sellerId: string
   name: string
-  email?: string | null
-  phone?: string | null
-  locality: string
-  pinCode: number
-  state: string
-  address: string
+  category?: $Enums.BusinessCategory
+  email: string
+  mobile: string
+  gstIn?: string | null
 }
 
 export type BusinessUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locality?: Prisma.StringFieldUpdateOperationsInput | string
-  pinCode?: Prisma.IntFieldUpdateOperationsInput | number
-  state?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type BusinessUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locality?: Prisma.StringFieldUpdateOperationsInput | string
-  pinCode?: Prisma.IntFieldUpdateOperationsInput | number
-  state?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type BusinessListRelationFilter = {
-  every?: Prisma.BusinessWhereInput
-  some?: Prisma.BusinessWhereInput
-  none?: Prisma.BusinessWhereInput
-}
-
-export type BusinessOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+export type BusinessNullableScalarRelationFilter = {
+  is?: Prisma.BusinessWhereInput | null
+  isNot?: Prisma.BusinessWhereInput | null
 }
 
 export type BusinessCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
-  locality?: Prisma.SortOrder
-  pinCode?: Prisma.SortOrder
-  state?: Prisma.SortOrder
-  address?: Prisma.SortOrder
-}
-
-export type BusinessAvgOrderByAggregateInput = {
-  pinCode?: Prisma.SortOrder
+  mobile?: Prisma.SortOrder
+  gstIn?: Prisma.SortOrder
 }
 
 export type BusinessMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
-  locality?: Prisma.SortOrder
-  pinCode?: Prisma.SortOrder
-  state?: Prisma.SortOrder
-  address?: Prisma.SortOrder
+  mobile?: Prisma.SortOrder
+  gstIn?: Prisma.SortOrder
 }
 
 export type BusinessMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  phone?: Prisma.SortOrder
-  locality?: Prisma.SortOrder
-  pinCode?: Prisma.SortOrder
-  state?: Prisma.SortOrder
-  address?: Prisma.SortOrder
+  mobile?: Prisma.SortOrder
+  gstIn?: Prisma.SortOrder
 }
 
-export type BusinessSumOrderByAggregateInput = {
-  pinCode?: Prisma.SortOrder
+export type BusinessScalarRelationFilter = {
+  is?: Prisma.BusinessWhereInput
+  isNot?: Prisma.BusinessWhereInput
 }
 
-export type BusinessCreateNestedManyWithoutSellerInput = {
-  create?: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput> | Prisma.BusinessCreateWithoutSellerInput[] | Prisma.BusinessUncheckedCreateWithoutSellerInput[]
-  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutSellerInput | Prisma.BusinessCreateOrConnectWithoutSellerInput[]
-  createMany?: Prisma.BusinessCreateManySellerInputEnvelope
-  connect?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
+export type BusinessCreateNestedOneWithoutSellerInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutSellerInput
+  connect?: Prisma.BusinessWhereUniqueInput
 }
 
-export type BusinessUncheckedCreateNestedManyWithoutSellerInput = {
-  create?: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput> | Prisma.BusinessCreateWithoutSellerInput[] | Prisma.BusinessUncheckedCreateWithoutSellerInput[]
-  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutSellerInput | Prisma.BusinessCreateOrConnectWithoutSellerInput[]
-  createMany?: Prisma.BusinessCreateManySellerInputEnvelope
-  connect?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
+export type BusinessUncheckedCreateNestedOneWithoutSellerInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutSellerInput
+  connect?: Prisma.BusinessWhereUniqueInput
 }
 
-export type BusinessUpdateManyWithoutSellerNestedInput = {
-  create?: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput> | Prisma.BusinessCreateWithoutSellerInput[] | Prisma.BusinessUncheckedCreateWithoutSellerInput[]
-  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutSellerInput | Prisma.BusinessCreateOrConnectWithoutSellerInput[]
-  upsert?: Prisma.BusinessUpsertWithWhereUniqueWithoutSellerInput | Prisma.BusinessUpsertWithWhereUniqueWithoutSellerInput[]
-  createMany?: Prisma.BusinessCreateManySellerInputEnvelope
-  set?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
-  disconnect?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
-  delete?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
-  connect?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
-  update?: Prisma.BusinessUpdateWithWhereUniqueWithoutSellerInput | Prisma.BusinessUpdateWithWhereUniqueWithoutSellerInput[]
-  updateMany?: Prisma.BusinessUpdateManyWithWhereWithoutSellerInput | Prisma.BusinessUpdateManyWithWhereWithoutSellerInput[]
-  deleteMany?: Prisma.BusinessScalarWhereInput | Prisma.BusinessScalarWhereInput[]
+export type BusinessUpdateOneWithoutSellerNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutSellerInput
+  upsert?: Prisma.BusinessUpsertWithoutSellerInput
+  disconnect?: Prisma.BusinessWhereInput | boolean
+  delete?: Prisma.BusinessWhereInput | boolean
+  connect?: Prisma.BusinessWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutSellerInput, Prisma.BusinessUpdateWithoutSellerInput>, Prisma.BusinessUncheckedUpdateWithoutSellerInput>
 }
 
-export type BusinessUncheckedUpdateManyWithoutSellerNestedInput = {
-  create?: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput> | Prisma.BusinessCreateWithoutSellerInput[] | Prisma.BusinessUncheckedCreateWithoutSellerInput[]
-  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutSellerInput | Prisma.BusinessCreateOrConnectWithoutSellerInput[]
-  upsert?: Prisma.BusinessUpsertWithWhereUniqueWithoutSellerInput | Prisma.BusinessUpsertWithWhereUniqueWithoutSellerInput[]
-  createMany?: Prisma.BusinessCreateManySellerInputEnvelope
-  set?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
-  disconnect?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
-  delete?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
-  connect?: Prisma.BusinessWhereUniqueInput | Prisma.BusinessWhereUniqueInput[]
-  update?: Prisma.BusinessUpdateWithWhereUniqueWithoutSellerInput | Prisma.BusinessUpdateWithWhereUniqueWithoutSellerInput[]
-  updateMany?: Prisma.BusinessUpdateManyWithWhereWithoutSellerInput | Prisma.BusinessUpdateManyWithWhereWithoutSellerInput[]
-  deleteMany?: Prisma.BusinessScalarWhereInput | Prisma.BusinessScalarWhereInput[]
+export type BusinessUncheckedUpdateOneWithoutSellerNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutSellerInput
+  upsert?: Prisma.BusinessUpsertWithoutSellerInput
+  disconnect?: Prisma.BusinessWhereInput | boolean
+  delete?: Prisma.BusinessWhereInput | boolean
+  connect?: Prisma.BusinessWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutSellerInput, Prisma.BusinessUpdateWithoutSellerInput>, Prisma.BusinessUncheckedUpdateWithoutSellerInput>
+}
+
+export type EnumBusinessCategoryFieldUpdateOperationsInput = {
+  set?: $Enums.BusinessCategory
+}
+
+export type BusinessCreateNestedOneWithoutAddressInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutAddressInput, Prisma.BusinessUncheckedCreateWithoutAddressInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutAddressInput
+  connect?: Prisma.BusinessWhereUniqueInput
+}
+
+export type BusinessUpdateOneRequiredWithoutAddressNestedInput = {
+  create?: Prisma.XOR<Prisma.BusinessCreateWithoutAddressInput, Prisma.BusinessUncheckedCreateWithoutAddressInput>
+  connectOrCreate?: Prisma.BusinessCreateOrConnectWithoutAddressInput
+  upsert?: Prisma.BusinessUpsertWithoutAddressInput
+  connect?: Prisma.BusinessWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BusinessUpdateToOneWithWhereWithoutAddressInput, Prisma.BusinessUpdateWithoutAddressInput>, Prisma.BusinessUncheckedUpdateWithoutAddressInput>
 }
 
 export type BusinessCreateWithoutSellerInput = {
   id?: string
   name: string
-  email?: string | null
-  phone?: string | null
-  locality: string
-  pinCode: number
-  state: string
-  address: string
+  category?: $Enums.BusinessCategory
+  email: string
+  mobile: string
+  gstIn?: string | null
+  address?: Prisma.BusinessAddressCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessUncheckedCreateWithoutSellerInput = {
   id?: string
   name: string
-  email?: string | null
-  phone?: string | null
-  locality: string
-  pinCode: number
-  state: string
-  address: string
+  category?: $Enums.BusinessCategory
+  email: string
+  mobile: string
+  gstIn?: string | null
+  address?: Prisma.BusinessAddressUncheckedCreateNestedOneWithoutBusinessInput
 }
 
 export type BusinessCreateOrConnectWithoutSellerInput = {
@@ -518,84 +443,91 @@ export type BusinessCreateOrConnectWithoutSellerInput = {
   create: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput>
 }
 
-export type BusinessCreateManySellerInputEnvelope = {
-  data: Prisma.BusinessCreateManySellerInput | Prisma.BusinessCreateManySellerInput[]
-  skipDuplicates?: boolean
-}
-
-export type BusinessUpsertWithWhereUniqueWithoutSellerInput = {
-  where: Prisma.BusinessWhereUniqueInput
+export type BusinessUpsertWithoutSellerInput = {
   update: Prisma.XOR<Prisma.BusinessUpdateWithoutSellerInput, Prisma.BusinessUncheckedUpdateWithoutSellerInput>
   create: Prisma.XOR<Prisma.BusinessCreateWithoutSellerInput, Prisma.BusinessUncheckedCreateWithoutSellerInput>
+  where?: Prisma.BusinessWhereInput
 }
 
-export type BusinessUpdateWithWhereUniqueWithoutSellerInput = {
-  where: Prisma.BusinessWhereUniqueInput
+export type BusinessUpdateToOneWithWhereWithoutSellerInput = {
+  where?: Prisma.BusinessWhereInput
   data: Prisma.XOR<Prisma.BusinessUpdateWithoutSellerInput, Prisma.BusinessUncheckedUpdateWithoutSellerInput>
-}
-
-export type BusinessUpdateManyWithWhereWithoutSellerInput = {
-  where: Prisma.BusinessScalarWhereInput
-  data: Prisma.XOR<Prisma.BusinessUpdateManyMutationInput, Prisma.BusinessUncheckedUpdateManyWithoutSellerInput>
-}
-
-export type BusinessScalarWhereInput = {
-  AND?: Prisma.BusinessScalarWhereInput | Prisma.BusinessScalarWhereInput[]
-  OR?: Prisma.BusinessScalarWhereInput[]
-  NOT?: Prisma.BusinessScalarWhereInput | Prisma.BusinessScalarWhereInput[]
-  id?: Prisma.StringFilter<"Business"> | string
-  sellerId?: Prisma.StringFilter<"Business"> | string
-  name?: Prisma.StringFilter<"Business"> | string
-  email?: Prisma.StringNullableFilter<"Business"> | string | null
-  phone?: Prisma.StringNullableFilter<"Business"> | string | null
-  locality?: Prisma.StringFilter<"Business"> | string
-  pinCode?: Prisma.IntFilter<"Business"> | number
-  state?: Prisma.StringFilter<"Business"> | string
-  address?: Prisma.StringFilter<"Business"> | string
-}
-
-export type BusinessCreateManySellerInput = {
-  id?: string
-  name: string
-  email?: string | null
-  phone?: string | null
-  locality: string
-  pinCode: number
-  state: string
-  address: string
 }
 
 export type BusinessUpdateWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locality?: Prisma.StringFieldUpdateOperationsInput | string
-  pinCode?: Prisma.IntFieldUpdateOperationsInput | number
-  state?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.BusinessAddressUpdateOneWithoutBusinessNestedInput
 }
 
 export type BusinessUncheckedUpdateWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locality?: Prisma.StringFieldUpdateOperationsInput | string
-  pinCode?: Prisma.IntFieldUpdateOperationsInput | number
-  state?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.BusinessAddressUncheckedUpdateOneWithoutBusinessNestedInput
 }
 
-export type BusinessUncheckedUpdateManyWithoutSellerInput = {
+export type BusinessCreateWithoutAddressInput = {
+  id?: string
+  name: string
+  category?: $Enums.BusinessCategory
+  email: string
+  mobile: string
+  gstIn?: string | null
+  seller: Prisma.SellerCreateNestedOneWithoutBusinessInput
+}
+
+export type BusinessUncheckedCreateWithoutAddressInput = {
+  id?: string
+  sellerId: string
+  name: string
+  category?: $Enums.BusinessCategory
+  email: string
+  mobile: string
+  gstIn?: string | null
+}
+
+export type BusinessCreateOrConnectWithoutAddressInput = {
+  where: Prisma.BusinessWhereUniqueInput
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutAddressInput, Prisma.BusinessUncheckedCreateWithoutAddressInput>
+}
+
+export type BusinessUpsertWithoutAddressInput = {
+  update: Prisma.XOR<Prisma.BusinessUpdateWithoutAddressInput, Prisma.BusinessUncheckedUpdateWithoutAddressInput>
+  create: Prisma.XOR<Prisma.BusinessCreateWithoutAddressInput, Prisma.BusinessUncheckedCreateWithoutAddressInput>
+  where?: Prisma.BusinessWhereInput
+}
+
+export type BusinessUpdateToOneWithWhereWithoutAddressInput = {
+  where?: Prisma.BusinessWhereInput
+  data: Prisma.XOR<Prisma.BusinessUpdateWithoutAddressInput, Prisma.BusinessUncheckedUpdateWithoutAddressInput>
+}
+
+export type BusinessUpdateWithoutAddressInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  locality?: Prisma.StringFieldUpdateOperationsInput | string
-  pinCode?: Prisma.IntFieldUpdateOperationsInput | number
-  state?: Prisma.StringFieldUpdateOperationsInput | string
-  address?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  seller?: Prisma.SellerUpdateOneRequiredWithoutBusinessNestedInput
+}
+
+export type BusinessUncheckedUpdateWithoutAddressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumBusinessCategoryFieldUpdateOperationsInput | $Enums.BusinessCategory
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  mobile?: Prisma.StringFieldUpdateOperationsInput | string
+  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -604,12 +536,11 @@ export type BusinessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   id?: boolean
   sellerId?: boolean
   name?: boolean
+  category?: boolean
   email?: boolean
-  phone?: boolean
-  locality?: boolean
-  pinCode?: boolean
-  state?: boolean
-  address?: boolean
+  mobile?: boolean
+  gstIn?: boolean
+  address?: boolean | Prisma.Business$addressArgs<ExtArgs>
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["business"]>
 
@@ -617,12 +548,10 @@ export type BusinessSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   sellerId?: boolean
   name?: boolean
+  category?: boolean
   email?: boolean
-  phone?: boolean
-  locality?: boolean
-  pinCode?: boolean
-  state?: boolean
-  address?: boolean
+  mobile?: boolean
+  gstIn?: boolean
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["business"]>
 
@@ -630,12 +559,10 @@ export type BusinessSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   sellerId?: boolean
   name?: boolean
+  category?: boolean
   email?: boolean
-  phone?: boolean
-  locality?: boolean
-  pinCode?: boolean
-  state?: boolean
-  address?: boolean
+  mobile?: boolean
+  gstIn?: boolean
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["business"]>
 
@@ -643,16 +570,15 @@ export type BusinessSelectScalar = {
   id?: boolean
   sellerId?: boolean
   name?: boolean
+  category?: boolean
   email?: boolean
-  phone?: boolean
-  locality?: boolean
-  pinCode?: boolean
-  state?: boolean
-  address?: boolean
+  mobile?: boolean
+  gstIn?: boolean
 }
 
-export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sellerId" | "name" | "email" | "phone" | "locality" | "pinCode" | "state" | "address", ExtArgs["result"]["business"]>
+export type BusinessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sellerId" | "name" | "category" | "email" | "mobile" | "gstIn", ExtArgs["result"]["business"]>
 export type BusinessInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  address?: boolean | Prisma.Business$addressArgs<ExtArgs>
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }
 export type BusinessIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -665,18 +591,17 @@ export type BusinessIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $BusinessPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Business"
   objects: {
+    address: Prisma.$BusinessAddressPayload<ExtArgs> | null
     seller: Prisma.$SellerPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     sellerId: string
     name: string
-    email: string | null
-    phone: string | null
-    locality: string
-    pinCode: number
-    state: string
-    address: string
+    category: $Enums.BusinessCategory
+    email: string
+    mobile: string
+    gstIn: string | null
   }, ExtArgs["result"]["business"]>
   composites: {}
 }
@@ -1071,6 +996,7 @@ readonly fields: BusinessFieldRefs;
  */
 export interface Prisma__BusinessClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  address<T extends Prisma.Business$addressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Business$addressArgs<ExtArgs>>): Prisma.Prisma__BusinessAddressClient<runtime.Types.Result.GetResult<Prisma.$BusinessAddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   seller<T extends Prisma.SellerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SellerDefaultArgs<ExtArgs>>): Prisma.Prisma__SellerClient<runtime.Types.Result.GetResult<Prisma.$SellerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1104,12 +1030,10 @@ export interface BusinessFieldRefs {
   readonly id: Prisma.FieldRef<"Business", 'String'>
   readonly sellerId: Prisma.FieldRef<"Business", 'String'>
   readonly name: Prisma.FieldRef<"Business", 'String'>
+  readonly category: Prisma.FieldRef<"Business", 'BusinessCategory'>
   readonly email: Prisma.FieldRef<"Business", 'String'>
-  readonly phone: Prisma.FieldRef<"Business", 'String'>
-  readonly locality: Prisma.FieldRef<"Business", 'String'>
-  readonly pinCode: Prisma.FieldRef<"Business", 'Int'>
-  readonly state: Prisma.FieldRef<"Business", 'String'>
-  readonly address: Prisma.FieldRef<"Business", 'String'>
+  readonly mobile: Prisma.FieldRef<"Business", 'String'>
+  readonly gstIn: Prisma.FieldRef<"Business", 'String'>
 }
     
 
@@ -1503,6 +1427,25 @@ export type BusinessDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Businesses to delete.
    */
   limit?: number
+}
+
+/**
+ * Business.address
+ */
+export type Business$addressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BusinessAddress
+   */
+  select?: Prisma.BusinessAddressSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BusinessAddress
+   */
+  omit?: Prisma.BusinessAddressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BusinessAddressInclude<ExtArgs> | null
+  where?: Prisma.BusinessAddressWhereInput
 }
 
 /**

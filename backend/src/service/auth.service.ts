@@ -13,14 +13,14 @@ class authService{
     if(hasMissingField){
       throw new apiError(400, 'Missing required fields: email');
     }
-    const existingSeller = await prisma.seller.findUnique({
+    const existingSeller = await prisma.user.findUnique({
       where:{ email: loginData.email}
     })    
     if(!existingSeller){
       throw new apiError(404, 'Seller not found');
     }
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    await prisma.seller.update({
+    await prisma.user.update({
       where: { email: loginData.email },
       data: { otp: otp, otpExpiresAt: new Date(Date.now() + 2 * 60 * 1000) }, // OTP valid for 5 minutes
     })

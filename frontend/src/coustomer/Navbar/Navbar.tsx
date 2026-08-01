@@ -143,7 +143,7 @@ const Navbar = () => {
               </Badge>
             </button>
 
-            <button className="nb-seller-btn">Become a Seller</button>
+            <button className="nb-seller-btn" onClick={() => navigate("/seller/login")}>Become a Seller</button>
           </div>
         </div>
       </header>
@@ -232,7 +232,9 @@ const Navbar = () => {
 
         {/* Drawer footer */}
         <div className="nb-drawer-footer">
-          <button className="nb-drawer-seller">
+          <button className="nb-drawer-seller" onClick={() => {
+      
+            navigate("/seller/login")}}>
             <Storefront style={{ fontSize: 18 }} />
             Become a Seller
           </button>

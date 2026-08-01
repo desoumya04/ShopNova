@@ -388,7 +388,8 @@ export const ModelName = {
   User: 'User',
   Business: 'Business',
   Bank: 'Bank',
-  Address: 'Address'
+  UserAddress: 'UserAddress',
+  BusinessAddress: 'BusinessAddress'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -404,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "seller" | "user" | "business" | "bank" | "address"
+    modelProps: "seller" | "user" | "business" | "bank" | "userAddress" | "businessAddress"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -704,77 +705,151 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Address: {
-      payload: Prisma.$AddressPayload<ExtArgs>
-      fields: Prisma.AddressFieldRefs
+    UserAddress: {
+      payload: Prisma.$UserAddressPayload<ExtArgs>
+      fields: Prisma.UserAddressFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.AddressFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload> | null
+          args: Prisma.UserAddressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.AddressFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+          args: Prisma.UserAddressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload>
         }
         findFirst: {
-          args: Prisma.AddressFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload> | null
+          args: Prisma.UserAddressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.AddressFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+          args: Prisma.UserAddressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload>
         }
         findMany: {
-          args: Prisma.AddressFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>[]
+          args: Prisma.UserAddressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload>[]
         }
         create: {
-          args: Prisma.AddressCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+          args: Prisma.UserAddressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload>
         }
         createMany: {
-          args: Prisma.AddressCreateManyArgs<ExtArgs>
+          args: Prisma.UserAddressCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.AddressCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>[]
+          args: Prisma.UserAddressCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload>[]
         }
         delete: {
-          args: Prisma.AddressDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+          args: Prisma.UserAddressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload>
         }
         update: {
-          args: Prisma.AddressUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+          args: Prisma.UserAddressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload>
         }
         deleteMany: {
-          args: Prisma.AddressDeleteManyArgs<ExtArgs>
+          args: Prisma.UserAddressDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.AddressUpdateManyArgs<ExtArgs>
+          args: Prisma.UserAddressUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.AddressUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>[]
+          args: Prisma.UserAddressUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload>[]
         }
         upsert: {
-          args: Prisma.AddressUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AddressPayload>
+          args: Prisma.UserAddressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAddressPayload>
         }
         aggregate: {
-          args: Prisma.AddressAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateAddress>
+          args: Prisma.UserAddressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserAddress>
         }
         groupBy: {
-          args: Prisma.AddressGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AddressGroupByOutputType>[]
+          args: Prisma.UserAddressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserAddressGroupByOutputType>[]
         }
         count: {
-          args: Prisma.AddressCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AddressCountAggregateOutputType> | number
+          args: Prisma.UserAddressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserAddressCountAggregateOutputType> | number
+        }
+      }
+    }
+    BusinessAddress: {
+      payload: Prisma.$BusinessAddressPayload<ExtArgs>
+      fields: Prisma.BusinessAddressFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BusinessAddressFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BusinessAddressFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload>
+        }
+        findFirst: {
+          args: Prisma.BusinessAddressFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BusinessAddressFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload>
+        }
+        findMany: {
+          args: Prisma.BusinessAddressFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload>[]
+        }
+        create: {
+          args: Prisma.BusinessAddressCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload>
+        }
+        createMany: {
+          args: Prisma.BusinessAddressCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BusinessAddressCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload>[]
+        }
+        delete: {
+          args: Prisma.BusinessAddressDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload>
+        }
+        update: {
+          args: Prisma.BusinessAddressUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload>
+        }
+        deleteMany: {
+          args: Prisma.BusinessAddressDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BusinessAddressUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BusinessAddressUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload>[]
+        }
+        upsert: {
+          args: Prisma.BusinessAddressUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BusinessAddressPayload>
+        }
+        aggregate: {
+          args: Prisma.BusinessAddressAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBusinessAddress>
+        }
+        groupBy: {
+          args: Prisma.BusinessAddressGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessAddressGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BusinessAddressCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BusinessAddressCountAggregateOutputType> | number
         }
       }
     }
@@ -819,15 +894,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const SellerScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  mobile: 'mobile',
-  email: 'email',
-  password: 'password',
-  otp: 'otp',
-  otpExpiresAt: 'otpExpiresAt',
-  otpVerified: 'otpVerified',
-  role: 'role',
-  gstIn: 'gstIn',
+  userId: 'userId',
   accountStatus: 'accountStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -858,12 +925,10 @@ export const BusinessScalarFieldEnum = {
   id: 'id',
   sellerId: 'sellerId',
   name: 'name',
+  category: 'category',
   email: 'email',
-  phone: 'phone',
-  locality: 'locality',
-  pinCode: 'pinCode',
-  state: 'state',
-  address: 'address'
+  mobile: 'mobile',
+  gstIn: 'gstIn'
 } as const
 
 export type BusinessScalarFieldEnum = (typeof BusinessScalarFieldEnum)[keyof typeof BusinessScalarFieldEnum]
@@ -873,7 +938,7 @@ export const BankScalarFieldEnum = {
   id: 'id',
   sellerId: 'sellerId',
   bankName: 'bankName',
-  accountHolderName: 'accountHolderName',
+  accountHolder: 'accountHolder',
   accountNumber: 'accountNumber',
   ifcCode: 'ifcCode'
 } as const
@@ -881,16 +946,28 @@ export const BankScalarFieldEnum = {
 export type BankScalarFieldEnum = (typeof BankScalarFieldEnum)[keyof typeof BankScalarFieldEnum]
 
 
-export const AddressScalarFieldEnum = {
+export const UserAddressScalarFieldEnum = {
   id: 'id',
-  sellerId: 'sellerId',
+  userId: 'userId',
   locality: 'locality',
   pinCode: 'pinCode',
   state: 'state',
   address: 'address'
 } as const
 
-export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
+export type UserAddressScalarFieldEnum = (typeof UserAddressScalarFieldEnum)[keyof typeof UserAddressScalarFieldEnum]
+
+
+export const BusinessAddressScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  locality: 'locality',
+  pinCode: 'pinCode',
+  state: 'state',
+  address: 'address'
+} as const
+
+export type BusinessAddressScalarFieldEnum = (typeof BusinessAddressScalarFieldEnum)[keyof typeof BusinessAddressScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -938,6 +1015,20 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'Account'
+ */
+export type EnumAccountFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Account'>
+    
+
+
+/**
+ * Reference to a field of type 'Account[]'
+ */
+export type ListEnumAccountFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Account[]'>
+    
+
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -948,6 +1039,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -973,30 +1078,16 @@ export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'Account'
+ * Reference to a field of type 'BusinessCategory'
  */
-export type EnumAccountFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Account'>
+export type EnumBusinessCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessCategory'>
     
 
 
 /**
- * Reference to a field of type 'Account[]'
+ * Reference to a field of type 'BusinessCategory[]'
  */
-export type ListEnumAccountFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Account[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+export type ListEnumBusinessCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BusinessCategory[]'>
     
 
 
@@ -1112,7 +1203,8 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   business?: Prisma.BusinessOmit
   bank?: Prisma.BankOmit
-  address?: Prisma.AddressOmit
+  userAddress?: Prisma.UserAddressOmit
+  businessAddress?: Prisma.BusinessAddressOmit
 }
 
 /* Types for Logging */
