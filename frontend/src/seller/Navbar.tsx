@@ -98,6 +98,14 @@ const SellerNavbar = () => {
           <div className="ml-auto flex items-center gap-2">
             <button
               type="button"
+              className="hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 sm:inline-flex"
+              onClick={() => navigate('/account/profile')}
+            >
+              Customer Profile
+            </button>
+
+            <button
+              type="button"
               className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/10"
               aria-label="Seller notifications"
             >
@@ -197,6 +205,14 @@ const SellerNavbar = () => {
         </nav>
 
         <div className="absolute bottom-5 left-5 right-5">
+          <button
+            type="button"
+            className="mb-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+            onClick={() => navigate('/account/profile')}
+          >
+            Customer Profile
+          </button>
+
           <button
             type="button"
             className="flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"

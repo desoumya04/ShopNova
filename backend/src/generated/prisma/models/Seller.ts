@@ -26,15 +26,7 @@ export type AggregateSeller = {
 
 export type SellerMinAggregateOutputType = {
   id: string | null
-  name: string | null
-  mobile: string | null
-  email: string | null
-  password: string | null
-  otp: string | null
-  otpExpiresAt: Date | null
-  otpVerified: boolean | null
-  role: $Enums.Role | null
-  gstIn: string | null
+  userId: string | null
   accountStatus: $Enums.Account | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -42,15 +34,7 @@ export type SellerMinAggregateOutputType = {
 
 export type SellerMaxAggregateOutputType = {
   id: string | null
-  name: string | null
-  mobile: string | null
-  email: string | null
-  password: string | null
-  otp: string | null
-  otpExpiresAt: Date | null
-  otpVerified: boolean | null
-  role: $Enums.Role | null
-  gstIn: string | null
+  userId: string | null
   accountStatus: $Enums.Account | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -58,15 +42,7 @@ export type SellerMaxAggregateOutputType = {
 
 export type SellerCountAggregateOutputType = {
   id: number
-  name: number
-  mobile: number
-  email: number
-  password: number
-  otp: number
-  otpExpiresAt: number
-  otpVerified: number
-  role: number
-  gstIn: number
+  userId: number
   accountStatus: number
   createdAt: number
   updatedAt: number
@@ -76,15 +52,7 @@ export type SellerCountAggregateOutputType = {
 
 export type SellerMinAggregateInputType = {
   id?: true
-  name?: true
-  mobile?: true
-  email?: true
-  password?: true
-  otp?: true
-  otpExpiresAt?: true
-  otpVerified?: true
-  role?: true
-  gstIn?: true
+  userId?: true
   accountStatus?: true
   createdAt?: true
   updatedAt?: true
@@ -92,15 +60,7 @@ export type SellerMinAggregateInputType = {
 
 export type SellerMaxAggregateInputType = {
   id?: true
-  name?: true
-  mobile?: true
-  email?: true
-  password?: true
-  otp?: true
-  otpExpiresAt?: true
-  otpVerified?: true
-  role?: true
-  gstIn?: true
+  userId?: true
   accountStatus?: true
   createdAt?: true
   updatedAt?: true
@@ -108,15 +68,7 @@ export type SellerMaxAggregateInputType = {
 
 export type SellerCountAggregateInputType = {
   id?: true
-  name?: true
-  mobile?: true
-  email?: true
-  password?: true
-  otp?: true
-  otpExpiresAt?: true
-  otpVerified?: true
-  role?: true
-  gstIn?: true
+  userId?: true
   accountStatus?: true
   createdAt?: true
   updatedAt?: true
@@ -197,15 +149,7 @@ export type SellerGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type SellerGroupByOutputType = {
   id: string
-  name: string
-  mobile: string | null
-  email: string
-  password: string
-  otp: string | null
-  otpExpiresAt: Date | null
-  otpVerified: boolean
-  role: $Enums.Role
-  gstIn: string | null
+  userId: string
   accountStatus: $Enums.Account
   createdAt: Date
   updatedAt: Date
@@ -234,75 +178,43 @@ export type SellerWhereInput = {
   OR?: Prisma.SellerWhereInput[]
   NOT?: Prisma.SellerWhereInput | Prisma.SellerWhereInput[]
   id?: Prisma.StringFilter<"Seller"> | string
-  name?: Prisma.StringFilter<"Seller"> | string
-  mobile?: Prisma.StringNullableFilter<"Seller"> | string | null
-  email?: Prisma.StringFilter<"Seller"> | string
-  password?: Prisma.StringFilter<"Seller"> | string
-  otp?: Prisma.StringNullableFilter<"Seller"> | string | null
-  otpExpiresAt?: Prisma.DateTimeNullableFilter<"Seller"> | Date | string | null
-  otpVerified?: Prisma.BoolFilter<"Seller"> | boolean
-  role?: Prisma.EnumRoleFilter<"Seller"> | $Enums.Role
-  gstIn?: Prisma.StringNullableFilter<"Seller"> | string | null
+  userId?: Prisma.StringFilter<"Seller"> | string
   accountStatus?: Prisma.EnumAccountFilter<"Seller"> | $Enums.Account
   createdAt?: Prisma.DateTimeFilter<"Seller"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Seller"> | Date | string
-  businessDetails?: Prisma.BusinessListRelationFilter
-  bankDetails?: Prisma.XOR<Prisma.BankNullableScalarRelationFilter, Prisma.BankWhereInput> | null
-  addresses?: Prisma.AddressListRelationFilter
+  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
+  bank?: Prisma.XOR<Prisma.BankNullableScalarRelationFilter, Prisma.BankWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type SellerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  mobile?: Prisma.SortOrderInput | Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
-  otp?: Prisma.SortOrderInput | Prisma.SortOrder
-  otpExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  otpVerified?: Prisma.SortOrder
-  role?: Prisma.SortOrder
-  gstIn?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  businessDetails?: Prisma.BusinessOrderByRelationAggregateInput
-  bankDetails?: Prisma.BankOrderByWithRelationInput
-  addresses?: Prisma.AddressOrderByRelationAggregateInput
+  business?: Prisma.BusinessOrderByWithRelationInput
+  bank?: Prisma.BankOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
 }
 
 export type SellerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  mobile?: string
-  email?: string
+  userId?: string
   AND?: Prisma.SellerWhereInput | Prisma.SellerWhereInput[]
   OR?: Prisma.SellerWhereInput[]
   NOT?: Prisma.SellerWhereInput | Prisma.SellerWhereInput[]
-  name?: Prisma.StringFilter<"Seller"> | string
-  password?: Prisma.StringFilter<"Seller"> | string
-  otp?: Prisma.StringNullableFilter<"Seller"> | string | null
-  otpExpiresAt?: Prisma.DateTimeNullableFilter<"Seller"> | Date | string | null
-  otpVerified?: Prisma.BoolFilter<"Seller"> | boolean
-  role?: Prisma.EnumRoleFilter<"Seller"> | $Enums.Role
-  gstIn?: Prisma.StringNullableFilter<"Seller"> | string | null
   accountStatus?: Prisma.EnumAccountFilter<"Seller"> | $Enums.Account
   createdAt?: Prisma.DateTimeFilter<"Seller"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Seller"> | Date | string
-  businessDetails?: Prisma.BusinessListRelationFilter
-  bankDetails?: Prisma.XOR<Prisma.BankNullableScalarRelationFilter, Prisma.BankWhereInput> | null
-  addresses?: Prisma.AddressListRelationFilter
-}, "id" | "mobile" | "email">
+  business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
+  bank?: Prisma.XOR<Prisma.BankNullableScalarRelationFilter, Prisma.BankWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+}, "id" | "userId">
 
 export type SellerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  mobile?: Prisma.SortOrderInput | Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
-  otp?: Prisma.SortOrderInput | Prisma.SortOrder
-  otpExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  otpVerified?: Prisma.SortOrder
-  role?: Prisma.SortOrder
-  gstIn?: Prisma.SortOrderInput | Prisma.SortOrder
+  userId?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -316,15 +228,7 @@ export type SellerScalarWhereWithAggregatesInput = {
   OR?: Prisma.SellerScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SellerScalarWhereWithAggregatesInput | Prisma.SellerScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Seller"> | string
-  name?: Prisma.StringWithAggregatesFilter<"Seller"> | string
-  mobile?: Prisma.StringNullableWithAggregatesFilter<"Seller"> | string | null
-  email?: Prisma.StringWithAggregatesFilter<"Seller"> | string
-  password?: Prisma.StringWithAggregatesFilter<"Seller"> | string
-  otp?: Prisma.StringNullableWithAggregatesFilter<"Seller"> | string | null
-  otpExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Seller"> | Date | string | null
-  otpVerified?: Prisma.BoolWithAggregatesFilter<"Seller"> | boolean
-  role?: Prisma.EnumRoleWithAggregatesFilter<"Seller"> | $Enums.Role
-  gstIn?: Prisma.StringNullableWithAggregatesFilter<"Seller"> | string | null
+  userId?: Prisma.StringWithAggregatesFilter<"Seller"> | string
   accountStatus?: Prisma.EnumAccountWithAggregatesFilter<"Seller"> | $Enums.Account
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Seller"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Seller"> | Date | string
@@ -332,91 +236,47 @@ export type SellerScalarWhereWithAggregatesInput = {
 
 export type SellerCreateInput = {
   id?: string
-  name: string
-  mobile?: string | null
-  email: string
-  password: string
-  otp?: string | null
-  otpExpiresAt?: Date | string | null
-  otpVerified?: boolean
-  role?: $Enums.Role
-  gstIn?: string | null
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
-  businessDetails?: Prisma.BusinessCreateNestedManyWithoutSellerInput
-  bankDetails?: Prisma.BankCreateNestedOneWithoutSellerInput
-  addresses?: Prisma.AddressCreateNestedManyWithoutSellerInput
+  business?: Prisma.BusinessCreateNestedOneWithoutSellerInput
+  bank?: Prisma.BankCreateNestedOneWithoutSellerInput
+  user: Prisma.UserCreateNestedOneWithoutSellerInput
 }
 
 export type SellerUncheckedCreateInput = {
   id?: string
-  name: string
-  mobile?: string | null
-  email: string
-  password: string
-  otp?: string | null
-  otpExpiresAt?: Date | string | null
-  otpVerified?: boolean
-  role?: $Enums.Role
-  gstIn?: string | null
+  userId: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
-  businessDetails?: Prisma.BusinessUncheckedCreateNestedManyWithoutSellerInput
-  bankDetails?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
-  addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutSellerInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutSellerInput
+  bank?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
 }
 
 export type SellerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businessDetails?: Prisma.BusinessUpdateManyWithoutSellerNestedInput
-  bankDetails?: Prisma.BankUpdateOneWithoutSellerNestedInput
-  addresses?: Prisma.AddressUpdateManyWithoutSellerNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutSellerNestedInput
+  bank?: Prisma.BankUpdateOneWithoutSellerNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSellerNestedInput
 }
 
 export type SellerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businessDetails?: Prisma.BusinessUncheckedUpdateManyWithoutSellerNestedInput
-  bankDetails?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
-  addresses?: Prisma.AddressUncheckedUpdateManyWithoutSellerNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutSellerNestedInput
+  bank?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
 }
 
 export type SellerCreateManyInput = {
   id?: string
-  name: string
-  mobile?: string | null
-  email: string
-  password: string
-  otp?: string | null
-  otpExpiresAt?: Date | string | null
-  otpVerified?: boolean
-  role?: $Enums.Role
-  gstIn?: string | null
+  userId: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -424,15 +284,6 @@ export type SellerCreateManyInput = {
 
 export type SellerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -440,15 +291,7 @@ export type SellerUpdateManyMutationInput = {
 
 export type SellerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -456,15 +299,7 @@ export type SellerUncheckedUpdateManyInput = {
 
 export type SellerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  mobile?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
-  otp?: Prisma.SortOrder
-  otpExpiresAt?: Prisma.SortOrder
-  otpVerified?: Prisma.SortOrder
-  role?: Prisma.SortOrder
-  gstIn?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -472,15 +307,7 @@ export type SellerCountOrderByAggregateInput = {
 
 export type SellerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  mobile?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
-  otp?: Prisma.SortOrder
-  otpExpiresAt?: Prisma.SortOrder
-  otpVerified?: Prisma.SortOrder
-  role?: Prisma.SortOrder
-  gstIn?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -488,18 +315,15 @@ export type SellerMaxOrderByAggregateInput = {
 
 export type SellerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  mobile?: Prisma.SortOrder
-  email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
-  otp?: Prisma.SortOrder
-  otpExpiresAt?: Prisma.SortOrder
-  otpVerified?: Prisma.SortOrder
-  role?: Prisma.SortOrder
-  gstIn?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type SellerNullableScalarRelationFilter = {
+  is?: Prisma.SellerWhereInput | null
+  isNot?: Prisma.SellerWhereInput | null
 }
 
 export type SellerScalarRelationFilter = {
@@ -511,22 +335,6 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
-export type EnumRoleFieldUpdateOperationsInput = {
-  set?: $Enums.Role
-}
-
 export type EnumAccountFieldUpdateOperationsInput = {
   set?: $Enums.Account
 }
@@ -535,448 +343,284 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type SellerCreateNestedOneWithoutBusinessDetailsInput = {
-  create?: Prisma.XOR<Prisma.SellerCreateWithoutBusinessDetailsInput, Prisma.SellerUncheckedCreateWithoutBusinessDetailsInput>
-  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutBusinessDetailsInput
+export type SellerCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutUserInput, Prisma.SellerUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutUserInput
   connect?: Prisma.SellerWhereUniqueInput
 }
 
-export type SellerUpdateOneRequiredWithoutBusinessDetailsNestedInput = {
-  create?: Prisma.XOR<Prisma.SellerCreateWithoutBusinessDetailsInput, Prisma.SellerUncheckedCreateWithoutBusinessDetailsInput>
-  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutBusinessDetailsInput
-  upsert?: Prisma.SellerUpsertWithoutBusinessDetailsInput
-  connect?: Prisma.SellerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SellerUpdateToOneWithWhereWithoutBusinessDetailsInput, Prisma.SellerUpdateWithoutBusinessDetailsInput>, Prisma.SellerUncheckedUpdateWithoutBusinessDetailsInput>
-}
-
-export type SellerCreateNestedOneWithoutBankDetailsInput = {
-  create?: Prisma.XOR<Prisma.SellerCreateWithoutBankDetailsInput, Prisma.SellerUncheckedCreateWithoutBankDetailsInput>
-  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutBankDetailsInput
+export type SellerUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutUserInput, Prisma.SellerUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutUserInput
   connect?: Prisma.SellerWhereUniqueInput
 }
 
-export type SellerUpdateOneRequiredWithoutBankDetailsNestedInput = {
-  create?: Prisma.XOR<Prisma.SellerCreateWithoutBankDetailsInput, Prisma.SellerUncheckedCreateWithoutBankDetailsInput>
-  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutBankDetailsInput
-  upsert?: Prisma.SellerUpsertWithoutBankDetailsInput
+export type SellerUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutUserInput, Prisma.SellerUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutUserInput
+  upsert?: Prisma.SellerUpsertWithoutUserInput
+  disconnect?: Prisma.SellerWhereInput | boolean
+  delete?: Prisma.SellerWhereInput | boolean
   connect?: Prisma.SellerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SellerUpdateToOneWithWhereWithoutBankDetailsInput, Prisma.SellerUpdateWithoutBankDetailsInput>, Prisma.SellerUncheckedUpdateWithoutBankDetailsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SellerUpdateToOneWithWhereWithoutUserInput, Prisma.SellerUpdateWithoutUserInput>, Prisma.SellerUncheckedUpdateWithoutUserInput>
 }
 
-export type SellerCreateNestedOneWithoutAddressesInput = {
-  create?: Prisma.XOR<Prisma.SellerCreateWithoutAddressesInput, Prisma.SellerUncheckedCreateWithoutAddressesInput>
-  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutAddressesInput
+export type SellerUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutUserInput, Prisma.SellerUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutUserInput
+  upsert?: Prisma.SellerUpsertWithoutUserInput
+  disconnect?: Prisma.SellerWhereInput | boolean
+  delete?: Prisma.SellerWhereInput | boolean
+  connect?: Prisma.SellerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SellerUpdateToOneWithWhereWithoutUserInput, Prisma.SellerUpdateWithoutUserInput>, Prisma.SellerUncheckedUpdateWithoutUserInput>
+}
+
+export type SellerCreateNestedOneWithoutBusinessInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutBusinessInput, Prisma.SellerUncheckedCreateWithoutBusinessInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutBusinessInput
   connect?: Prisma.SellerWhereUniqueInput
 }
 
-export type SellerUpdateOneRequiredWithoutAddressesNestedInput = {
-  create?: Prisma.XOR<Prisma.SellerCreateWithoutAddressesInput, Prisma.SellerUncheckedCreateWithoutAddressesInput>
-  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutAddressesInput
-  upsert?: Prisma.SellerUpsertWithoutAddressesInput
+export type SellerUpdateOneRequiredWithoutBusinessNestedInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutBusinessInput, Prisma.SellerUncheckedCreateWithoutBusinessInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutBusinessInput
+  upsert?: Prisma.SellerUpsertWithoutBusinessInput
   connect?: Prisma.SellerWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SellerUpdateToOneWithWhereWithoutAddressesInput, Prisma.SellerUpdateWithoutAddressesInput>, Prisma.SellerUncheckedUpdateWithoutAddressesInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SellerUpdateToOneWithWhereWithoutBusinessInput, Prisma.SellerUpdateWithoutBusinessInput>, Prisma.SellerUncheckedUpdateWithoutBusinessInput>
 }
 
-export type SellerCreateWithoutBusinessDetailsInput = {
+export type SellerCreateNestedOneWithoutBankInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutBankInput, Prisma.SellerUncheckedCreateWithoutBankInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutBankInput
+  connect?: Prisma.SellerWhereUniqueInput
+}
+
+export type SellerUpdateOneRequiredWithoutBankNestedInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutBankInput, Prisma.SellerUncheckedCreateWithoutBankInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutBankInput
+  upsert?: Prisma.SellerUpsertWithoutBankInput
+  connect?: Prisma.SellerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SellerUpdateToOneWithWhereWithoutBankInput, Prisma.SellerUpdateWithoutBankInput>, Prisma.SellerUncheckedUpdateWithoutBankInput>
+}
+
+export type SellerCreateWithoutUserInput = {
   id?: string
-  name: string
-  mobile?: string | null
-  email: string
-  password: string
-  otp?: string | null
-  otpExpiresAt?: Date | string | null
-  otpVerified?: boolean
-  role?: $Enums.Role
-  gstIn?: string | null
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
-  bankDetails?: Prisma.BankCreateNestedOneWithoutSellerInput
-  addresses?: Prisma.AddressCreateNestedManyWithoutSellerInput
+  business?: Prisma.BusinessCreateNestedOneWithoutSellerInput
+  bank?: Prisma.BankCreateNestedOneWithoutSellerInput
 }
 
-export type SellerUncheckedCreateWithoutBusinessDetailsInput = {
+export type SellerUncheckedCreateWithoutUserInput = {
   id?: string
-  name: string
-  mobile?: string | null
-  email: string
-  password: string
-  otp?: string | null
-  otpExpiresAt?: Date | string | null
-  otpVerified?: boolean
-  role?: $Enums.Role
-  gstIn?: string | null
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
-  bankDetails?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
-  addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutSellerInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutSellerInput
+  bank?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
 }
 
-export type SellerCreateOrConnectWithoutBusinessDetailsInput = {
+export type SellerCreateOrConnectWithoutUserInput = {
   where: Prisma.SellerWhereUniqueInput
-  create: Prisma.XOR<Prisma.SellerCreateWithoutBusinessDetailsInput, Prisma.SellerUncheckedCreateWithoutBusinessDetailsInput>
+  create: Prisma.XOR<Prisma.SellerCreateWithoutUserInput, Prisma.SellerUncheckedCreateWithoutUserInput>
 }
 
-export type SellerUpsertWithoutBusinessDetailsInput = {
-  update: Prisma.XOR<Prisma.SellerUpdateWithoutBusinessDetailsInput, Prisma.SellerUncheckedUpdateWithoutBusinessDetailsInput>
-  create: Prisma.XOR<Prisma.SellerCreateWithoutBusinessDetailsInput, Prisma.SellerUncheckedCreateWithoutBusinessDetailsInput>
+export type SellerUpsertWithoutUserInput = {
+  update: Prisma.XOR<Prisma.SellerUpdateWithoutUserInput, Prisma.SellerUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.SellerCreateWithoutUserInput, Prisma.SellerUncheckedCreateWithoutUserInput>
   where?: Prisma.SellerWhereInput
 }
 
-export type SellerUpdateToOneWithWhereWithoutBusinessDetailsInput = {
+export type SellerUpdateToOneWithWhereWithoutUserInput = {
   where?: Prisma.SellerWhereInput
-  data: Prisma.XOR<Prisma.SellerUpdateWithoutBusinessDetailsInput, Prisma.SellerUncheckedUpdateWithoutBusinessDetailsInput>
+  data: Prisma.XOR<Prisma.SellerUpdateWithoutUserInput, Prisma.SellerUncheckedUpdateWithoutUserInput>
 }
 
-export type SellerUpdateWithoutBusinessDetailsInput = {
+export type SellerUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bankDetails?: Prisma.BankUpdateOneWithoutSellerNestedInput
-  addresses?: Prisma.AddressUpdateManyWithoutSellerNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutSellerNestedInput
+  bank?: Prisma.BankUpdateOneWithoutSellerNestedInput
 }
 
-export type SellerUncheckedUpdateWithoutBusinessDetailsInput = {
+export type SellerUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  bankDetails?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
-  addresses?: Prisma.AddressUncheckedUpdateManyWithoutSellerNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutSellerNestedInput
+  bank?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
 }
 
-export type SellerCreateWithoutBankDetailsInput = {
+export type SellerCreateWithoutBusinessInput = {
   id?: string
-  name: string
-  mobile?: string | null
-  email: string
-  password: string
-  otp?: string | null
-  otpExpiresAt?: Date | string | null
-  otpVerified?: boolean
-  role?: $Enums.Role
-  gstIn?: string | null
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
-  businessDetails?: Prisma.BusinessCreateNestedManyWithoutSellerInput
-  addresses?: Prisma.AddressCreateNestedManyWithoutSellerInput
+  bank?: Prisma.BankCreateNestedOneWithoutSellerInput
+  user: Prisma.UserCreateNestedOneWithoutSellerInput
 }
 
-export type SellerUncheckedCreateWithoutBankDetailsInput = {
+export type SellerUncheckedCreateWithoutBusinessInput = {
   id?: string
-  name: string
-  mobile?: string | null
-  email: string
-  password: string
-  otp?: string | null
-  otpExpiresAt?: Date | string | null
-  otpVerified?: boolean
-  role?: $Enums.Role
-  gstIn?: string | null
+  userId: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
-  businessDetails?: Prisma.BusinessUncheckedCreateNestedManyWithoutSellerInput
-  addresses?: Prisma.AddressUncheckedCreateNestedManyWithoutSellerInput
+  bank?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
 }
 
-export type SellerCreateOrConnectWithoutBankDetailsInput = {
+export type SellerCreateOrConnectWithoutBusinessInput = {
   where: Prisma.SellerWhereUniqueInput
-  create: Prisma.XOR<Prisma.SellerCreateWithoutBankDetailsInput, Prisma.SellerUncheckedCreateWithoutBankDetailsInput>
+  create: Prisma.XOR<Prisma.SellerCreateWithoutBusinessInput, Prisma.SellerUncheckedCreateWithoutBusinessInput>
 }
 
-export type SellerUpsertWithoutBankDetailsInput = {
-  update: Prisma.XOR<Prisma.SellerUpdateWithoutBankDetailsInput, Prisma.SellerUncheckedUpdateWithoutBankDetailsInput>
-  create: Prisma.XOR<Prisma.SellerCreateWithoutBankDetailsInput, Prisma.SellerUncheckedCreateWithoutBankDetailsInput>
+export type SellerUpsertWithoutBusinessInput = {
+  update: Prisma.XOR<Prisma.SellerUpdateWithoutBusinessInput, Prisma.SellerUncheckedUpdateWithoutBusinessInput>
+  create: Prisma.XOR<Prisma.SellerCreateWithoutBusinessInput, Prisma.SellerUncheckedCreateWithoutBusinessInput>
   where?: Prisma.SellerWhereInput
 }
 
-export type SellerUpdateToOneWithWhereWithoutBankDetailsInput = {
+export type SellerUpdateToOneWithWhereWithoutBusinessInput = {
   where?: Prisma.SellerWhereInput
-  data: Prisma.XOR<Prisma.SellerUpdateWithoutBankDetailsInput, Prisma.SellerUncheckedUpdateWithoutBankDetailsInput>
+  data: Prisma.XOR<Prisma.SellerUpdateWithoutBusinessInput, Prisma.SellerUncheckedUpdateWithoutBusinessInput>
 }
 
-export type SellerUpdateWithoutBankDetailsInput = {
+export type SellerUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businessDetails?: Prisma.BusinessUpdateManyWithoutSellerNestedInput
-  addresses?: Prisma.AddressUpdateManyWithoutSellerNestedInput
+  bank?: Prisma.BankUpdateOneWithoutSellerNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSellerNestedInput
 }
 
-export type SellerUncheckedUpdateWithoutBankDetailsInput = {
+export type SellerUncheckedUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businessDetails?: Prisma.BusinessUncheckedUpdateManyWithoutSellerNestedInput
-  addresses?: Prisma.AddressUncheckedUpdateManyWithoutSellerNestedInput
+  bank?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
 }
 
-export type SellerCreateWithoutAddressesInput = {
+export type SellerCreateWithoutBankInput = {
   id?: string
-  name: string
-  mobile?: string | null
-  email: string
-  password: string
-  otp?: string | null
-  otpExpiresAt?: Date | string | null
-  otpVerified?: boolean
-  role?: $Enums.Role
-  gstIn?: string | null
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
-  businessDetails?: Prisma.BusinessCreateNestedManyWithoutSellerInput
-  bankDetails?: Prisma.BankCreateNestedOneWithoutSellerInput
+  business?: Prisma.BusinessCreateNestedOneWithoutSellerInput
+  user: Prisma.UserCreateNestedOneWithoutSellerInput
 }
 
-export type SellerUncheckedCreateWithoutAddressesInput = {
+export type SellerUncheckedCreateWithoutBankInput = {
   id?: string
-  name: string
-  mobile?: string | null
-  email: string
-  password: string
-  otp?: string | null
-  otpExpiresAt?: Date | string | null
-  otpVerified?: boolean
-  role?: $Enums.Role
-  gstIn?: string | null
+  userId: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
-  businessDetails?: Prisma.BusinessUncheckedCreateNestedManyWithoutSellerInput
-  bankDetails?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutSellerInput
 }
 
-export type SellerCreateOrConnectWithoutAddressesInput = {
+export type SellerCreateOrConnectWithoutBankInput = {
   where: Prisma.SellerWhereUniqueInput
-  create: Prisma.XOR<Prisma.SellerCreateWithoutAddressesInput, Prisma.SellerUncheckedCreateWithoutAddressesInput>
+  create: Prisma.XOR<Prisma.SellerCreateWithoutBankInput, Prisma.SellerUncheckedCreateWithoutBankInput>
 }
 
-export type SellerUpsertWithoutAddressesInput = {
-  update: Prisma.XOR<Prisma.SellerUpdateWithoutAddressesInput, Prisma.SellerUncheckedUpdateWithoutAddressesInput>
-  create: Prisma.XOR<Prisma.SellerCreateWithoutAddressesInput, Prisma.SellerUncheckedCreateWithoutAddressesInput>
+export type SellerUpsertWithoutBankInput = {
+  update: Prisma.XOR<Prisma.SellerUpdateWithoutBankInput, Prisma.SellerUncheckedUpdateWithoutBankInput>
+  create: Prisma.XOR<Prisma.SellerCreateWithoutBankInput, Prisma.SellerUncheckedCreateWithoutBankInput>
   where?: Prisma.SellerWhereInput
 }
 
-export type SellerUpdateToOneWithWhereWithoutAddressesInput = {
+export type SellerUpdateToOneWithWhereWithoutBankInput = {
   where?: Prisma.SellerWhereInput
-  data: Prisma.XOR<Prisma.SellerUpdateWithoutAddressesInput, Prisma.SellerUncheckedUpdateWithoutAddressesInput>
+  data: Prisma.XOR<Prisma.SellerUpdateWithoutBankInput, Prisma.SellerUncheckedUpdateWithoutBankInput>
 }
 
-export type SellerUpdateWithoutAddressesInput = {
+export type SellerUpdateWithoutBankInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businessDetails?: Prisma.BusinessUpdateManyWithoutSellerNestedInput
-  bankDetails?: Prisma.BankUpdateOneWithoutSellerNestedInput
+  business?: Prisma.BusinessUpdateOneWithoutSellerNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSellerNestedInput
 }
 
-export type SellerUncheckedUpdateWithoutAddressesInput = {
+export type SellerUncheckedUpdateWithoutBankInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  mobile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  otp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  gstIn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  businessDetails?: Prisma.BusinessUncheckedUpdateManyWithoutSellerNestedInput
-  bankDetails?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutSellerNestedInput
 }
 
-
-/**
- * Count Type SellerCountOutputType
- */
-
-export type SellerCountOutputType = {
-  businessDetails: number
-  addresses: number
-}
-
-export type SellerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  businessDetails?: boolean | SellerCountOutputTypeCountBusinessDetailsArgs
-  addresses?: boolean | SellerCountOutputTypeCountAddressesArgs
-}
-
-/**
- * SellerCountOutputType without action
- */
-export type SellerCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the SellerCountOutputType
-   */
-  select?: Prisma.SellerCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * SellerCountOutputType without action
- */
-export type SellerCountOutputTypeCountBusinessDetailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.BusinessWhereInput
-}
-
-/**
- * SellerCountOutputType without action
- */
-export type SellerCountOutputTypeCountAddressesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AddressWhereInput
-}
 
 
 export type SellerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  mobile?: boolean
-  email?: boolean
-  password?: boolean
-  otp?: boolean
-  otpExpiresAt?: boolean
-  otpVerified?: boolean
-  role?: boolean
-  gstIn?: boolean
+  userId?: boolean
   accountStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  businessDetails?: boolean | Prisma.Seller$businessDetailsArgs<ExtArgs>
-  bankDetails?: boolean | Prisma.Seller$bankDetailsArgs<ExtArgs>
-  addresses?: boolean | Prisma.Seller$addressesArgs<ExtArgs>
-  _count?: boolean | Prisma.SellerCountOutputTypeDefaultArgs<ExtArgs>
+  business?: boolean | Prisma.Seller$businessArgs<ExtArgs>
+  bank?: boolean | Prisma.Seller$bankArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["seller"]>
 
 export type SellerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  mobile?: boolean
-  email?: boolean
-  password?: boolean
-  otp?: boolean
-  otpExpiresAt?: boolean
-  otpVerified?: boolean
-  role?: boolean
-  gstIn?: boolean
+  userId?: boolean
   accountStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["seller"]>
 
 export type SellerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
-  mobile?: boolean
-  email?: boolean
-  password?: boolean
-  otp?: boolean
-  otpExpiresAt?: boolean
-  otpVerified?: boolean
-  role?: boolean
-  gstIn?: boolean
+  userId?: boolean
   accountStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["seller"]>
 
 export type SellerSelectScalar = {
   id?: boolean
-  name?: boolean
-  mobile?: boolean
-  email?: boolean
-  password?: boolean
-  otp?: boolean
-  otpExpiresAt?: boolean
-  otpVerified?: boolean
-  role?: boolean
-  gstIn?: boolean
+  userId?: boolean
   accountStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SellerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "mobile" | "email" | "password" | "otp" | "otpExpiresAt" | "otpVerified" | "role" | "gstIn" | "accountStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["seller"]>
+export type SellerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "accountStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["seller"]>
 export type SellerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  businessDetails?: boolean | Prisma.Seller$businessDetailsArgs<ExtArgs>
-  bankDetails?: boolean | Prisma.Seller$bankDetailsArgs<ExtArgs>
-  addresses?: boolean | Prisma.Seller$addressesArgs<ExtArgs>
-  _count?: boolean | Prisma.SellerCountOutputTypeDefaultArgs<ExtArgs>
+  business?: boolean | Prisma.Seller$businessArgs<ExtArgs>
+  bank?: boolean | Prisma.Seller$bankArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
-export type SellerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type SellerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type SellerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type SellerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $SellerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Seller"
   objects: {
-    businessDetails: Prisma.$BusinessPayload<ExtArgs>[]
-    bankDetails: Prisma.$BankPayload<ExtArgs> | null
-    addresses: Prisma.$AddressPayload<ExtArgs>[]
+    business: Prisma.$BusinessPayload<ExtArgs> | null
+    bank: Prisma.$BankPayload<ExtArgs> | null
+    user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    name: string
-    mobile: string | null
-    email: string
-    password: string
-    otp: string | null
-    otpExpiresAt: Date | null
-    otpVerified: boolean
-    role: $Enums.Role
-    gstIn: string | null
+    userId: string
     accountStatus: $Enums.Account
     createdAt: Date
     updatedAt: Date
@@ -1374,9 +1018,9 @@ readonly fields: SellerFieldRefs;
  */
 export interface Prisma__SellerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  businessDetails<T extends Prisma.Seller$businessDetailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Seller$businessDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  bankDetails<T extends Prisma.Seller$bankDetailsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Seller$bankDetailsArgs<ExtArgs>>): Prisma.Prisma__BankClient<runtime.Types.Result.GetResult<Prisma.$BankPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  addresses<T extends Prisma.Seller$addressesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Seller$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  business<T extends Prisma.Seller$businessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Seller$businessArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  bank<T extends Prisma.Seller$bankArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Seller$bankArgs<ExtArgs>>): Prisma.Prisma__BankClient<runtime.Types.Result.GetResult<Prisma.$BankPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1407,15 +1051,7 @@ export interface Prisma__SellerClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface SellerFieldRefs {
   readonly id: Prisma.FieldRef<"Seller", 'String'>
-  readonly name: Prisma.FieldRef<"Seller", 'String'>
-  readonly mobile: Prisma.FieldRef<"Seller", 'String'>
-  readonly email: Prisma.FieldRef<"Seller", 'String'>
-  readonly password: Prisma.FieldRef<"Seller", 'String'>
-  readonly otp: Prisma.FieldRef<"Seller", 'String'>
-  readonly otpExpiresAt: Prisma.FieldRef<"Seller", 'DateTime'>
-  readonly otpVerified: Prisma.FieldRef<"Seller", 'Boolean'>
-  readonly role: Prisma.FieldRef<"Seller", 'Role'>
-  readonly gstIn: Prisma.FieldRef<"Seller", 'String'>
+  readonly userId: Prisma.FieldRef<"Seller", 'String'>
   readonly accountStatus: Prisma.FieldRef<"Seller", 'Account'>
   readonly createdAt: Prisma.FieldRef<"Seller", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Seller", 'DateTime'>
@@ -1668,6 +1304,10 @@ export type SellerCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    */
   data: Prisma.SellerCreateManyInput | Prisma.SellerCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SellerIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1738,6 +1378,10 @@ export type SellerUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Sellers to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SellerIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1807,9 +1451,9 @@ export type SellerDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Seller.businessDetails
+ * Seller.business
  */
-export type Seller$businessDetailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Seller$businessArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Business
    */
@@ -1823,17 +1467,12 @@ export type Seller$businessDetailsArgs<ExtArgs extends runtime.Types.Extensions.
    */
   include?: Prisma.BusinessInclude<ExtArgs> | null
   where?: Prisma.BusinessWhereInput
-  orderBy?: Prisma.BusinessOrderByWithRelationInput | Prisma.BusinessOrderByWithRelationInput[]
-  cursor?: Prisma.BusinessWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.BusinessScalarFieldEnum | Prisma.BusinessScalarFieldEnum[]
 }
 
 /**
- * Seller.bankDetails
+ * Seller.bank
  */
-export type Seller$bankDetailsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Seller$bankArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Bank
    */
@@ -1847,30 +1486,6 @@ export type Seller$bankDetailsArgs<ExtArgs extends runtime.Types.Extensions.Inte
    */
   include?: Prisma.BankInclude<ExtArgs> | null
   where?: Prisma.BankWhereInput
-}
-
-/**
- * Seller.addresses
- */
-export type Seller$addressesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Address
-   */
-  select?: Prisma.AddressSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Address
-   */
-  omit?: Prisma.AddressOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.AddressInclude<ExtArgs> | null
-  where?: Prisma.AddressWhereInput
-  orderBy?: Prisma.AddressOrderByWithRelationInput | Prisma.AddressOrderByWithRelationInput[]
-  cursor?: Prisma.AddressWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.AddressScalarFieldEnum | Prisma.AddressScalarFieldEnum[]
 }
 
 /**

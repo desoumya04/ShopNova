@@ -28,7 +28,7 @@ export type BankMinAggregateOutputType = {
   id: string | null
   sellerId: string | null
   bankName: string | null
-  accountHolderName: string | null
+  accountHolder: string | null
   accountNumber: string | null
   ifcCode: string | null
 }
@@ -37,7 +37,7 @@ export type BankMaxAggregateOutputType = {
   id: string | null
   sellerId: string | null
   bankName: string | null
-  accountHolderName: string | null
+  accountHolder: string | null
   accountNumber: string | null
   ifcCode: string | null
 }
@@ -46,7 +46,7 @@ export type BankCountAggregateOutputType = {
   id: number
   sellerId: number
   bankName: number
-  accountHolderName: number
+  accountHolder: number
   accountNumber: number
   ifcCode: number
   _all: number
@@ -57,7 +57,7 @@ export type BankMinAggregateInputType = {
   id?: true
   sellerId?: true
   bankName?: true
-  accountHolderName?: true
+  accountHolder?: true
   accountNumber?: true
   ifcCode?: true
 }
@@ -66,7 +66,7 @@ export type BankMaxAggregateInputType = {
   id?: true
   sellerId?: true
   bankName?: true
-  accountHolderName?: true
+  accountHolder?: true
   accountNumber?: true
   ifcCode?: true
 }
@@ -75,7 +75,7 @@ export type BankCountAggregateInputType = {
   id?: true
   sellerId?: true
   bankName?: true
-  accountHolderName?: true
+  accountHolder?: true
   accountNumber?: true
   ifcCode?: true
   _all?: true
@@ -157,7 +157,7 @@ export type BankGroupByOutputType = {
   id: string
   sellerId: string
   bankName: string
-  accountHolderName: string
+  accountHolder: string
   accountNumber: string
   ifcCode: string | null
   _count: BankCountAggregateOutputType | null
@@ -187,7 +187,7 @@ export type BankWhereInput = {
   id?: Prisma.StringFilter<"Bank"> | string
   sellerId?: Prisma.StringFilter<"Bank"> | string
   bankName?: Prisma.StringFilter<"Bank"> | string
-  accountHolderName?: Prisma.StringFilter<"Bank"> | string
+  accountHolder?: Prisma.StringFilter<"Bank"> | string
   accountNumber?: Prisma.StringFilter<"Bank"> | string
   ifcCode?: Prisma.StringNullableFilter<"Bank"> | string | null
   seller?: Prisma.XOR<Prisma.SellerScalarRelationFilter, Prisma.SellerWhereInput>
@@ -197,7 +197,7 @@ export type BankOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   bankName?: Prisma.SortOrder
-  accountHolderName?: Prisma.SortOrder
+  accountHolder?: Prisma.SortOrder
   accountNumber?: Prisma.SortOrder
   ifcCode?: Prisma.SortOrderInput | Prisma.SortOrder
   seller?: Prisma.SellerOrderByWithRelationInput
@@ -211,7 +211,7 @@ export type BankWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.BankWhereInput[]
   NOT?: Prisma.BankWhereInput | Prisma.BankWhereInput[]
   bankName?: Prisma.StringFilter<"Bank"> | string
-  accountHolderName?: Prisma.StringFilter<"Bank"> | string
+  accountHolder?: Prisma.StringFilter<"Bank"> | string
   ifcCode?: Prisma.StringNullableFilter<"Bank"> | string | null
   seller?: Prisma.XOR<Prisma.SellerScalarRelationFilter, Prisma.SellerWhereInput>
 }, "id" | "sellerId" | "accountNumber">
@@ -220,7 +220,7 @@ export type BankOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   bankName?: Prisma.SortOrder
-  accountHolderName?: Prisma.SortOrder
+  accountHolder?: Prisma.SortOrder
   accountNumber?: Prisma.SortOrder
   ifcCode?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.BankCountOrderByAggregateInput
@@ -235,7 +235,7 @@ export type BankScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Bank"> | string
   sellerId?: Prisma.StringWithAggregatesFilter<"Bank"> | string
   bankName?: Prisma.StringWithAggregatesFilter<"Bank"> | string
-  accountHolderName?: Prisma.StringWithAggregatesFilter<"Bank"> | string
+  accountHolder?: Prisma.StringWithAggregatesFilter<"Bank"> | string
   accountNumber?: Prisma.StringWithAggregatesFilter<"Bank"> | string
   ifcCode?: Prisma.StringNullableWithAggregatesFilter<"Bank"> | string | null
 }
@@ -243,17 +243,17 @@ export type BankScalarWhereWithAggregatesInput = {
 export type BankCreateInput = {
   id?: string
   bankName: string
-  accountHolderName: string
+  accountHolder: string
   accountNumber: string
   ifcCode?: string | null
-  seller: Prisma.SellerCreateNestedOneWithoutBankDetailsInput
+  seller: Prisma.SellerCreateNestedOneWithoutBankInput
 }
 
 export type BankUncheckedCreateInput = {
   id?: string
   sellerId: string
   bankName: string
-  accountHolderName: string
+  accountHolder: string
   accountNumber: string
   ifcCode?: string | null
 }
@@ -261,17 +261,17 @@ export type BankUncheckedCreateInput = {
 export type BankUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountHolderName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountHolder?: Prisma.StringFieldUpdateOperationsInput | string
   accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifcCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  seller?: Prisma.SellerUpdateOneRequiredWithoutBankDetailsNestedInput
+  seller?: Prisma.SellerUpdateOneRequiredWithoutBankNestedInput
 }
 
 export type BankUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountHolderName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountHolder?: Prisma.StringFieldUpdateOperationsInput | string
   accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifcCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -280,7 +280,7 @@ export type BankCreateManyInput = {
   id?: string
   sellerId: string
   bankName: string
-  accountHolderName: string
+  accountHolder: string
   accountNumber: string
   ifcCode?: string | null
 }
@@ -288,7 +288,7 @@ export type BankCreateManyInput = {
 export type BankUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountHolderName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountHolder?: Prisma.StringFieldUpdateOperationsInput | string
   accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifcCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -297,7 +297,7 @@ export type BankUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountHolderName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountHolder?: Prisma.StringFieldUpdateOperationsInput | string
   accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifcCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -311,7 +311,7 @@ export type BankCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   bankName?: Prisma.SortOrder
-  accountHolderName?: Prisma.SortOrder
+  accountHolder?: Prisma.SortOrder
   accountNumber?: Prisma.SortOrder
   ifcCode?: Prisma.SortOrder
 }
@@ -320,7 +320,7 @@ export type BankMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   bankName?: Prisma.SortOrder
-  accountHolderName?: Prisma.SortOrder
+  accountHolder?: Prisma.SortOrder
   accountNumber?: Prisma.SortOrder
   ifcCode?: Prisma.SortOrder
 }
@@ -329,7 +329,7 @@ export type BankMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   bankName?: Prisma.SortOrder
-  accountHolderName?: Prisma.SortOrder
+  accountHolder?: Prisma.SortOrder
   accountNumber?: Prisma.SortOrder
   ifcCode?: Prisma.SortOrder
 }
@@ -369,7 +369,7 @@ export type BankUncheckedUpdateOneWithoutSellerNestedInput = {
 export type BankCreateWithoutSellerInput = {
   id?: string
   bankName: string
-  accountHolderName: string
+  accountHolder: string
   accountNumber: string
   ifcCode?: string | null
 }
@@ -377,7 +377,7 @@ export type BankCreateWithoutSellerInput = {
 export type BankUncheckedCreateWithoutSellerInput = {
   id?: string
   bankName: string
-  accountHolderName: string
+  accountHolder: string
   accountNumber: string
   ifcCode?: string | null
 }
@@ -401,7 +401,7 @@ export type BankUpdateToOneWithWhereWithoutSellerInput = {
 export type BankUpdateWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountHolderName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountHolder?: Prisma.StringFieldUpdateOperationsInput | string
   accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifcCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -409,7 +409,7 @@ export type BankUpdateWithoutSellerInput = {
 export type BankUncheckedUpdateWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   bankName?: Prisma.StringFieldUpdateOperationsInput | string
-  accountHolderName?: Prisma.StringFieldUpdateOperationsInput | string
+  accountHolder?: Prisma.StringFieldUpdateOperationsInput | string
   accountNumber?: Prisma.StringFieldUpdateOperationsInput | string
   ifcCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -420,7 +420,7 @@ export type BankSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   sellerId?: boolean
   bankName?: boolean
-  accountHolderName?: boolean
+  accountHolder?: boolean
   accountNumber?: boolean
   ifcCode?: boolean
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
@@ -430,7 +430,7 @@ export type BankSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   sellerId?: boolean
   bankName?: boolean
-  accountHolderName?: boolean
+  accountHolder?: boolean
   accountNumber?: boolean
   ifcCode?: boolean
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
@@ -440,7 +440,7 @@ export type BankSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   sellerId?: boolean
   bankName?: boolean
-  accountHolderName?: boolean
+  accountHolder?: boolean
   accountNumber?: boolean
   ifcCode?: boolean
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
@@ -450,12 +450,12 @@ export type BankSelectScalar = {
   id?: boolean
   sellerId?: boolean
   bankName?: boolean
-  accountHolderName?: boolean
+  accountHolder?: boolean
   accountNumber?: boolean
   ifcCode?: boolean
 }
 
-export type BankOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sellerId" | "bankName" | "accountHolderName" | "accountNumber" | "ifcCode", ExtArgs["result"]["bank"]>
+export type BankOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sellerId" | "bankName" | "accountHolder" | "accountNumber" | "ifcCode", ExtArgs["result"]["bank"]>
 export type BankInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }
@@ -475,7 +475,7 @@ export type $BankPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     sellerId: string
     bankName: string
-    accountHolderName: string
+    accountHolder: string
     accountNumber: string
     ifcCode: string | null
   }, ExtArgs["result"]["bank"]>
@@ -905,7 +905,7 @@ export interface BankFieldRefs {
   readonly id: Prisma.FieldRef<"Bank", 'String'>
   readonly sellerId: Prisma.FieldRef<"Bank", 'String'>
   readonly bankName: Prisma.FieldRef<"Bank", 'String'>
-  readonly accountHolderName: Prisma.FieldRef<"Bank", 'String'>
+  readonly accountHolder: Prisma.FieldRef<"Bank", 'String'>
   readonly accountNumber: Prisma.FieldRef<"Bank", 'String'>
   readonly ifcCode: Prisma.FieldRef<"Bank", 'String'>
 }

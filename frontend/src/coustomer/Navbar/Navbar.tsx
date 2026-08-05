@@ -11,7 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { Avatar, Badge } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../Redux_toolkit/store";
+import { useAppDispatch, useAppSelector } from "../../Redux_toolkit/store";
 
 const NAV_LINKS = [
   { label: "Electronics", to: "/electronics" },
@@ -21,13 +21,21 @@ const NAV_LINKS = [
 ];
 
 const Navbar = () => {
+ const dispatch = useAppDispatch();
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
 
   // Get user login status and details from localStorage
   const jwt = useAppSelector((state)=>state.auth.jwt)
   const name = useAppSelector((state)=>state.auth.name)
+  
+ 
 
+  const role = useAppSelector((state) => state.user.role);
+  const isSeller = role === "SELLER";
+
+  console.log(role)
   const isLoggedIn = jwt!== null;
   const userName = name || "User";
 
@@ -143,7 +151,9 @@ const Navbar = () => {
               </Badge>
             </button>
 
-            <button className="nb-seller-btn">Become a Seller</button>
+            <button className="nb-seller-btn" onClick={() => navigate(isSeller? '/seller/login' : '/seller/signup')}>
+              {isSeller? 'Seller' : 'Become a Seller'}
+            </button>
           </div>
         </div>
       </header>
@@ -232,9 +242,11 @@ const Navbar = () => {
 
         {/* Drawer footer */}
         <div className="nb-drawer-footer">
-          <button className="nb-drawer-seller">
+          <button className="nb-drawer-seller" onClick={() => {
+            navigate(isSeller? '/seller/login' : '/seller/signup')
+          }}>
             <Storefront style={{ fontSize: 18 }} />
-            Become a Seller
+            {isSeller ? 'Seller' : 'Become a Seller'}
           </button>
         </div>
       </div>

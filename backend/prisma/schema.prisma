@@ -15,28 +15,20 @@ datasource db {
 
 model Seller {
   id        String   @id @default(uuid())
+  userId    String   @unique
 
-  name      String
-  mobile    String? @unique
-  email     String   @unique
-  password  String
+  business Business?
+  bank     Bank?
 
-  otp             String?
-  otpExpiresAt    DateTime?   // ⭐ expiry timee
-  otpVerified     Boolean     @default(false)
-
-  businessDetails Business[]
-  bankDetails     Bank?
-  addresses     Address[]
-  role Role @default(CUSTOMER)
-  gstIn      String?  
   accountStatus Account @default(PENDING_VERIFICATION)  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }
 model User {
   id        String   @id @default(uuid())
-
+  
   name      String
   mobile    String? @unique
   email     String   @unique
@@ -46,23 +38,28 @@ model User {
   otpAttempts     Int        @default(0)
   otpVerified     Boolean     @default(false)
 
+  
   role Role @default(CUSTOMER)
+
+  seller Seller?
+
+  address UserAddress[]
   accountStatus Account @default(PENDING_VERIFICATION)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
 }
 model Business {
   id          String   @id @default(uuid())
-  sellerId    String   
+  sellerId    String   @unique
 
   name        String
-  email       String?
-  phone       String?
+  category    BusinessCategory @default(ELECTRONICS) 
+  email       String
+  mobile      String
+  gstIn       String?
   
-  locality String
-  pinCode Int
-  state String
-  address String
+  address     BusinessAddress?
  
   seller      Seller   @relation(fields: [sellerId], references: [id])
 }
@@ -71,24 +68,38 @@ model Bank {
   sellerId    String @unique
 
   bankName    String
-  accountHolderName  String
+  accountHolder  String
   accountNumber String  @unique
   ifcCode    String?
   seller      Seller   @relation(fields: [sellerId], references: [id])
 }
 
-model Address {
+model UserAddress {
   id          String   @id @default(uuid())
-  sellerId    String
+
+  userId     String 
 
   locality String
   pinCode Int
   state String
   address String
 
-  seller      Seller   @relation(fields: [sellerId], references: [id])
+  
+  user     User   @relation(fields: [userId], references: [id])
 }
 
+model BusinessAddress {
+  id          String   @id @default(uuid())
+
+  businessId     String @unique
+
+  locality String
+  pinCode Int
+  state String
+  address String
+
+  business     Business   @relation(fields: [businessId], references: [id])
+}
 
 enum Role{
   ADMIN
@@ -102,4 +113,15 @@ enum Account{
   DEACTIVATE
   BANNED
   CLOSED
+}
+enum BusinessCategory{
+  ELECTRONICS
+  FASHION
+  GROCERY
+  BEAUTY
+  SPORTS
+  HOME_APPLIANCES
+  BOOKS
+  TOYS
+  OTHER
 }

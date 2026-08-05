@@ -55,7 +55,8 @@ export const ModelName = {
   User: 'User',
   Business: 'Business',
   Bank: 'Bank',
-  Address: 'Address'
+  UserAddress: 'UserAddress',
+  BusinessAddress: 'BusinessAddress'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -76,15 +77,7 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const SellerScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  mobile: 'mobile',
-  email: 'email',
-  password: 'password',
-  otp: 'otp',
-  otpExpiresAt: 'otpExpiresAt',
-  otpVerified: 'otpVerified',
-  role: 'role',
-  gstIn: 'gstIn',
+  userId: 'userId',
   accountStatus: 'accountStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -115,12 +108,10 @@ export const BusinessScalarFieldEnum = {
   id: 'id',
   sellerId: 'sellerId',
   name: 'name',
+  category: 'category',
   email: 'email',
-  phone: 'phone',
-  locality: 'locality',
-  pinCode: 'pinCode',
-  state: 'state',
-  address: 'address'
+  mobile: 'mobile',
+  gstIn: 'gstIn'
 } as const
 
 export type BusinessScalarFieldEnum = (typeof BusinessScalarFieldEnum)[keyof typeof BusinessScalarFieldEnum]
@@ -130,7 +121,7 @@ export const BankScalarFieldEnum = {
   id: 'id',
   sellerId: 'sellerId',
   bankName: 'bankName',
-  accountHolderName: 'accountHolderName',
+  accountHolder: 'accountHolder',
   accountNumber: 'accountNumber',
   ifcCode: 'ifcCode'
 } as const
@@ -138,16 +129,28 @@ export const BankScalarFieldEnum = {
 export type BankScalarFieldEnum = (typeof BankScalarFieldEnum)[keyof typeof BankScalarFieldEnum]
 
 
-export const AddressScalarFieldEnum = {
+export const UserAddressScalarFieldEnum = {
   id: 'id',
-  sellerId: 'sellerId',
+  userId: 'userId',
   locality: 'locality',
   pinCode: 'pinCode',
   state: 'state',
   address: 'address'
 } as const
 
-export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
+export type UserAddressScalarFieldEnum = (typeof UserAddressScalarFieldEnum)[keyof typeof UserAddressScalarFieldEnum]
+
+
+export const BusinessAddressScalarFieldEnum = {
+  id: 'id',
+  businessId: 'businessId',
+  locality: 'locality',
+  pinCode: 'pinCode',
+  state: 'state',
+  address: 'address'
+} as const
+
+export type BusinessAddressScalarFieldEnum = (typeof BusinessAddressScalarFieldEnum)[keyof typeof BusinessAddressScalarFieldEnum]
 
 
 export const SortOrder = {

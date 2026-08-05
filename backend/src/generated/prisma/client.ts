@@ -60,7 +60,12 @@ export type Business = Prisma.BusinessModel
  */
 export type Bank = Prisma.BankModel
 /**
- * Model Address
+ * Model UserAddress
  * 
  */
-export type Address = Prisma.AddressModel
+export type UserAddress = Prisma.UserAddressModel
+/**
+ * Model BusinessAddress
+ * 
+ */
+export type BusinessAddress = Prisma.BusinessAddressModel

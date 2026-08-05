@@ -2,11 +2,13 @@ import { configureStore,combineReducers } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, type TypedUseSelectorHook } from 'react-redux';
 import authReducer from './Auth/authSlice';
 import userReducer from './coustomer/userSlice';
+import sellerReducer from './seller/seller';
 
 const rootReducer = combineReducers({
   // Add your reducers here
   auth:authReducer,
-  user:userReducer
+  user:userReducer,
+  seller:sellerReducer,
 });
 const store = configureStore({
   reducer: rootReducer,
