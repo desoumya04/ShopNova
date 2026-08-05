@@ -17,9 +17,9 @@ class jwtProvider {
 
   verifyToken(token: string){
     try {
-      console.log('Verifying token:', token);
+     
       const decoded = jwt.verify(token, this.secretKey);
-      console.log(decoded);
+      
       return decoded;
     } catch (error) {
       throw new apiError(401, 'Invalid or expired token');

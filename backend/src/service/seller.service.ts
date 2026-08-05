@@ -1,6 +1,7 @@
 
 import { prisma } from '../config/db.js';
 import { apiError } from '../utils/apiError.js';
+
 import bcrypt from 'bcrypt';
 import { JWTProviderInstance } from '../utils/jwtProvider.js';
 
@@ -25,7 +26,7 @@ interface SellerRegistrationPayload {
     email: string;
     mobile: string;
     gstIn?: string;
-    category: "ELECTRONICS" | "FASHION" | "GROCERY" | "BEAUTY" | "SPORTS" | "HOME_APPLIANCES" | "BOOKS" | "TOYS" | "OTHER";
+    category: "ELECTRONICS" | "FASHION" | "HOME" | "BEAUTY" | "SPORTS" | "TOYS" | "GROCERY" | "OTHER";
   };
 
   businessAddress: {
@@ -39,7 +40,7 @@ interface SellerRegistrationPayload {
     bankName: string;
     accountHolder: string;
     accountNumber: string;
-    ifscCode: string;
+    ifcCode: string;
   };
 }
 
@@ -72,7 +73,7 @@ const {seller,sellerAddress,business,businessAddress,bank} = sellerData;
         data:{
           name: seller.fullName,
           mobile: seller.mobile,
-          role: seller.role || 'SELLER',
+          role: 'SELLER',
         } ,
       })
 
@@ -107,7 +108,7 @@ const {seller,sellerAddress,business,businessAddress,bank} = sellerData;
           email: business.email,
           mobile: business.mobile,
           gstIn: business.gstIn,
-          category: business.category || 'OTHER',
+          category: business.category,
           seller:{
             connect:{
               id: createSeller.id,
@@ -115,7 +116,7 @@ const {seller,sellerAddress,business,businessAddress,bank} = sellerData;
           },
         },
       })
-
+      console.log("business",business)
       // create a business address
       await tx.businessAddress.create({
         data:{
@@ -137,7 +138,7 @@ const {seller,sellerAddress,business,businessAddress,bank} = sellerData;
           bankName: bank.bankName,
           accountHolder: bank.accountHolder,
           accountNumber: bank.accountNumber,
-          ifscCode: bank.ifscCode,
+          ifcCode: bank.ifcCode,
           seller:{
             connect:{
               id: createSeller.id,

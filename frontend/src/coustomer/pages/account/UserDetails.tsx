@@ -9,6 +9,8 @@ const UserDetails = () => {
 
   const User = useAppSelector(state => state.user);
   console.log("UserDetails component - User state:", User);
+
+  
   useEffect(() => {
     dispatch(fetchUserData());
   }, [dispatch]);
@@ -20,7 +22,7 @@ const UserDetails = () => {
 
   return (
     
-          <ProfileFiledCard user={User} />
+    <ProfileFiledCard user={User} />
   )
 }
 

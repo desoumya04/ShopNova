@@ -58,13 +58,14 @@ class UserService{
     if(!decoded){
       throw new apiError(401, 'Invalid token');
     }
+    console.log(jwt)
     const existingUser = await prisma.user.findUnique({
       where:{ id: decoded.id}
     })    
     if(!existingUser){
       throw new apiError(404, 'User not found');
     } 
-    return { name: existingUser.name, email: existingUser.email, phone: existingUser.mobile, joined: existingUser.createdAt};
+    return { name: existingUser.name, email: existingUser.email, phone: existingUser.mobile,role: existingUser.role, joined: existingUser.createdAt};
   } 
 
 

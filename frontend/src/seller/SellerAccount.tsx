@@ -108,8 +108,8 @@ const handleAccountSubmit = async (
 											<span className="mb-2 block text-sm font-medium text-slate-200">IFSC code</span>
 											<input
 												type="text"
-												value={bank.ifsc}
-												onChange={(event) => dispatch(updateBank({ ifsc: event.target.value }))}
+												value={bank.ifcCode}
+												onChange={(event) => dispatch(updateBank({ ifcCode: event.target.value }))}
 												placeholder="ABCD0123456"
 												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
@@ -130,6 +130,7 @@ const handleAccountSubmit = async (
 											onClick={async (event) => {
 												event.preventDefault();
 												dispatch(sellerDetails(sellerData));
+												navigate("/seller", { replace: true });
 											}}
 											className="flex-1 rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
 										>

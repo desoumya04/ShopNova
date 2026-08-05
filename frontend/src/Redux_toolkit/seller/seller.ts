@@ -22,10 +22,10 @@ type SellerState = {
   };
 
   business: {
-    storeName: string;
-	  storeCategory: string;
-	  businessEmail: string;
-	  businessMobile: string;
+    businessName: string;
+    email: string;
+    mobile: string;
+	  category: string;
     gstIn: string;
   };
 
@@ -40,7 +40,7 @@ type SellerState = {
   bank: {
     accountHolder: string;
     accountNumber: string;
-    ifsc: string;
+    ifcCode: string;
     bankName: string;
   };
 
@@ -63,10 +63,10 @@ const initialState: SellerState = {
   
   },
   business: {
-    storeName: "",
-    storeCategory: "",
-    businessEmail: "",
-    businessMobile: "",
+    businessName: "",
+    category: "",
+    email: "",
+    mobile: "",
     gstIn: "",
   },
   businessAddress: {
@@ -79,7 +79,7 @@ const initialState: SellerState = {
   bank: {
     accountHolder: "",
     accountNumber: "",
-    ifsc: "",
+    ifcCode: "",
     bankName: "",
   },
   loading: false,
@@ -103,6 +103,7 @@ export const sellerDetails = createAsyncThunk(
       });
 
       console.log("sellerDetails response:", response.data);
+      localStorage.setItem("role", response.data.data.seller.role);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -156,6 +157,7 @@ const sellerSlice = createSlice({
       state.sellerAddress = action.payload.sellerAddress; 
       state.business = action.payload.business;
       state.businessAddress = action.payload.businessAddress;
+
       state.bank = action.payload.bank;
       state.loading = false;
       state.error = null;

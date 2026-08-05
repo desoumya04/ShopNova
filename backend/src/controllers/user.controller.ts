@@ -23,9 +23,8 @@ class UserController {
 
   userDetails = asyncHandler(async (req,res) =>{
     const authHeader = req.headers.authorization;
-
+    console.log("authHeader:", authHeader)
   const token =
-    req.cookies.token ||
     (authHeader?.startsWith("Bearer ")
       ? authHeader.split(" ")[1]
       : undefined);
@@ -33,6 +32,7 @@ class UserController {
     if(!token){
       throw new apiError(401, 'Unauthorized: No token provided');
     }
+    console.log("token:" ,token)
     const userDetails = await userService.userDetails(token);
     res.status(200).json(new apiResponse(200,userDetails,'User details fetched successfully'));
   })

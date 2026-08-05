@@ -9,6 +9,7 @@ const initialState = {
   name: null,
   email: null,
   phone: null,
+  role: null,
   joined: null,
   loading: false,
   error: null,
@@ -78,7 +79,7 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.phone = action.payload.phone;
       state.joined = action.payload.joined;
-  
+      state.role = action.payload.role;
     })
     .addCase(fetchUserData.rejected,(state,action)=>{
       state.loading = false;

@@ -20,9 +20,13 @@ import SellerDashboard from './seller/Dashboard/dashboard';
 import SellerOrders from './seller/Orders/order';
 import SellerPayouts from './seller/Payout/payout';
 import SellerProfile from './seller/Profile/profile';
-import SellerLogin from './seller/SellerLogin';
+
+
+import SellerSignup from './seller/SellerSignup';
 import SellerBussiness from './seller/SellerBussiness';
 import SellerAccount from './seller/SellerAccount';
+import SellerLogin from './seller/SellerLogin';
+
 
 function App() {
   
@@ -49,10 +53,11 @@ function App() {
         
         
         
-        <Route path="/seller/login" element={<SellerLogin />} />
+        
+        <Route path="/seller/signup" element={<SellerSignup />} />
         <Route path="/seller/onboarding/business" element={<SellerBussiness />} />
         <Route path="/seller/onboarding/account" element={<SellerAccount />} />
-
+        <Route path="/seller/login" element={<SellerLogin />} />
         {/* Seller Routes */}
         <Route element={<SellerLayout />} >      
     
