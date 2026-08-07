@@ -101,6 +101,16 @@ model BusinessAddress {
   business     Business   @relation(fields: [businessId], references: [id])
 }
 
+model Orders {
+  id String @id @default(uuid())
+
+}
+model Product{
+  id String @id @default(uuid())
+
+  
+}
+
 enum Role{
   ADMIN
   CUSTOMER

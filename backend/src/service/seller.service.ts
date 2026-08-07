@@ -4,6 +4,7 @@ import { apiError } from '../utils/apiError.js';
 
 import bcrypt from 'bcrypt';
 import { JWTProviderInstance } from '../utils/jwtProvider.js';
+import { EmailServiceInstance } from '../utils/sendEmail.js';
 
 
 interface SellerRegistrationPayload {
@@ -152,7 +153,23 @@ const {seller,sellerAddress,business,businessAddress,bank} = sellerData;
 
   }
 
-
+  async sellerLogin(loginData: any){
+    const email = loginData.email;
+    const hasMissingField = [email].some(v => !v);
+    const existingSeller = await prisma.user.findUnique({
+      where:{ email: email}
+    })    
+    if(!existingSeller){
+      throw new apiError(404, 'Seller not found');
+    }
+    
+    // check for missing fields
+    if(hasMissingField){
+      throw new apiError(400, 'Missing required fields: email');
+    }
+    
+    return {existingSeller};
+  }
 
   async getSeller(token: string){
    
