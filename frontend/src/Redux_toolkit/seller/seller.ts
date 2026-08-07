@@ -103,7 +103,22 @@ export const sellerDetails = createAsyncThunk(
       });
 
       console.log("sellerDetails response:", response.data);
-      localStorage.setItem("role", response.data.data.seller.role);
+     
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+)
+
+export const loginSeller = createAsyncThunk(
+  "seller/login",
+  async( email:string, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`${API_URL}/login`, { email });
+
+      console.log("loginSeller response:", response.data);
+      
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -141,7 +156,7 @@ const sellerSlice = createSlice({
         ...state.bank,
         ...action.payload};
     },
-    resetSeller(state) {
+    resetSeller() {
       return initialState;
     },
     
@@ -165,7 +180,20 @@ const sellerSlice = createSlice({
     .addCase(sellerDetails.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
-    });
+    })
+    .addCase(loginSeller.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(loginSeller.fulfilled, (state) => {
+      state.loading = false;
+      state.error = null;
+    })
+    .addCase(loginSeller.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    })
+
   }
 })
 

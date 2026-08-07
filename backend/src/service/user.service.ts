@@ -53,6 +53,9 @@ class UserService{
 
   } 
 
+  
+
+
   async userDetails(jwt: string){
     const decoded = JWTProviderInstance.verifyToken(jwt);
     if(!decoded){

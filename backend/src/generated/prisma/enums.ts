@@ -33,20 +33,13 @@ export type Account = (typeof Account)[keyof typeof Account]
 export const BusinessCategory = {
   ELECTRONICS: 'ELECTRONICS',
   FASHION: 'FASHION',
-  HOME_APPLIANCES: 'HOME_APPLIANCES',
-  BOOKS: 'BOOKS',
+  GROCERY: 'GROCERY',
   BEAUTY: 'BEAUTY',
   SPORTS: 'SPORTS',
+  HOME_APPLIANCES: 'HOME_APPLIANCES',
+  BOOKS: 'BOOKS',
   TOYS: 'TOYS',
-  GROCERY: 'GROCERY',
-  JEWELRY: 'JEWELRY',
-  AUTOMOTIVE: 'AUTOMOTIVE',
-  PET_SUPPLIES: 'PET_SUPPLIES',
-  HEALTHCARE: 'HEALTHCARE',
-  OFFICE_SUPPLIES: 'OFFICE_SUPPLIES',
-  ART_CRAFTS: 'ART_CRAFTS',
-  MUSIC_INSTRUMENTS: 'MUSIC_INSTRUMENTS',
-  OUTDOOR_RECREATION: 'OUTDOOR_RECREATION'
+  OTHER: 'OTHER'
 } as const
 
 export type BusinessCategory = (typeof BusinessCategory)[keyof typeof BusinessCategory]
