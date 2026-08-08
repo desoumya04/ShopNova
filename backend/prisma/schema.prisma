@@ -20,6 +20,7 @@ model Seller {
   business Business?
   bank     Bank?
 
+  products Product[]  
   accountStatus Account @default(PENDING_VERIFICATION)  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -42,7 +43,7 @@ model User {
   role Role @default(CUSTOMER)
 
   seller Seller?
-
+  reviews Review[]
   address UserAddress[]
   accountStatus Account @default(PENDING_VERIFICATION)
   createdAt DateTime @default(now())
@@ -105,10 +106,90 @@ model Orders {
   id String @id @default(uuid())
 
 }
-model Product{
-  id String @id @default(uuid())
+model Product {
+  id              String   @id @default(uuid())
 
+  name            String
+  slug            String   @unique
+  description     String
+
+  brand           String?
   
+  
+  status          ProductStatus @default(DRAFT)
+
+  sellerId        String
+  seller          Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+
+  categoryId      String
+  category        Category @relation(fields: [categoryId], references: [id])
+
+  images          ProductImage[]
+  variants        ProductVariant[]
+  reviews         Review[]
+
+  averageRating   Float    @default(0)
+  totalReviews    Int      @default(0)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ProductImage {
+  id          String   @id @default(uuid())
+  productId   String
+
+  url         String
+  isPrimary   Boolean  @default(false)
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+} 
+
+model ProductVariant {
+  id          String   @id @default(uuid())
+
+  productId   String
+
+  color         String?
+  size          String?
+  storage       String?
+  ram           String?
+
+
+  price           Decimal  @db.Decimal(10,2)
+  discountPrice   Decimal? @db.Decimal(10,2)
+  costPrice       Decimal? @db.Decimal(10,2)
+
+  stock           Int      @default(0)
+
+  weight          Float?
+  warranty        String?
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id          String   @id @default(uuid())
+
+  name        String   @unique
+  description String?
+  products    Product[]
+}
+
+model Review {
+  id          String   @id @default(uuid())
+
+  productId   String
+  userId      String 
+
+  rating      Int
+  comment     String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Role{
@@ -134,4 +215,10 @@ enum BusinessCategory{
   BOOKS
   TOYS
   OTHER
+}
+
+enum ProductStatus{
+  DRAFT
+  ACTIVE
+  LOW_STOCK
 }

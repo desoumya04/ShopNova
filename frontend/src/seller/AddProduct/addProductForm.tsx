@@ -1,36 +1,30 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-
-type ProductFormState = {
-	title: string
-	category: string
-	brand: string
-	price: string
-	stock: string
-	color: string
-	description: string
-}
-
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch,useAppSelector } from '../../Redux_toolkit/store'
+import { updateProduct, updateProductVariants, updateProductImages } from '../../Redux_toolkit/Product/product'
 const MAX_IMAGES = 5
 
-const initialFormState: ProductFormState = {
-	title: '',
-	category: '',
-	brand: '',
-	price: '',
-	stock: '',
-	color: '',
-	description: '',
-}
-
 const AddProductForm = () => {
+	const navigate = useNavigate()
+
+	const dispatch = useAppDispatch()
 	const fileInputRef = useRef<HTMLInputElement>(null)
-	const [formData, setFormData] = useState<ProductFormState>(initialFormState)
-	const [images, setImages] = useState<File[]>([])
+
+	const product = useAppSelector((state) => state.product.products)
+	const productVariants = useAppSelector((state) => state.product.productVariants)
+	const productImages = useAppSelector((state) => state.product.productImages)
+
+
+
 	const [imageError, setImageError] = useState('')
 
 	const imagePreviews = useMemo(
-		() => images.map((file) => ({ file, url: URL.createObjectURL(file) })),
-		[images],
+		() =>
+			productImages.map((file) => ({
+				file,
+				url: URL.createObjectURL(file),
+			})),
+		[productImages]
 	)
 
 	useEffect(() => {
@@ -39,19 +33,21 @@ const AddProductForm = () => {
 		}
 	}, [imagePreviews])
 
-	const handleChange = (field: keyof ProductFormState, value: string) => {
-		setFormData((current) => ({
-			...current,
-			[field]: value,
-		}))
+	
+	const handleAllSubmit =() => {
+		navigate("/seller/products")
 	}
+	
+		
+		
+	
 
 	const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFiles = Array.from(event.target.files ?? [])
 
 		if (!selectedFiles.length) return
 
-		const availableSlots = MAX_IMAGES - images.length
+		const availableSlots = MAX_IMAGES - productImages.length
 		const nextFiles = selectedFiles.slice(0, availableSlots)
 
 		if (selectedFiles.length > availableSlots) {
@@ -60,21 +56,18 @@ const AddProductForm = () => {
 			setImageError('')
 		}
 
-		setImages((current) => [...current, ...nextFiles])
-
+		dispatch(updateProductImages(nextFiles))
 		if (fileInputRef.current) {
 			fileInputRef.current.value = ''
 		}
 	}
 
 	const removeImage = (index: number) => {
-		setImages((current) => current.filter((_, currentIndex) => currentIndex !== index))
-		setImageError('')
+		dispatch(updateProductImages(productImages.filter((_, i) => i !== index)))
 	}
 
 	const clearAll = () => {
-		setFormData(initialFormState)
-		setImages([])
+		dispatch(updateProductImages([]))
 		setImageError('')
 		if (fileInputRef.current) {
 			fileInputRef.current.value = ''
@@ -83,11 +76,14 @@ const AddProductForm = () => {
 
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		// Hook this into your seller API or Redux action.
-		console.log({
-			...formData,
-			images,
-		})
+		const fromData = new FormData()
+
+		fromData.append("product", JSON.stringify(product))
+		fromData.append("productVarients", JSON.stringify(productVariants))
+	 
+		productImages.forEach((file, index) => {
+			fromData.append(`productImages[${index}]`, file)	
+		})	
 	}
 
 	return (
@@ -159,7 +155,7 @@ const AddProductForm = () => {
 									</div>
 								))}
 
-								{images.length < MAX_IMAGES && (
+								{productImages.length < MAX_IMAGES && (
 									<button
 										type="button"
 										onClick={() => fileInputRef.current?.click()}
@@ -173,7 +169,7 @@ const AddProductForm = () => {
 
 							<div className="mt-4 flex items-center justify-between text-sm">
 								<p className="text-slate-500">
-									{images.length}/{MAX_IMAGES} images selected
+									{productImages.length}/{MAX_IMAGES} images selected
 								</p>
 								{imageError ? <p className="font-medium text-rose-600">{imageError}</p> : null}
 							</div>
@@ -182,36 +178,106 @@ const AddProductForm = () => {
 						<section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 sm:grid-cols-2">
 							<Field label="Product Name">
 								<input
-									value={formData.title}
-									onChange={(event) => handleChange('title', event.target.value)}
+									value={product.name}
+									onChange={(event) => dispatch(updateProduct({ name: event.target.value }))}
 									placeholder="Enter product name"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
 							</Field>
 
-							<Field label="Category">
+							<Field label="Slug">
 								<input
-									value={formData.category}
-									onChange={(event) => handleChange('category', event.target.value)}
-									placeholder="e.g. Electronics"
+									value={product.slug}
+									onChange={(event) => dispatch(updateProduct({ slug: event.target.value }))}
+									placeholder="product-slug"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
 							</Field>
 
+							<Field label="Category">
+							<select
+								value={product.categoryId}
+								onChange={(event) =>
+									dispatch(
+										updateProduct({
+											categoryId: event.target.value,
+										})
+									)
+								}
+								className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+							>
+								<option value="">Select Category</option>
+
+								{categories.map((category) => (
+									<option key={category.id} value={category.id}>
+										{category.name}
+									</option>
+								))}
+							</select>
+						</Field>
+
 							<Field label="Brand">
 								<input
-									value={formData.brand}
-									onChange={(event) => handleChange('brand', event.target.value)}
+									value={product.brand}
+									onChange={(event) => dispatch(updateProduct({ brand: event.target.value }))}
 									placeholder="Brand name"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
 							</Field>
 
+							<Field label="Status">
+								<select
+									value={product.status}
+									onChange={(event) =>
+										dispatch(
+											updateProduct({
+												status: event.target.value as
+													"DRAFT" |
+													"PUBLISHED" |
+													"ARCHIVED",
+											})
+										)
+									}
+									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+								>
+									<option value="DRAFT">Draft</option>
+									<option value="PUBLISHED">Published</option>
+									<option value="ARCHIVED">Archived</option>
+								</select>
+							</Field>
+
 							<Field label="Color">
 								<input
-									value={formData.color}
-									onChange={(event) => handleChange('color', event.target.value)}
+									value={productVariants.color}
+									onChange={(event) => dispatch(updateProductVariants({ color: event.target.value }))}
 									placeholder="Black, Blue, etc."
+									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+								/>
+							</Field>
+
+							<Field label="Size">
+								<input
+									value={productVariants.size}
+									onChange={(event) => dispatch(updateProductVariants({ size: event.target.value }))}
+									placeholder="M, L, XL"
+									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+								/>
+							</Field>
+
+							<Field label="Storage">
+								<input
+									value={productVariants.storage}
+									onChange={(event) => dispatch(updateProductVariants({ storage: event.target.value }))}
+									placeholder="128GB, 512GB"
+									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+								/>
+							</Field>
+
+							<Field label="RAM">
+								<input
+									value={productVariants.ram}
+									onChange={(event) => dispatch(updateProductVariants({ ram: event.target.value }))}
+									placeholder="8GB, 16GB"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
 							</Field>
@@ -220,8 +286,30 @@ const AddProductForm = () => {
 								<input
 									type="number"
 									min="0"
-									value={formData.price}
-									onChange={(event) => handleChange('price', event.target.value)}
+									value={productVariants.price}
+									onChange={(event) => dispatch(updateProductVariants({ price: event.target.value }))}
+									placeholder="0.00"
+									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+								/>
+							</Field>
+
+							<Field label="Discount Price">
+								<input
+									type="number"
+									min="0"
+									value={productVariants.discountPrice}
+									onChange={(event) => dispatch(updateProductVariants({ discountPrice: event.target.value }))}
+									placeholder="0.00"	
+									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+								/>
+							</Field>
+
+							<Field label="Cost Price">
+								<input
+									type="number"
+									min="0"
+									value={productVariants.costPrice}
+									onChange={(event) => dispatch(updateProductVariants({ costPrice: event.target.value }))}
 									placeholder="0.00"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -231,9 +319,27 @@ const AddProductForm = () => {
 								<input
 									type="number"
 									min="0"
-									value={formData.stock}
-									onChange={(event) => handleChange('stock', event.target.value)}
+									value={productVariants.stock}
+									onChange={(event) => dispatch(updateProductVariants({ stock: event.target.value }))}
 									placeholder="Quantity"
+									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+								/>
+							</Field>
+
+							<Field label="Weight">
+								<input
+									value={productVariants.weight}
+									onChange={(event) => dispatch(updateProductVariants({ weight: event.target.value }))}
+									placeholder="1.2kg"
+									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+								/>
+							</Field>
+
+							<Field label="Warranty">
+								<input
+									value={productVariants.warranty}
+									onChange={(event) => dispatch(updateProductVariants({ warranty: event.target.value }))}
+									placeholder="1 year"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
 							</Field>
@@ -241,8 +347,8 @@ const AddProductForm = () => {
 							<div className="sm:col-span-2">
 								<Field label="Description">
 									<textarea
-										value={formData.description}
-										onChange={(event) => handleChange('description', event.target.value)}
+										value={product.description}
+										onChange={(event) => dispatch(updateProduct({ description: event.target.value }))}
 										placeholder="Describe the product, size, condition, or features"
 										rows={5}
 										className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
@@ -258,27 +364,27 @@ const AddProductForm = () => {
 								Preview
 							</p>
 							<h3 className="mt-2 text-2xl font-semibold tracking-tight">
-								{formData.title || 'Product title'}
+								{product.name || 'Product title'}
 							</h3>
 							<p className="mt-1 text-sm text-slate-300">
-								{formData.brand || 'Brand'} {formData.category ? `• ${formData.category}` : ''}
+								{product.brand || 'Brand'}
 							</p>
 
 							<div className="mt-5 flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
 								<div>
 									<p className="text-xs uppercase tracking-wide text-slate-400">Price</p>
-									<p className="text-xl font-semibold text-white">${formData.price || '0.00'}</p>
+									<p className="text-xl font-semibold text-white">${productVariants.price || '0.00'}</p>
 								</div>
 								<div className="text-right">
 									<p className="text-xs uppercase tracking-wide text-slate-400">Stock</p>
-									<p className="text-xl font-semibold text-white">{formData.stock || '0'}</p>
+									<p className="text-xl font-semibold text-white">{productVariants.stock || '0'}</p>
 								</div>
 							</div>
 
 							<div className="mt-5 rounded-2xl bg-white/5 p-4 text-sm text-slate-300">
 								<p className="font-medium text-white">Details</p>
 								<p className="mt-2 leading-6">
-									{formData.description || 'Your product description will appear here.'}
+									{product.description || 'Your product description will appear here.'}
 								</p>
 							</div>
 						</div>
@@ -302,6 +408,7 @@ const AddProductForm = () => {
 							</button>
 							<button
 								type="submit"
+								onClick={handleAllSubmit}
 								className="flex-1 rounded-full bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
 							>
 								Publish Product

@@ -149,6 +149,7 @@ const {seller,sellerAddress,business,businessAddress,bank} = sellerData;
       })
     })
 
+    
     return { newSeller };
 
   }
