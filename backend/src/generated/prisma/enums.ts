@@ -43,3 +43,12 @@ export const BusinessCategory = {
 } as const
 
 export type BusinessCategory = (typeof BusinessCategory)[keyof typeof BusinessCategory]
+
+
+export const ProductStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  LOW_STOCK: 'LOW_STOCK'
+} as const
+
+export type ProductStatus = (typeof ProductStatus)[keyof typeof ProductStatus]
