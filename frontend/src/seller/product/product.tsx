@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../Redux_toolkit/store'
+import {useEffect} from 'react'
 import {
 	Add,
 	DeleteOutline,
@@ -11,41 +12,47 @@ import {
 	VisibilityOutlined,
 } from '@mui/icons-material'
 import SellerNavbar from '../Navbar'
-import product from '../../Redux_toolkit/Product/product'
+import product, { fetchSellerProducts } from '../../Redux_toolkit/Product/product'
 
-type ProductStatus = 'Active' | 'Draft' | 'Low stock'
+type ProductStatus = 'ACTIVE' | 'DRAFT' | 'LOW_STOCK'
 
-type Product = {
-	id: number
-	name: string
-	category: string
-	price: string
-	stock: number
-	status: ProductStatus
-	image: string
-	updatedAt: string
-}
-const FILTERS: Array<'All' | ProductStatus> = ['All', 'Active', 'Draft', 'Low stock']
+
+const FILTERS: Array<'All' | ProductStatus> = ['All', 'ACTIVE', 'DRAFT', 'LOW_STOCK']
 
 const ProductPage = () => {
 	const dispatch = useAppDispatch()
 
-	const products = useAppSelector((state) => state.product)
+	
 	const navigate = useNavigate()
 	const [search, setSearch] = useState('')
 	const [filter, setFilter] = useState<(typeof FILTERS)[number]>('All')
 
+
+	const products = useAppSelector((state) => state.product.products)
+	useEffect(() =>{
+		dispatch(fetchSellerProducts())
+	},[dispatch])
+	
+
 	const filteredProducts = useMemo(() => {
-		return products.products.filter((product:any) => {
-			const matchesSearch =
-				product.name.toLowerCase().includes(search.toLowerCase()) ||
-				product.category.toLowerCase().includes(search.toLowerCase())
+    const searchText = search.trim().toLowerCase()
 
-			const matchesFilter = filter === 'All' ? true : product.status === filter
+    return products.filter((product: any) => {
+        const productName = product.name?.toLowerCase() || ''
+        const category = product.category?.name.toLowerCase() || ''
+        const status = product.status?.toUpperCase() || ''
 
-			return matchesSearch && matchesFilter
-		})
-	}, [filter, search])
+        const matchesSearch =
+            searchText === '' ||
+            productName.includes(searchText) ||
+            category.includes(searchText)
+
+        const matchesFilter =
+            filter === 'All' || status === filter
+
+        return matchesSearch && matchesFilter
+    })
+}, [products, search, filter])
 
 	const stats = useMemo(
 		() => [
@@ -57,24 +64,24 @@ const ProductPage = () => {
 			},
 			{
 				label: 'Active listings',
-				value: products.filter((product) => product.status === 'Active').length,
+				value: products.filter((product) => product.status === 'ACTIVE').length,
 				icon: VisibilityOutlined,
 				accent: 'from-emerald-400 to-green-500',
 			},
 			{
 				label: 'Draft items',
-				value: products.filter((product) => product.status === 'Draft').length,
+				value: products.filter((product) => product.status === 'DRAFT').length,
 				icon: EditOutlined,
 				accent: 'from-amber-400 to-orange-500',
 			},
 			{
 				label: 'Low stock alerts',
-				value: products.filter((product) => product.status === 'Low stock').length,
+				value: products.filter((product) => product.status === 'LOW_STOCK').length,
 				icon: LocalOfferOutlined,
 				accent: 'from-rose-400 to-pink-500',
 			},
 		],
-		[],
+		[products],
 	)
 
 	return (
@@ -189,7 +196,7 @@ const ProductPage = () => {
 											<div className="flex items-center gap-4">
 												{/* eslint-disable-next-line @next/next/no-img-element */}
 												<img
-													src={product.image}
+													src={product.images?.[1]?.url || product.images?.[0].url}
 													alt={product.name}
 													className="h-16 w-16 rounded-2xl object-cover shadow-sm"
 												/>
@@ -207,7 +214,7 @@ const ProductPage = () => {
 												<span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-400 lg:hidden">
 													Category
 												</span>
-												<span className="font-medium text-slate-700">{product.category}</span>
+												<span className="font-medium text-slate-700">{product.category?.name}</span>
 											</div>
 
 											<div className="flex items-center justify-between text-sm lg:block">
@@ -230,9 +237,9 @@ const ProductPage = () => {
 												</span>
 												<span
 													className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-														product.status === 'Active'
+														product.status === 'ACTIVE'
 															? 'bg-emerald-50 text-emerald-700'
-															: product.status === 'Draft'
+															: product.status === 'DRAFT'
 																? 'bg-slate-100 text-slate-700'
 																: 'bg-amber-50 text-amber-700'
 													}`}
