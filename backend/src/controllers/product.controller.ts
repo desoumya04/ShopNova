@@ -9,7 +9,7 @@ class productController{
   createProduct = asyncHandler(async(req,res) =>{
     const authHeader = req.headers.authorization
     console.log("products",req.body)
-    const token = (req.cookies.token || (authHeader?.startsWith("Bearer") ? authHeader.split(" ")[1] : "undefined"))
+    const token = ((authHeader?.startsWith("Bearer") ? authHeader.split(" ")[1] : "undefined"))
 
     const newProduct = await productServiceInstance.createProduct(token,req.body,req.files)
     console.log("newProduct", newProduct)

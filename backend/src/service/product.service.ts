@@ -113,21 +113,32 @@ class productService {
       throw new apiError(401,"user is ot authorized")
     }
     const decode = JWTProviderInstance.verifyToken(jwt)
-
+    console.log("decode",decode)
     if(!decode){
       throw new apiError(401,"user is ot authorized")
     }
     const existSeller = await prisma.seller.findUnique({
       where: {
         userId: decode.id
-      },include:{
-        products:true
       }
+      
     })
+
+    const products = await prisma.product.findMany({
+      where: {
+        sellerId: existSeller?.id
+      },
+      include: {
+        category: true,
+        variants: true,
+        images: true,
+      },
+    });
+    console.log("existSeller",existSeller)
     if(!existSeller){
       throw new apiError(404,"the seller have no product")
     }
-    return existSeller.products
+    return products
 
   }
 

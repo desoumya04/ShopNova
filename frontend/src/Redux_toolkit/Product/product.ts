@@ -10,8 +10,7 @@ type category = {
   name:string
 }
 
-type ProductState = {
-  products: {
+type product = {
     name:string
     slug?:string
     description:string
@@ -23,7 +22,7 @@ type ProductState = {
     costPrice?:string
     stock:string
   }
-  productVariants:{
+type productVariant = {
     color?:string
     size?:string
     storage?:string
@@ -31,6 +30,9 @@ type ProductState = {
     weight:string
     warranty:string
   }
+type ProductState = {
+  products: product[]
+  productVariants: productVariant[]
   categories: category[]
 
 
@@ -39,29 +41,9 @@ type ProductState = {
 }
 
 const initialState : ProductState = {
-  products:{
-    name:"",
-    slug:"",
-    description:"",
-    brand:"",
-    status:"",
-    categoryId:"",
-    price:"",
-    discountPrice:"",
-    costPrice:"",
-    stock:""
-  },
-  productVariants:{
-    color:"",
-    size:"",
-    storage:"",
-    ram:"",
-    weight:"",
-    warranty:""
-  },
+  products:[],
+  productVariants:[],
   categories: [],
- 
-
   loading: false,
   error: null,
 }
@@ -83,7 +65,11 @@ export const fetchSellerProducts =  createAsyncThunk(
   "/product/sellerProductDetails",
   async(_,{rejectWithValue}) =>{
     try{
-      const response = await api.get(`${api_path}/sellerProductDetails`)
+      const response = await api.get(`${api_path}/sellerProductDetails`,{
+        headers:{
+          Authorization:`Bearer ${localStorage.getItem("jwt")}`
+        }
+      })
       console.log(response.data)
       return response.data.data
     }catch(error:any){
@@ -121,6 +107,7 @@ const productSlice = createSlice({
         ...action.payload
       }
     },
+    
 
   },
   extraReducers: (builder) => {
