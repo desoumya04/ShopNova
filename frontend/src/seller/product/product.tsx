@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../Redux_toolkit/store'
 import {
 	Add,
 	DeleteOutline,
@@ -10,6 +11,7 @@ import {
 	VisibilityOutlined,
 } from '@mui/icons-material'
 import SellerNavbar from '../Navbar'
+import product from '../../Redux_toolkit/Product/product'
 
 type ProductStatus = 'Active' | 'Draft' | 'Low stock'
 
@@ -23,63 +25,18 @@ type Product = {
 	image: string
 	updatedAt: string
 }
-
-const PRODUCTS: Product[] = [
-	{
-		id: 1,
-		name: 'Wireless Headphones Pro',
-		category: 'Electronics',
-		price: '$129.00',
-		stock: 24,
-		status: 'Active',
-		image:
-			'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=900&q=80',
-		updatedAt: '2 hours ago',
-	},
-	{
-		id: 2,
-		name: 'Premium Cotton Shirt',
-		category: 'Fashion',
-		price: '$39.00',
-		stock: 8,
-		status: 'Low stock',
-		image:
-			'https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=900&q=80',
-		updatedAt: 'Today',
-	},
-	{
-		id: 3,
-		name: 'Smart LED Desk Lamp',
-		category: 'Home',
-		price: '$54.00',
-		stock: 0,
-		status: 'Draft',
-		image:
-			'https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=900&q=80',
-		updatedAt: 'Yesterday',
-	},
-	{
-		id: 4,
-		name: 'Running Shoes X1',
-		category: 'Footwear',
-		price: '$89.00',
-		stock: 15,
-		status: 'Active',
-		image:
-			'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80',
-		updatedAt: '4 days ago',
-	},
-]
-
 const FILTERS: Array<'All' | ProductStatus> = ['All', 'Active', 'Draft', 'Low stock']
 
 const ProductPage = () => {
+	const dispatch = useAppDispatch()
+
+	const products = useAppSelector((state) => state.product)
 	const navigate = useNavigate()
 	const [search, setSearch] = useState('')
 	const [filter, setFilter] = useState<(typeof FILTERS)[number]>('All')
 
 	const filteredProducts = useMemo(() => {
-		return PRODUCTS.filter((product) => {
+		return products.products.filter((product:any) => {
 			const matchesSearch =
 				product.name.toLowerCase().includes(search.toLowerCase()) ||
 				product.category.toLowerCase().includes(search.toLowerCase())
@@ -94,25 +51,25 @@ const ProductPage = () => {
 		() => [
 			{
 				label: 'Total products',
-				value: PRODUCTS.length,
+				value: products.length,
 				icon: Inventory2Outlined,
 				accent: 'from-cyan-400 to-sky-500',
 			},
 			{
 				label: 'Active listings',
-				value: PRODUCTS.filter((product) => product.status === 'Active').length,
+				value: products.filter((product) => product.status === 'Active').length,
 				icon: VisibilityOutlined,
 				accent: 'from-emerald-400 to-green-500',
 			},
 			{
 				label: 'Draft items',
-				value: PRODUCTS.filter((product) => product.status === 'Draft').length,
+				value: products.filter((product) => product.status === 'Draft').length,
 				icon: EditOutlined,
 				accent: 'from-amber-400 to-orange-500',
 			},
 			{
 				label: 'Low stock alerts',
-				value: PRODUCTS.filter((product) => product.status === 'Low stock').length,
+				value: products.filter((product) => product.status === 'Low stock').length,
 				icon: LocalOfferOutlined,
 				accent: 'from-rose-400 to-pink-500',
 			},

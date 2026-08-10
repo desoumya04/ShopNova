@@ -52,10 +52,23 @@ class UserService{
     return { newUser };
 
   } 
-
+  async userLogin(loginData: any){
+    const { email } = loginData;
+    const hasMissingField = [email].some(v => !v);
+    // check for missing fields
+    if(hasMissingField){
+      throw new apiError(400, 'Missing required fields: email');
+    }
+    const existingUser = await prisma.user.findUnique({
+      where:{ email: loginData.email}
+    })    
+    if(!existingUser){
+      throw new apiError(404, 'User not found');
+    }
+    const token = JWTProviderInstance.createToken({email: existingUser.email, id: existingUser.id});
+    return { email: existingUser.email, name: existingUser.name,jwt:token };
+  }
   
-
-
   async userDetails(jwt: string){
     const decoded = JWTProviderInstance.verifyToken(jwt);
     if(!decoded){

@@ -1,39 +1,40 @@
 import { useState, type FormEvent } from "react";
-import { login, sendLoginOtp } from "../../../Redux_toolkit/Auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../../Redux_toolkit/Auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../../Redux_toolkit/store";
 
 function Login() {
-	const [email, setEmail] = useState("");
-	const [otp, setOtp] = useState("");
-	const [isOtpSent, setIsOtpSent] = useState(false);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
+	
+	const[email, setEmail] = useState("");
+
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState("");
 
-	const handleSendOtp = async (e: FormEvent<HTMLFormElement>) => {
+	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setLoading(true);
-		setMessage("");
+		const trimmedEmail = email.trim();
 
-		try {
-			await sendLoginOtp({ email });
-			setIsOtpSent(true);
-			setMessage("We sent a one-time code to your email.");
-		} catch {
-			setMessage("Unable to send the code. Please try again.");
-		} finally {
-			setLoading(false);
+		if (!trimmedEmail) {
+			setMessage("Please enter your email address.");
+			return;
 		}
-	};
 
-	const handleVerifyOtp = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
 		setLoading(true);
 		setMessage("");
 
 		try {
-			await login({ otp });
-			setMessage("Login successful.");
+			const resultAction = await dispatch(login({ email: trimmedEmail }));
+
+			if (login.fulfilled.match(resultAction)) {
+				setMessage("Login successful.");
+				navigate("/");
+			} else {
+				setMessage("Unable to log in with this email. Please try again.");
+			}
 		} catch {
-			setMessage("Invalid code. Please try again.");
+			setMessage("Unable to log in with this email. Please try again.");
 		} finally {
 			setLoading(false);
 		}
@@ -52,7 +53,7 @@ function Login() {
 								Sign in with your email in a clean, modern flow.
 							</h1>
 							<p className="mt-4 max-w-md text-sm leading-6 text-slate-900/75">
-								Use your email address to receive a one-time code and access your account quickly.
+								Use your email address to access your account quickly.
 							</p>
 						</div>
 						<div className="rounded-2xl border border-slate-900/10 bg-white/40 p-4 text-sm font-medium text-slate-900 shadow-lg shadow-slate-900/10">
@@ -67,75 +68,37 @@ function Login() {
 									Welcome back
 								</p>
 								<h2 className="mt-3 text-3xl font-bold text-white">
-									{isOtpSent ? "Verify your code" : "Login with email"}
+									Login with email
 								</h2>
 								<p className="mt-3 text-sm leading-6 text-slate-300">
-									{isOtpSent
-										? `We sent a code to ${email}. Enter it below to continue.`
-										: "Enter your email address and we will send you a one-time login code."}
+									Enter your email address to continue and access your account.
 								</p>
 							</div>
 
 							<div className="rounded-2xl border border-white/10 bg-slate-950/60 p-6 shadow-xl shadow-black/20">
-								{!isOtpSent ? (
-									<form onSubmit={handleSendOtp} className="space-y-5">
-										<label className="block">
-											<span className="mb-2 block text-sm font-medium text-slate-200">
-												Email address
-											</span>
-											<input
-												type="email"
-												value={email}
-												onChange={(e) => setEmail(e.target.value)}
-												placeholder="name@example.com"
-												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
-												required
-											/>
-										</label>
+								<form onSubmit={handleLogin} className="space-y-5">
+									<label className="block">
+										<span className="mb-2 block text-sm font-medium text-slate-200">
+											Email address
+										</span>
+										<input
+											type="email"
+											value={email}
+											onChange={(e) => setEmail(e.target.value)}
+											placeholder="name@example.com"
+											className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
+											required
+										/>
+									</label>
 
-										<button
-											type="submit"
-											disabled={loading}
-											className="flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
-										>
-											{loading ? "Sending code..." : "Send login code"}
-										</button>
-									</form>
-								) : (
-									<form onSubmit={handleVerifyOtp} className="space-y-5">
-										<label className="block">
-											<span className="mb-2 block text-sm font-medium text-slate-200">
-												One-time code
-											</span>
-											<input
-												type="text"
-												value={otp}
-												onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-												placeholder="Enter the code"
-												maxLength={6}
-												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-center tracking-[0.4em] text-white outline-none transition placeholder:tracking-normal placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
-												required
-											/>
-										</label>
-
-										<div className="flex gap-3">
-											<button
-												type="button"
-												onClick={() => setIsOtpSent(false)}
-												className="rounded-2xl border border-white/10 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/5"
-											>
-												Change email
-											</button>
-											<button
-												type="submit"
-												disabled={loading}
-												className="flex flex-1 items-center justify-center rounded-2xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
-											>
-												{loading ? "Verifying..." : "Verify code"}
-											</button>
-										</div>
-									</form>
-								)}
+									<button
+										type="submit"
+										disabled={loading}
+										className="flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
+									>
+										{loading ? "Signing in..." : "Continue with email"}
+									</button>
+								</form>
 
 								{message ? (
 									<p className="mt-5 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200">

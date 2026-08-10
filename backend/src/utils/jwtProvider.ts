@@ -12,7 +12,7 @@ class jwtProvider {
   }
 
   createToken(data: object): string {
-    return jwt.sign(data, this.secretKey, { expiresIn:"24h" } as jwt.SignOptions);
+    return jwt.sign(data, this.secretKey, { expiresIn:"48h" } as jwt.SignOptions);
   }
 
   verifyToken(token: string){

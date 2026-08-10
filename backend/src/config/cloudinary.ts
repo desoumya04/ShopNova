@@ -1,7 +1,5 @@
 import{ v2 as cloudinary }from 'cloudinary';
 import { apiError } from '../utils/apiError.js';
-import { response } from 'express';
-import { Result } from 'pg';
 import fs from 'fs';
 import { apiResponse } from '../utils/apiResponse.js';
 
@@ -21,6 +19,7 @@ const uploadImage = async (filePath: string) => {
       resource_type: 'auto',
     })
     console.log('Image uploaded successfully',result.url);
+    fs.unlinkSync(filePath);
     return new apiResponse(200, {url: result.url}, 'Image uploaded successfully');
   }catch(error){
     fs.unlinkSync(filePath);

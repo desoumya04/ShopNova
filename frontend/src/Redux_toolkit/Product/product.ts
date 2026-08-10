@@ -1,11 +1,14 @@
 
-import { createAsyncThunk } from "@reduxjs/toolkit"
+import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 import { api } from "../../config/api"
 
 const api_path = "/product"
 
-
+type category = {
+  id:string
+  name:string
+}
 
 type ProductState = {
   products: {
@@ -15,23 +18,21 @@ type ProductState = {
     brand:string
     categoryId?:string
     status: string
+    price:string
+    discountPrice?:string
+    costPrice?:string
+    stock:string
   }
   productVariants:{
     color?:string
     size?:string
     storage?:string
     ram?:string
-    price:string
-    discountPrice?:string
-    costPrice?:string
-    stock:string
     weight:string
     warranty:string
   }
-  category:{
-    name:string
-  }
-  productImages: File[]
+  categories: category[]
+
 
   loading: boolean;
   error: string | null;
@@ -44,24 +45,22 @@ const initialState : ProductState = {
     description:"",
     brand:"",
     status:"",
-    categoryId:""
+    categoryId:"",
+    price:"",
+    discountPrice:"",
+    costPrice:"",
+    stock:""
   },
   productVariants:{
     color:"",
     size:"",
     storage:"",
     ram:"",
-    price:"",
-    discountPrice:"",
-    costPrice:"",
-    stock:"",
     weight:"",
     warranty:""
   },
-  category:{
-    name:""
-  },
-  productImages:[],
+  categories: [],
+ 
 
   loading: false,
   error: null,
@@ -69,7 +68,7 @@ const initialState : ProductState = {
 
 export const createProduct = createAsyncThunk(
   "product/createProduct",
-  async (productData: { products: ProductState["products"]; productVariants: ProductState["productVariants"]; productImages: [] }, { rejectWithValue }) => {
+  async (productData: FormData, { rejectWithValue }) => {
     try {
       const response = await api.post(`${api_path}/createProduct`, productData);
       console.log(response.data);
@@ -80,13 +79,26 @@ export const createProduct = createAsyncThunk(
   }
 );
 
+export const fetchSellerProducts =  createAsyncThunk(
+  "/product/sellerProductDetails",
+  async(_,{rejectWithValue}) =>{
+    try{
+      const response = await api.get(`${api_path}/sellerProductDetails`)
+      console.log(response.data)
+      return response.data.data
+    }catch(error:any){
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
 export const fetchCategory = createAsyncThunk(
   "product/fetchCategory",
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(`${api_path}/getCategory`);
       console.log(response.data);
-      return response.data;
+      return response.data.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
@@ -109,13 +121,7 @@ const productSlice = createSlice({
         ...action.payload
       }
     },
-  
-    updateProductImages(state,action){
-      state.productImages = {
-        ...state.productImages,
-        ...action.payload
-      }
-    }
+
   },
   extraReducers: (builder) => {
     builder
@@ -130,8 +136,23 @@ const productSlice = createSlice({
       .addCase(createProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      }); 
+      })
+      .addCase(fetchCategory.pending , (state)=>{
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchCategory.fulfilled,(state,action) =>{
+        state.loading = false
+        state.categories = action.payload
+      })
+      .addCase(fetchSellerProducts.fulfilled,(state,action) =>{
+        state.products = action.payload
+        
+      })
+      .addCase(fetchSellerProducts.rejected,(state,action) =>{
+        state.error = action.payload as string
+      })
   }
 })
-export const { updateProduct, updateProductVariants, updateProductImages } = productSlice.actions;
+export const { updateProduct, updateProductVariants } = productSlice.actions;
 export default productSlice.reducer

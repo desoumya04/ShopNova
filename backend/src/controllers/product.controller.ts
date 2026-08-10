@@ -8,10 +8,21 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 class productController{
   createProduct = asyncHandler(async(req,res) =>{
     const authHeader = req.headers.authorization
+    console.log("products",req.body)
+    const token = (req.cookies.token || (authHeader?.startsWith("Bearer") ? authHeader.split(" ")[1] : "undefined"))
 
-    const token = (authHeader?.startsWith("Bearer") ? authHeader.split(" ")[1] : "undefined")
+    const newProduct = await productServiceInstance.createProduct(token,req.body,req.files)
+    console.log("newProduct", newProduct)
+    res.status(201).json(new apiResponse(201, newProduct, 'Product created successfully'));
+  })
 
-    await productServiceInstance.createProduct(token,req.body,req.file)
+  sellerProductDetails = asyncHandler(async(req,res) =>{
+    const authHeader = req.headers.authorization
+
+    const token = (authHeader?.startsWith("Bearer")?authHeader.split(" ")[1] : "undefined")
+
+    const fetchDetails = await productServiceInstance.sellerProductDetails(token)
+    res.status(201).json(new apiResponse(201,fetchDetails,"the details is fetch successfully"))
   })
 
   getCategory = asyncHandler(async(req,res) =>{
