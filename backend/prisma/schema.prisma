@@ -118,6 +118,13 @@ model Product {
   
   status          ProductStatus @default(DRAFT)
 
+  price           Decimal  @db.Decimal(10,2)
+  discountPrice   Decimal? @db.Decimal(10,2)
+  costPrice       Decimal? @db.Decimal(10,2)
+
+  stock           Int      @default(0)
+
+
   sellerId        String
   seller          Seller   @relation(fields: [sellerId], references: [id], onDelete: Cascade)
 
@@ -154,13 +161,6 @@ model ProductVariant {
   size          String?
   storage       String?
   ram           String?
-
-
-  price           Decimal  @db.Decimal(10,2)
-  discountPrice   Decimal? @db.Decimal(10,2)
-  costPrice       Decimal? @db.Decimal(10,2)
-
-  stock           Int      @default(0)
 
   weight          Float?
   warranty        String?

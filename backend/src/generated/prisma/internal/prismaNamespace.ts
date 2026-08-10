@@ -1434,6 +1434,10 @@ export const ProductScalarFieldEnum = {
   description: 'description',
   brand: 'brand',
   status: 'status',
+  price: 'price',
+  discountPrice: 'discountPrice',
+  costPrice: 'costPrice',
+  stock: 'stock',
   sellerId: 'sellerId',
   categoryId: 'categoryId',
   averageRating: 'averageRating',
@@ -1462,10 +1466,6 @@ export const ProductVariantScalarFieldEnum = {
   size: 'size',
   storage: 'storage',
   ram: 'ram',
-  price: 'price',
-  discountPrice: 'discountPrice',
-  costPrice: 'costPrice',
-  stock: 'stock',
   weight: 'weight',
   warranty: 'warranty'
 } as const
@@ -1631,20 +1631,6 @@ export type ListEnumProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
  * Reference to a field of type 'Decimal'
  */
 export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -1655,6 +1641,20 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal[]'
  */
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**

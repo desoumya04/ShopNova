@@ -1,19 +1,28 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch,useAppSelector } from '../../Redux_toolkit/store'
-import { updateProduct, updateProductVariants, updateProductImages } from '../../Redux_toolkit/Product/product'
+import { updateProduct, updateProductVariants, fetchCategory, createProduct } from '../../Redux_toolkit/Product/product'
+import { current } from '@reduxjs/toolkit'
+
+
 const MAX_IMAGES = 5
 
 const AddProductForm = () => {
 	const navigate = useNavigate()
+
 
 	const dispatch = useAppDispatch()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const product = useAppSelector((state) => state.product.products)
 	const productVariants = useAppSelector((state) => state.product.productVariants)
-	const productImages = useAppSelector((state) => state.product.productImages)
+	
+	const[productImages,setProductImages] = useState<File[]>([])
 
+	useEffect(() =>{
+		dispatch(fetchCategory())
+	},[dispatch])
+	const categories = useAppSelector((state) => state.product.categories )
 
 
 	const [imageError, setImageError] = useState('')
@@ -33,14 +42,6 @@ const AddProductForm = () => {
 		}
 	}, [imagePreviews])
 
-	
-	const handleAllSubmit =() => {
-		navigate("/seller/products")
-	}
-	
-		
-		
-	
 
 	const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFiles = Array.from(event.target.files ?? [])
@@ -55,35 +56,44 @@ const AddProductForm = () => {
 		} else {
 			setImageError('')
 		}
-
-		dispatch(updateProductImages(nextFiles))
+		setProductImages((current) =>[
+			...current,
+			...nextFiles
+		])
+	
 		if (fileInputRef.current) {
 			fileInputRef.current.value = ''
 		}
 	}
 
 	const removeImage = (index: number) => {
-		dispatch(updateProductImages(productImages.filter((_, i) => i !== index)))
+		setProductImages((current) => current.filter((_, i) => i !== index))
 	}
 
 	const clearAll = () => {
-		dispatch(updateProductImages([]))
+		setProductImages([])
 		setImageError('')
 		if (fileInputRef.current) {
 			fileInputRef.current.value = ''
 		}
 	}
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		const fromData = new FormData()
+		const formData = new FormData()
 
-		fromData.append("product", JSON.stringify(product))
-		fromData.append("productVarients", JSON.stringify(productVariants))
+		formData.append("product", JSON.stringify(product))
+		formData.append("productVariants", JSON.stringify(productVariants))
 	 
-		productImages.forEach((file, index) => {
-			fromData.append(`productImages[${index}]`, file)	
+		productImages.forEach((file) => {
+			formData.append("productImages", file)	
 		})	
+
+		const result = await dispatch(createProduct(formData))
+
+		if (createProduct.fulfilled.match(result)){
+			navigate("/seller/products")
+		}
 	}
 
 	return (
@@ -233,16 +243,16 @@ const AddProductForm = () => {
 											updateProduct({
 												status: event.target.value as
 													"DRAFT" |
-													"PUBLISHED" |
-													"ARCHIVED",
+													"ACTIVE" |
+													"LOW_STOCK",
 											})
 										)
 									}
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
 								>
 									<option value="DRAFT">Draft</option>
-									<option value="PUBLISHED">Published</option>
-									<option value="ARCHIVED">Archived</option>
+									<option value="ACTIVE">Active</option>
+									<option value="LOW_STOCK">Low Stock</option>
 								</select>
 							</Field>
 
@@ -286,8 +296,8 @@ const AddProductForm = () => {
 								<input
 									type="number"
 									min="0"
-									value={productVariants.price}
-									onChange={(event) => dispatch(updateProductVariants({ price: event.target.value }))}
+									value={product.price}
+									onChange={(event) => dispatch(updateProduct({ price: event.target.value }))}
 									placeholder="0.00"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -297,8 +307,8 @@ const AddProductForm = () => {
 								<input
 									type="number"
 									min="0"
-									value={productVariants.discountPrice}
-									onChange={(event) => dispatch(updateProductVariants({ discountPrice: event.target.value }))}
+									value={product.discountPrice}
+									onChange={(event) => dispatch(updateProduct({ discountPrice: event.target.value }))}
 									placeholder="0.00"	
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -308,8 +318,8 @@ const AddProductForm = () => {
 								<input
 									type="number"
 									min="0"
-									value={productVariants.costPrice}
-									onChange={(event) => dispatch(updateProductVariants({ costPrice: event.target.value }))}
+									value={product.costPrice}
+									onChange={(event) => dispatch(updateProduct({ costPrice: event.target.value }))}
 									placeholder="0.00"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -319,8 +329,8 @@ const AddProductForm = () => {
 								<input
 									type="number"
 									min="0"
-									value={productVariants.stock}
-									onChange={(event) => dispatch(updateProductVariants({ stock: event.target.value }))}
+									value={product.stock}
+									onChange={(event) => dispatch(updateProduct({ stock: event.target.value }))}
 									placeholder="Quantity"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -408,7 +418,7 @@ const AddProductForm = () => {
 							</button>
 							<button
 								type="submit"
-								onClick={handleAllSubmit}
+								onClick={(event) => (handleSubmit(event))}
 								className="flex-1 rounded-full bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
 							>
 								Publish Product

@@ -12,6 +12,7 @@ import { Avatar, Badge } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Redux_toolkit/store";
+import { fetchUserData } from "../../Redux_toolkit/coustomer/userSlice";
 
 const NAV_LINKS = [
   { label: "Electronics", to: "/electronics" },
@@ -31,11 +32,13 @@ const Navbar = () => {
   const name = useAppSelector((state)=>state.auth.name)
   
  
-
+  useEffect(() => {
+    dispatch(fetchUserData());
+  },[dispatch]);
   const role = useAppSelector((state) => state.user.role);
   const isSeller = role === "SELLER";
 
-  console.log(role)
+  console.log("role", role);
   const isLoggedIn = jwt!== null;
   const userName = name || "User";
 
