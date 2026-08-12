@@ -1,5 +1,5 @@
 
-import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit"
+import { asyncThunkCreator, createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 import { api } from "../../config/api"
 
@@ -11,6 +11,7 @@ type category = {
 }
 
 type product = {
+    id:string
     name:string
     slug?:string
     description:string
@@ -77,19 +78,61 @@ export const fetchSellerProducts =  createAsyncThunk(
     }
   }
 )
+export const fetchCategoryProducts = createAsyncThunk(
+  "product/categoryProducts",
+  async(category:string,{rejectWithValue}) =>{
+    try {
+       console.log("THUNK CATEGORY:", category);
+      const response = await api.post(`${api_path}/categoryProducts`,{
+          category
+      })
+      console.log("Response:", response.data);
 
+      return response.data.data.products
+    } catch (error:any) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
 export const fetchCategory = createAsyncThunk(
   "product/fetchCategory",
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(`${api_path}/getCategory`);
       console.log(response.data);
-      return response.data.data;
+      return response.data.data.product;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
   }
 )
+
+
+export const getProductByProductId = createAsyncThunk(
+  "/product/getProductByProductId",
+  async(productId:string,{rejectWithValue})=>{
+    try {
+      const response = await api.get(`${api_path}/getProductByProductId`,{
+        params:{
+          productId
+        }
+      })
+      console.log(response.data)
+      return response.data.data
+    } catch (error:any) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
+
+
+
+
+
+
+
+
 const productSlice = createSlice({
   name:"product",
   initialState,
@@ -138,6 +181,22 @@ const productSlice = createSlice({
       })
       .addCase(fetchSellerProducts.rejected,(state,action) =>{
         state.error = action.payload as string
+      })
+      .addCase(fetchCategoryProducts.fulfilled,(state,action) =>{
+        state.products = action.payload
+
+      })
+      .addCase(fetchCategoryProducts.rejected,(state,action) =>{
+        state.error = action.payload as string
+        
+      })
+      .addCase(getProductByProductId.fulfilled,(state,action) =>{
+        state.products = action.payload
+
+      })
+      .addCase(getProductByProductId.rejected,(state,action) =>{
+        state.error = action.payload as string
+        
       })
   }
 })

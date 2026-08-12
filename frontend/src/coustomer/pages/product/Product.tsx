@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FilterSection from "./FilterSection";
 import {
   Divider,
@@ -11,9 +11,16 @@ import {
 import Productcard from "./ProductCard";
 import { useLocation, useParams } from "react-router-dom";
 import { getProductSection } from "./productData";
+import {  useAppDispatch,useAppSelector } from "../../../Redux_toolkit/store";
+import { fetchCategoryProducts } from "../../../Redux_toolkit/Product/product";
 
 const Product = () => {
+  const dispatch = useAppDispatch()
+  
   const { CategoryId } = useParams();
+
+  
+  const section = getProductSection(CategoryId)
   const location = useLocation();
   const [sort, setSort] = useState("price-low");
   const handleChange = (e: any) => {
@@ -21,18 +28,25 @@ const Product = () => {
   };
 
   const routeKey = (CategoryId || location.pathname.split("/").filter(Boolean).pop() || "fashion").toLowerCase();
-  const section = getProductSection(routeKey);
+  
+  const products = useAppSelector((state) => state.product.products)
+  useEffect(() =>{
+      dispatch(fetchCategoryProducts(routeKey))
+  },[dispatch,routeKey])
 
-  const products = useMemo(() => {
-    const list = [...section.items];
-    return list.sort((left, right) => {
+
+  
+  const sortedProducts = useMemo(() => {
+    const list = [...products]
+    return list.sort((left:any, right:any) => {
       if (sort === "price-high") {
         return right.price - left.price;
       }
       return left.price - right.price;
     });
-  }, [section.items, sort]);
+  }, [products, sort]);
 
+  
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-slate-100 pt-6">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -76,8 +90,8 @@ const Product = () => {
           </div>
           <Divider />
           <div className="grid grid-cols-1 gap-6 px-1 sm:grid-cols-2 xl:grid-cols-3">
-            {products.map((item) => (
-              <Productcard key={item.productId} item={item} />
+            {sortedProducts.map((product) => (
+              <Productcard key={product.id} item={product} />
             ))}
           </div>
           <div className="flex justify-center my-10">

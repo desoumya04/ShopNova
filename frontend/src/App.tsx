@@ -48,7 +48,7 @@ function App() {
             <Route path="/grocery" element={<Product />} />
             <Route path="/account/*" element={<ProfileDetails />} />
 
-            <Route path="/product-details/:CategoryId/:name/:productId" element={<ProductDetails />} />
+            <Route path="/product-details/:CategoryId/:productId" element={<ProductDetails />} />
             <Route path="/" element={<Home />} />
           
           </Route>

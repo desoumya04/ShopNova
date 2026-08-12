@@ -15,9 +15,9 @@ import { useAppDispatch, useAppSelector } from "../../Redux_toolkit/store";
 import { fetchUserData } from "../../Redux_toolkit/coustomer/userSlice";
 
 const NAV_LINKS = [
-  { label: "Electronics", to: "/electronics" },
-  { label: "Fashion", to: "/fashion" },
-  { label: "Grocery", to: "/grocery" },
+  { label: "Electronics", to: "/products/electronics" },
+  { label: "Fashion", to: "/products/fashion" },
+  { label: "Grocery", to: "/products/grocery" },
   { label: "Home", to: "/" },
 ];
 
