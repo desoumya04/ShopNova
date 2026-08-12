@@ -41,7 +41,6 @@ class productService {
     const existingSeller = await prisma.seller.findUnique({
       where: { userId: decode.id },
     });
-    console.log("existing seller", existingSeller);
     if (!existingSeller) {
       throw new apiError(404, "seller not found");
     }
@@ -58,7 +57,7 @@ class productService {
     }
 
     // Create the product in the database
-
+    console.log("category",products.categoryId)
     const newProduct = await prisma.$transaction(async (tx) => {
       const product = await tx.product.create({
         data: {
@@ -104,7 +103,7 @@ class productService {
         });
       
     });
-    console.log("newProduct", newProduct);
+    
     return newProduct;
   }
 
@@ -113,7 +112,7 @@ class productService {
       throw new apiError(401,"user is ot authorized")
     }
     const decode = JWTProviderInstance.verifyToken(jwt)
-    console.log("decode",decode)
+    
     if(!decode){
       throw new apiError(401,"user is ot authorized")
     }
@@ -134,13 +133,71 @@ class productService {
         images: true,
       },
     });
-    console.log("existSeller",existSeller)
+    
     if(!existSeller){
       throw new apiError(404,"the seller have no product")
     }
     return products
 
   }
+
+  async fetchCategoryWishProduct(category:any){
+   
+    if(!category){
+      throw new apiError(404,"category is not selected")
+    }
+    const categoryMap: Record<string, string> = {
+    electronics: "Electronics",
+    fashion: "Fashion",
+    books: "Books",
+    grocery: "Grocery",
+    beauty: "Beauty",
+    sports: "Sports",
+    toys: "Toys",
+  };
+
+  const categoryName = categoryMap[category.trim().toLowerCase()];
+
+  
+    const categoryData  = await prisma.category.findUnique({
+      where:{name: categoryName },
+      include:{
+        products:{
+          include:{
+            images:true
+          }
+        }
+      }
+    })
+    return categoryData
+  }
+
+
+
+  async getProductByProductId(productId:string){
+    if(!productId){
+      throw new apiError(404,"productId is not given"
+      )
+    }
+
+    const productDetails = await prisma.product.findUnique({
+      where:{id:productId},
+      include:{
+        images:true,
+        variants:true
+      }
+    })
+
+    if(!productDetails){
+      throw new apiError(404,"productId is not valid")
+    }
+    console.log(productDetails)
+    return productDetails
+
+  }
+
+
+
 
   async getCategory() {
     const categories = await prisma.category.findMany();

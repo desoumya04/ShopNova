@@ -1,21 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Add, AddShoppingCart, Favorite, Remove, Star} from '@mui/icons-material'
 import { Button, Divider } from '@mui/material'
 import SimilarProduct from './SimilarProduct'
+import { useLocation } from 'react-router'
+import { useAppDispatch, useAppSelector } from '../../../../Redux_toolkit/store'
+import {getProductByProductId} from '../../../../Redux_toolkit/Product/product'
 
 
 
-const images=[
-  "https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/v/w/q/free-fandy-vivan-fab-unstitched-original-imahgzzh6vyqbzsw.jpeg?q=90",
-    "https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/z/e/i/free-satin-fendy-vivan-fab-unstitched-original-imahh5zrhh34dsxk.jpeg?q=90",
-    "https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/k/y/u/free-fandy-vivan-fab-unstitched-original-imahgzzhcsgycwqv.jpeg?q=90",
-    "https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/j/g/e/free-fandy-vivan-fab-unstitched-original-imahgzzh6nca7p72.jpeg?q=90",
-    "https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/u/g/e/free-satin-fendy-vivan-fab-unstitched-original-imahh5zrzg5wbe4e.jpeg?q=90"
-]
 const ProductDetails = () => {
+  const dispatch = useAppDispatch()
+
+  const location = useLocation() 
+
+  const routeKey = location.pathname.split("/").filter(Boolean).pop() as string
+  const product:any = useAppSelector((state)=>state.product.products)
+
+  
+
+  useEffect(()=>{
+    dispatch(getProductByProductId(routeKey))
+  },[dispatch,routeKey])
+  const images = product.images??[]
+
   const[currentImage, setCurrentImage] = useState(0)
   const[quantity, setQuantity] = useState(1)
 
+  
   const handleQuantity = (value:number) =>{if(quantity+value > 0){
     setQuantity(quantity+value)
   }}
@@ -27,10 +38,10 @@ const ProductDetails = () => {
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
         <section className='flex flex-col lg:flex-row gap-3'>
           <div className='w-full lg:w-[15%] flex flex-wrap lg:flex-col gap-3'>
-            {images.map((item,index)=> <img onClick={()=>handleImageChange(index)} src={item} className='lg:w-full w-[50px] cursor-pointer rounded-md'/>)}
+            {images.map((image:any,index:number)=> <img onClick={()=>handleImageChange(index)} src={image.url} className='lg:w-full w-[50px] cursor-pointer rounded-md'/>)}
           </div>
           <div className='w-full lg:w-[85%]'>
-            <img src={images[currentImage]} alt="" />
+            <img src={images[currentImage]?.url} alt="" />
 
           </div>
         </section>
@@ -44,16 +55,16 @@ const ProductDetails = () => {
             </div>
             <div>
               <Divider orientation='vertical' items-center/>
-              <span>789 rating</span>
+              <span>{product.averageRating} ratings</span>
             </div> 
           </div>
           <div className="price flex items-center gap-3 pt-5">
-          <span className="font-semibold text-teal-700"> $2499
+          <span className="font-semibold text-teal-700"> ₹{product.costPrice}
           </span>
-          <span className="font-thin text line line-through text-gray-400"> $3999
+          <span className="font-thin text line line-through text-gray-400">₹{product.price}
           </span>
           <span className="font-semibold text-teal-700">
-            38% off
+            {product.discountPrice}
           </span>
         </div>
         <div className='mt-7 space-y-2'>

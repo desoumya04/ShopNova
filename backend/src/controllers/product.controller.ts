@@ -8,11 +8,11 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 class productController{
   createProduct = asyncHandler(async(req,res) =>{
     const authHeader = req.headers.authorization
-    console.log("products",req.body)
+    
     const token = ((authHeader?.startsWith("Bearer") ? authHeader.split(" ")[1] : "undefined"))
 
     const newProduct = await productServiceInstance.createProduct(token,req.body,req.files)
-    console.log("newProduct", newProduct)
+    
     res.status(201).json(new apiResponse(201, newProduct, 'Product created successfully'));
   })
 
@@ -29,6 +29,35 @@ class productController{
     const categories = await productServiceInstance.getCategory();
     res.status(200).json(new apiResponse(200,categories,'Categories fetched successfully'));
   })
+
+  getCategoryProducts = asyncHandler(async(req,res) =>{
+    const authHeader = req.headers.authorization
+   
+    if(!authHeader){
+      throw new apiError(401,"user is not authorized")
+    }
+
+    const products = await productServiceInstance.fetchCategoryWishProduct(req.body.category)
+    console.log("products",products)
+  res
+  .status(200)
+  .json(new apiResponse(200,products,"successfully Fetch the products"))
+  })
+
+  getProductById = asyncHandler(async(req,res)=>{
+    const authHeader = req.headers.authorization
+    
+    if(!authHeader){
+      throw new apiError(401,"user is not authorized")
+    }
+
+    const products = await productServiceInstance.getProductByProductId(req.query.productId)
+
+    res
+    .status(200)
+    .json(new apiResponse(200,products,"successfully Fetch the products"))
+  })
+  
 
 }
 
