@@ -51,7 +51,12 @@ class productController{
       throw new apiError(401,"user is not authorized")
     }
 
-    const products = await productServiceInstance.getProductByProductId(req.query.productId)
+    const productId = req.query.productId as string;
+    if(!productId){
+      throw new apiError(400,"productId is required")
+    }
+
+    const products = await productServiceInstance.getProductByProductId(productId)
 
     res
     .status(200)

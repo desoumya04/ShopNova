@@ -2,6 +2,12 @@ import jwt from 'jsonwebtoken';
 import { apiError } from './apiError.js';
 import bcrypt from 'bcrypt';
 
+interface JwtPayload {
+  id: string;
+  email: string;
+  
+}
+
 class jwtProvider {
   private secretKey: string;
   
@@ -11,14 +17,14 @@ class jwtProvider {
    
   }
 
-  createToken(data: object): string {
+  createToken(data: JwtPayload ) {
     return jwt.sign(data, this.secretKey, { expiresIn:"48h" } as jwt.SignOptions);
   }
 
   verifyToken(token: string){
     try {
      
-      const decoded = jwt.verify(token, this.secretKey);
+      const decoded: JwtPayload = jwt.verify(token, this.secretKey) as JwtPayload;
       
       return decoded;
     } catch (error) {
