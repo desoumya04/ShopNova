@@ -28,6 +28,7 @@ const Product = () => {
   };
 
   const routeKey = (CategoryId || location.pathname.split("/").filter(Boolean).pop() || "fashion").toLowerCase() as  string;
+  console.log("routeKey", routeKey)
   
   const products = useAppSelector((state) => state.product.products)
   useEffect(() =>{

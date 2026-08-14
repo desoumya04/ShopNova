@@ -21,10 +21,10 @@ export const sendLoginOtp = createAsyncThunk<any, { name: string; mobile: string
         mobile,
         email,
       });
-
+      console.log("sendLoginOtp response:", response.data);
       return response.data;
     } catch (error) {
-      console.error("Error sending OTP:", error);
+      
       return rejectWithValue(error);
     }
   },
@@ -51,7 +51,7 @@ export const login = createAsyncThunk<any, { email: string }>(
 
       return { jwt,  name };
     } catch (error) {
-      console.error("Error logging in:", error);
+      
       return rejectWithValue(error);
     }
   },
