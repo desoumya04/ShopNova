@@ -174,11 +174,10 @@ const productSlice = createSlice({
   initialState,
   reducers:{
     updateProduct(state, action) {
-      state.products = state.products.map((item) =>
-        item.id === action.payload.id
-          ? { ...item, ...action.payload }
-          : item
-      );
+      state.product = {
+        ...state.product,
+        ...action.payload
+      }
     },
 
     updateProductVariants(state,action){

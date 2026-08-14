@@ -1,9 +1,15 @@
 import multer from "multer"
-
+import fs from "fs"
+import os from "os"
+import path from "path"
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/temp')
+    const dir = path.join(os.tmpdir(), 'shoping-uploads')
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
+    cb(null, dir)
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
@@ -11,4 +17,4 @@ const storage = multer.diskStorage({
   }
 })
 
-export const upload = multer({ storage: storage })  
+export const upload = multer({ storage: storage })

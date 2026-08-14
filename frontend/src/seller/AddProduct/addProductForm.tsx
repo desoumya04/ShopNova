@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch,useAppSelector } from '../../Redux_toolkit/store'
-import { updateProduct, updateProductVariants, fetchCategory, createProduct } from '../../Redux_toolkit/Product/product'
+import { fetchCategory, createProduct } from '../../Redux_toolkit/Product/product'
 
 const MAX_IMAGES = 5
 
@@ -12,8 +12,27 @@ const AddProductForm = () => {
 	const dispatch = useAppDispatch()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
-	const product = useAppSelector((state) => state.product.product)
-	const productVariant = useAppSelector((state) => state.product.productVariants)
+	const [product, setProduct] = useState({
+		name: "",
+		slug: "",
+		description: "",
+		brand: "",
+		categoryId: "",
+		status: "DRAFT",
+		price: "",
+		discountPrice: "",
+		costPrice: "",
+		stock: "",
+	})
+
+	const [productVariant, setProductVariant] = useState({
+		color: "",
+		size: "",
+		storage: "",
+		ram: "",
+		weight: "",
+		warranty: "",
+	})
 	
 	const[productImages,setProductImages] = useState<File[]>([])
 
@@ -188,7 +207,7 @@ const AddProductForm = () => {
 							<Field label="Product Name">
 								<input
 									value={product.name}
-									onChange={(event) => dispatch(updateProduct({ name: event.target.value }))}
+									onChange={(event) => setProduct((prev) => ({ ...prev, name: event.target.value }))}
 									placeholder="Enter product name"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -197,7 +216,7 @@ const AddProductForm = () => {
 							<Field label="Slug">
 								<input
 									value={product.slug}
-									onChange={(event) => dispatch(updateProduct({ slug: event.target.value }))}
+									onChange={(event) => setProduct((prev) => ({ ...prev, slug: event.target.value }))}
 									placeholder="product-slug"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -206,13 +225,7 @@ const AddProductForm = () => {
 							<Field label="Category">
 							<select
 								value={product.categoryId}
-								onChange={(event) =>
-									dispatch(
-										updateProduct({
-											categoryId: event.target.value,
-										})
-									)
-								}
+								onChange={(event) => setProduct((prev) => ({ ...prev, categoryId: event.target.value }))}
 								className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
 							>
 								<option value="">Select Category</option>
@@ -228,7 +241,7 @@ const AddProductForm = () => {
 							<Field label="Brand">
 								<input
 									value={product.brand}
-									onChange={(event) => dispatch(updateProduct({ brand: event.target.value }))}
+									onChange={(event) => setProduct((prev) => ({ ...prev, brand: event.target.value }))}
 									placeholder="Brand name"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -237,16 +250,7 @@ const AddProductForm = () => {
 							<Field label="Status">
 								<select
 									value={product.status}
-									onChange={(event) =>
-										dispatch(
-											updateProduct({
-												status: event.target.value as
-													"DRAFT" |
-													"ACTIVE" |
-													"LOW_STOCK",
-											})
-										)
-									}
+									onChange={(event) => setProduct((prev) => ({ ...prev, status: event.target.value }))}
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
 								>
 									<option value="DRAFT">Draft</option>
@@ -258,7 +262,7 @@ const AddProductForm = () => {
 							<Field label="Color">
 								<input
 									value={productVariant.color}
-									onChange={(event) => dispatch(updateProductVariants({ color: event.target.value }))}
+									onChange={(event) => setProductVariant((prev) => ({ ...prev, color: event.target.value }))}
 									placeholder="Black, Blue, etc."
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -267,7 +271,7 @@ const AddProductForm = () => {
 							<Field label="Size">
 								<input
 									value={productVariant.size}
-									onChange={(event) => dispatch(updateProductVariants({ size: event.target.value }))}
+									onChange={(event) => setProductVariant((prev) => ({ ...prev, size: event.target.value }))}
 									placeholder="M, L, XL"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -276,7 +280,7 @@ const AddProductForm = () => {
 							<Field label="Storage">
 								<input
 									value={productVariant.storage}
-									onChange={(event) => dispatch(updateProductVariants({ storage: event.target.value }))}
+									onChange={(event) => setProductVariant((prev) => ({ ...prev, storage: event.target.value }))}
 									placeholder="128GB, 512GB"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -285,7 +289,7 @@ const AddProductForm = () => {
 							<Field label="RAM">
 								<input
 									value={productVariant.ram}
-									onChange={(event) => dispatch(updateProductVariants({ ram: event.target.value }))}
+									onChange={(event) => setProductVariant((prev) => ({ ...prev, ram: event.target.value }))}
 									placeholder="8GB, 16GB"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -296,7 +300,7 @@ const AddProductForm = () => {
 									type="number"
 									min="0"
 									value={product.price}
-									onChange={(event) => dispatch(updateProduct({ price: event.target.value }))}
+									onChange={(event) => setProduct((prev) => ({ ...prev, price: event.target.value }))}
 									placeholder="0.00"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -307,7 +311,7 @@ const AddProductForm = () => {
 									type="number"
 									min="0"
 									value={product.discountPrice}
-									onChange={(event) => dispatch(updateProduct({ discountPrice: event.target.value }))}
+									onChange={(event) => setProduct((prev) => ({ ...prev, discountPrice: event.target.value }))}
 									placeholder="0.00"	
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -318,7 +322,7 @@ const AddProductForm = () => {
 									type="number"
 									min="0"
 									value={product.costPrice}
-									onChange={(event) => dispatch(updateProduct({ costPrice: event.target.value }))}
+									onChange={(event) => setProduct((prev) => ({ ...prev, costPrice: event.target.value }))}
 									placeholder="0.00"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -329,7 +333,7 @@ const AddProductForm = () => {
 									type="number"
 									min="0"
 									value={product.stock}
-									onChange={(event) => dispatch(updateProduct({ stock: event.target.value }))}
+									onChange={(event) => setProduct((prev) => ({ ...prev, stock: event.target.value }))}
 									placeholder="Quantity"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -338,7 +342,7 @@ const AddProductForm = () => {
 							<Field label="Weight">
 								<input
 									value={productVariant.weight}
-									onChange={(event) => dispatch(updateProductVariants({ weight: event.target.value }))}
+									onChange={(event) => setProductVariant((prev) => ({ ...prev, weight: event.target.value }))}
 									placeholder="1.2kg"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -347,7 +351,7 @@ const AddProductForm = () => {
 							<Field label="Warranty">
 								<input
 									value={productVariant.warranty}
-									onChange={(event) => dispatch(updateProductVariants({ warranty: event.target.value }))}
+									onChange={(event) => setProductVariant((prev) => ({ ...prev, warranty: event.target.value }))}
 									placeholder="1 year"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -357,7 +361,7 @@ const AddProductForm = () => {
 								<Field label="Description">
 									<textarea
 										value={product.description}
-										onChange={(event) => dispatch(updateProduct({ description: event.target.value }))}
+										onChange={(event) => setProduct((prev) => ({ ...prev, description: event.target.value }))}
 										placeholder="Describe the product, size, condition, or features"
 										rows={5}
 										className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
