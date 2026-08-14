@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { login, sendLoginOtp } from "../../../Redux_toolkit/Auth/authSlice";
+import { sendLoginOtp, signup } from "../../../Redux_toolkit/Auth/authSlice";
 import { useAppSelector, useAppDispatch } from "../../../Redux_toolkit/store";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +14,6 @@ function Signup() {
 		email: "",
 		
 	});
-
 	const [otp, setOtp] = useState("");
 	
 	const updateField = (
@@ -38,7 +37,7 @@ function Signup() {
 	
 
 		try {
-			await dispatch(login({ email: formData.email, otp }));
+			await dispatch(signup({ email: formData.email,otp}));
 			console.log("OTP Verified");
 			navigate("/");
 		} finally {

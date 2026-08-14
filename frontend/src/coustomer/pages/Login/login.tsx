@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../../Redux_toolkit/Auth/authSlice";
-import { useAppDispatch, useAppSelector } from "../../../Redux_toolkit/store";
+import { useAppDispatch} from "../../../Redux_toolkit/store";
 
 function Login() {
 	const dispatch = useAppDispatch();

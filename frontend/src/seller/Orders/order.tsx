@@ -9,7 +9,7 @@ import {
 	ShoppingBagOutlined,
 	TaskAltOutlined,
 } from '@mui/icons-material'
-import SellerNavbar from '../Navbar'
+
 
 type OrderStatus = 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled'
 

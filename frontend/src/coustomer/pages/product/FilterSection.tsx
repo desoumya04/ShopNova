@@ -5,7 +5,7 @@ import FormControl from "@mui/material/FormControl";
 import { colors } from "../../../../data/filter/color";
 import { price } from "../../../../data/filter/price";
 import { discount } from "../../../../data/filter/discount";
-import React, { useState } from "react";
+import  { useState } from "react";
 
 const FilterSection = () => {
   const [expandColor, setExpandColor] = useState(false);
@@ -24,7 +24,7 @@ const FilterSection = () => {
 
   return (
     <div className="-z-50 space-y-5 bg-white">
-      <div className="flex items-center justify-between h-[40px] px-9 lg:border-r">
+      <div className="flex items-center justify-between h-10 px-9 lg:border-r">
         <p className="text-lg font-semibold">Filters</p>
         <Button variant="text" size="small" color="primary">
           Clear All

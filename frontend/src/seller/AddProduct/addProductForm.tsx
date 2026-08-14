@@ -2,8 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch,useAppSelector } from '../../Redux_toolkit/store'
 import { updateProduct, updateProductVariants, fetchCategory, createProduct } from '../../Redux_toolkit/Product/product'
-import { current } from '@reduxjs/toolkit'
-
 
 const MAX_IMAGES = 5
 
@@ -14,15 +12,16 @@ const AddProductForm = () => {
 	const dispatch = useAppDispatch()
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
-	const product = useAppSelector((state) => state.product.products)
-	const productVariants = useAppSelector((state) => state.product.productVariants)
+	const product = useAppSelector((state) => state.product.product)
+	const productVariant = useAppSelector((state) => state.product.productVariants)
 	
 	const[productImages,setProductImages] = useState<File[]>([])
 
+	const categories = useAppSelector((state) => state.product.categories )
 	useEffect(() =>{
 		dispatch(fetchCategory())
 	},[dispatch])
-	const categories = useAppSelector((state) => state.product.categories )
+	
 
 
 	const [imageError, setImageError] = useState('')
@@ -83,7 +82,7 @@ const AddProductForm = () => {
 		const formData = new FormData()
 
 		formData.append("product", JSON.stringify(product))
-		formData.append("productVariants", JSON.stringify(productVariants))
+		formData.append("productVariants", JSON.stringify(productVariant))
 	 
 		productImages.forEach((file) => {
 			formData.append("productImages", file)	
@@ -258,7 +257,7 @@ const AddProductForm = () => {
 
 							<Field label="Color">
 								<input
-									value={productVariants.color}
+									value={productVariant.color}
 									onChange={(event) => dispatch(updateProductVariants({ color: event.target.value }))}
 									placeholder="Black, Blue, etc."
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
@@ -267,7 +266,7 @@ const AddProductForm = () => {
 
 							<Field label="Size">
 								<input
-									value={productVariants.size}
+									value={productVariant.size}
 									onChange={(event) => dispatch(updateProductVariants({ size: event.target.value }))}
 									placeholder="M, L, XL"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
@@ -276,7 +275,7 @@ const AddProductForm = () => {
 
 							<Field label="Storage">
 								<input
-									value={productVariants.storage}
+									value={productVariant.storage}
 									onChange={(event) => dispatch(updateProductVariants({ storage: event.target.value }))}
 									placeholder="128GB, 512GB"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
@@ -285,7 +284,7 @@ const AddProductForm = () => {
 
 							<Field label="RAM">
 								<input
-									value={productVariants.ram}
+									value={productVariant.ram}
 									onChange={(event) => dispatch(updateProductVariants({ ram: event.target.value }))}
 									placeholder="8GB, 16GB"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
@@ -338,7 +337,7 @@ const AddProductForm = () => {
 
 							<Field label="Weight">
 								<input
-									value={productVariants.weight}
+									value={productVariant.weight}
 									onChange={(event) => dispatch(updateProductVariants({ weight: event.target.value }))}
 									placeholder="1.2kg"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
@@ -347,7 +346,7 @@ const AddProductForm = () => {
 
 							<Field label="Warranty">
 								<input
-									value={productVariants.warranty}
+									value={productVariant.warranty}
 									onChange={(event) => dispatch(updateProductVariants({ warranty: event.target.value }))}
 									placeholder="1 year"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
@@ -383,11 +382,11 @@ const AddProductForm = () => {
 							<div className="mt-5 flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
 								<div>
 									<p className="text-xs uppercase tracking-wide text-slate-400">Price</p>
-									<p className="text-xl font-semibold text-white">${productVariants.price || '0.00'}</p>
+									<p className="text-xl font-semibold text-white">${product.price || '0.00'}</p>
 								</div>
 								<div className="text-right">
 									<p className="text-xs uppercase tracking-wide text-slate-400">Stock</p>
-									<p className="text-xl font-semibold text-white">{productVariants.stock || '0'}</p>
+									<p className="text-xl font-semibold text-white">{product.stock || '0'}</p>
 								</div>
 							</div>
 
@@ -418,7 +417,7 @@ const AddProductForm = () => {
 							</button>
 							<button
 								type="submit"
-								onClick={(event) => (handleSubmit(event))}
+								
 								className="flex-1 rounded-full bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
 							>
 								Publish Product

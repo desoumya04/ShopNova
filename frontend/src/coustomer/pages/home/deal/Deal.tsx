@@ -1,4 +1,4 @@
-import React from "react";
+
 import DealCard from "./DealCard";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -43,7 +43,7 @@ const Deal = () => {
     <div className="my-5">
       <div className="slider-container">
         <Slider {...settings} className="gap-5">
-          {[1, 1, 1, 1, 1, 1, 1].map((item) => (
+          {[1, 1, 1, 1, 1, 1, 1].map(() => (
             <DealCard
               deal={{
                 image:

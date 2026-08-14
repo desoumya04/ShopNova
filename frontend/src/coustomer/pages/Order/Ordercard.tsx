@@ -1,4 +1,4 @@
-import React from "react";
+
 type OrderCardProps = {
   title: string;
   seller: string;

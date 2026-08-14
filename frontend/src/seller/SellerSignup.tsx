@@ -1,6 +1,5 @@
-import { useState, type FormEvent } from 'react'
+import { type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../Redux_toolkit/store'
 import { updateSeller,updateSellerAddress } from '../Redux_toolkit/seller/seller'
 

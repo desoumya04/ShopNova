@@ -1,29 +1,35 @@
 
-import { asyncThunkCreator, createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit"
+import {  createAsyncThunk } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 import { api } from "../../config/api"
 
 const api_path = "/product"
 
+type ProductImage = {
+  url: string;
+}
 type category = {
   id:string
   name:string
 }
 
-type product = {
+type Product = {
     id:string
     name:string
     slug?:string
     description:string
     brand:string
     categoryId?:string
+    category?:category
     status: string
     price:string
     discountPrice?:string
     costPrice?:string
     stock:string
+    images: ProductImage[]
+
   }
-type productVariant = {
+type ProductVariant = {
     color?:string
     size?:string
     storage?:string
@@ -32,8 +38,9 @@ type productVariant = {
     warranty:string
   }
 type ProductState = {
-  products: product[]
-  productVariants: productVariant[]
+  products: Product[]
+  product:Product
+  productVariants: ProductVariant
   categories: category[]
 
 
@@ -42,9 +49,38 @@ type ProductState = {
 }
 
 const initialState : ProductState = {
-  products:[],
-  productVariants:[],
+  product: {
+    id: "",
+    name: "",
+    slug: "",
+    description: "",
+    brand: "",
+    categoryId: "",
+    category: {
+      id: "",
+      name: ""
+    },
+    status: "DRAFT",
+    price: "",
+    discountPrice: "",
+    costPrice: "",
+    stock: "",
+    images: [],
+  },
+
+  products: [],
+
+  productVariants: {
+    color: "",
+    size: "",
+    storage: "",
+    ram: "",
+    weight: "",
+    warranty: "",
+  },
+
   categories: [],
+
   loading: false,
   error: null,
 }
@@ -62,7 +98,7 @@ export const createProduct = createAsyncThunk(
   }
 );
 
-export const fetchSellerProducts =  createAsyncThunk(
+export const fetchSellerProducts =  createAsyncThunk<Product[]>(
   "/product/sellerProductDetails",
   async(_,{rejectWithValue}) =>{
     try{
@@ -72,7 +108,7 @@ export const fetchSellerProducts =  createAsyncThunk(
         }
       })
       console.log(response.data)
-      return response.data.data
+      return response.data.data.products
     }catch(error:any){
       return rejectWithValue(error.response.data)
     }
@@ -94,13 +130,13 @@ export const fetchCategoryProducts = createAsyncThunk(
     }
   }
 )
-export const fetchCategory = createAsyncThunk(
+export const fetchCategory = createAsyncThunk<category[]>(
   "product/fetchCategory",
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(`${api_path}/getCategory`);
       console.log(response.data);
-      return response.data.data.product;
+      return response.data.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
@@ -137,11 +173,12 @@ const productSlice = createSlice({
   name:"product",
   initialState,
   reducers:{
-    updateProduct(state,action){
-      state.products = {
-        ...state.products,
-        ...action.payload
-      }
+    updateProduct(state, action) {
+      state.products = state.products.map((item) =>
+        item.id === action.payload.id
+          ? { ...item, ...action.payload }
+          : item
+      );
     },
 
     updateProductVariants(state,action){
@@ -159,7 +196,7 @@ const productSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createProduct.fulfilled, (state, action) => {
+      .addCase(createProduct.fulfilled, (state) => {
         state.loading = false;
         // Handle the successful creation of the product here if needed
       })

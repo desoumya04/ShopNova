@@ -52,8 +52,8 @@ class UserService{
     return { newUser };
 
   } 
-  async userLogin(loginData: any){
-    const { email } = loginData;
+  async userLogin(loginData: string){
+    const { email} = loginData;
     const hasMissingField = [email].some(v => !v);
     // check for missing fields
     if(hasMissingField){

@@ -27,7 +27,7 @@ const Product = () => {
     setSort(e.target.value);
   };
 
-  const routeKey = (CategoryId || location.pathname.split("/").filter(Boolean).pop() || "fashion").toLowerCase();
+  const routeKey = (CategoryId || location.pathname.split("/").filter(Boolean).pop() || "fashion").toLowerCase() as  string;
   
   const products = useAppSelector((state) => state.product.products)
   useEffect(() =>{

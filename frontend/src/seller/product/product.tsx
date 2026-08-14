@@ -11,8 +11,8 @@ import {
 	Search,
 	VisibilityOutlined,
 } from '@mui/icons-material'
-import SellerNavbar from '../Navbar'
-import product, { fetchSellerProducts } from '../../Redux_toolkit/Product/product'
+
+import { fetchSellerProducts } from '../../Redux_toolkit/Product/product'
 
 type ProductStatus = 'ACTIVE' | 'DRAFT' | 'LOW_STOCK'
 
@@ -37,15 +37,15 @@ const ProductPage = () => {
 	const filteredProducts = useMemo(() => {
     const searchText = search.trim().toLowerCase()
 
-    return products.filter((product: any) => {
+    return products.filter((product) => {
         const productName = product.name?.toLowerCase() || ''
-        const category = product.category?.name.toLowerCase() || ''
+        const categoryName = product.category?.name.toLowerCase() || ''
         const status = product.status?.toUpperCase() || ''
 
         const matchesSearch =
             searchText === '' ||
             productName.includes(searchText) ||
-            category.includes(searchText)
+            categoryName.includes(searchText)
 
         const matchesFilter =
             filter === 'All' || status === filter
@@ -204,9 +204,7 @@ const ProductPage = () => {
 													<h2 className="truncate text-base font-semibold text-slate-900">
 														{product.name}
 													</h2>
-													<p className="mt-1 text-sm text-slate-500">
-														Updated {product.updatedAt}
-													</p>
+											
 												</div>
 											</div>
 
