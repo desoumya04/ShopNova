@@ -1,9 +1,5 @@
 import axios from "axios";
-import path from "path";
-import env from "dotenv";
-env.config({ path: path.resolve( "../../.env") });
-
-const api_path = process.env.BACKEND_URL ;
+const api_path = `${import.meta.env.VITE_BACKEND_URL}/api/v1`; ;
 
 export const api = axios.create({
   baseURL: api_path,

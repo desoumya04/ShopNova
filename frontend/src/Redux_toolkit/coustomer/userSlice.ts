@@ -3,13 +3,22 @@ import { api } from "../../config/api";
 
 
 const API_URL = "/user";
+type UserState = {
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  joined: string | null;
+  role: string | null;
+  loading: boolean;
+  error: string | null;
+};
 
-const initialState = {
-  name: null,
-  email: null,
-  phone: null,
-  role: null,
-  joined: null,
+const initialState: UserState = {
+  name: "",
+  email: "",
+  phone: "",
+  joined: "",
+  role: "",
   loading: false,
   error: null as string | null,
 }
@@ -30,6 +39,9 @@ export const fetchUserData = createAsyncThunk(
           Authorization: `Bearer ${jwt}`,
         },
       });
+      if(!response.data || !response.data.data){
+        throw new Error("Invalid response data");
+      }
 
       console.log("fetchUserData response:", response.data);
       return response.data.data;
@@ -53,6 +65,7 @@ export const updateUserData = createAsyncThunk(
           Authorization: `Bearer ${jwt}`,
         },
       });
+
 
       console.log("updateUserData response:", response.data);
       return response.data.data;
