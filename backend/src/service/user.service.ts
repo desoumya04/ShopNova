@@ -4,7 +4,9 @@ import bcrypt from 'bcrypt';
 import { JWTProviderInstance } from '../utils/jwtProvider.js';
 import { EmailServiceInstance } from '../utils/sendEmail.js';
 
-
+interface loginData {
+  email: string;
+}
 
 class UserService{
 // create a new user
@@ -52,7 +54,7 @@ class UserService{
     return { newUser };
 
   } 
-  async userLogin(loginData: string){
+  async userLogin(loginData: loginData){
     const { email} = loginData;
     const hasMissingField = [email].some(v => !v);
     // check for missing fields

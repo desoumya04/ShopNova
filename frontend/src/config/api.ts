@@ -1,8 +1,12 @@
 import axios from "axios";
+import path from "path";
+import env from "dotenv";
+env.config({ path: path.resolve( "../../.env") });
 
+const api_path = process.env.BACKEND_URL ;
 
 export const api = axios.create({
-  baseURL: "http://localhost:5001/api/v1",
+  baseURL: api_path,
   withCredentials: true,
   
 });

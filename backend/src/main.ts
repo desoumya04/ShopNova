@@ -31,4 +31,7 @@ app.use('/api/v1', userRoutes);
 import productRoutes from './routes/product.route.js';
 app.use('/api/v1', productRoutes);
 
+import healthRoutes from './routes/health.route.js';
+app.use('/api/v1', healthRoutes);
+
 export default app;

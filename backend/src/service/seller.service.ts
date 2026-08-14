@@ -1,54 +1,17 @@
 
 import { prisma } from '../config/db.js';
 import { apiError } from '../utils/apiError.js';
-
-import bcrypt from 'bcrypt';
-import { JWTProviderInstance } from '../utils/jwtProvider.js';
-import { EmailServiceInstance } from '../utils/sendEmail.js';
-
-
-interface SellerRegistrationPayload {
-  seller: {
-    fullName: string;
-    email: string;
-    mobile: string;
-    role: "SELLER" | "ADMIN";
-  };
-
-  sellerAddress: {
-    locality: string;
-    state: string;
-    pinCode: number;
-    address: string;
-  };
-
-  business: {
-    businessName: string;
-    email: string;
-    mobile: string;
-    gstIn?: string;
-    category: "ELECTRONICS" | "FASHION" | "HOME" | "BEAUTY" | "SPORTS" | "TOYS" | "GROCERY" | "OTHER";
-  };
-
-  businessAddress: {
-    locality: string;
-    state: string;
-    pinCode: number;
-    address: string;
-  };
-
-  bank: {
-    bankName: string;
-    accountHolder: string;
-    accountNumber: string;
-    ifcCode: string;
-  };
-}
-
+import type { Prisma } from '../generated/prisma/client.js';
 
 class SellerService{
 
-async register(sellerData: SellerRegistrationPayload){
+async register(sellerData: {
+  seller: Prisma.UserCreateInput;
+  sellerAddress: Prisma.UserAddressCreateWithoutUserInput;
+  business: Prisma.BusinessCreateWithoutSellerInput;
+  businessAddress: Prisma.BusinessAddressCreateWithoutBusinessInput;
+  bank: Prisma.BankCreateWithoutSellerInput;
+}){
     
 const {seller,sellerAddress,business,businessAddress,bank} = sellerData;
     console.log('sellerData:', sellerData.seller,sellerData.sellerAddress,sellerData.business,sellerData.businessAddress,sellerData.bank);
@@ -72,7 +35,7 @@ const {seller,sellerAddress,business,businessAddress,bank} = sellerData;
           id: existingSeller.id,
         },
         data:{
-          name: seller.fullName,
+          name: seller.name,
           mobile: seller.mobile,
           role: 'SELLER',
         } ,
@@ -105,7 +68,7 @@ const {seller,sellerAddress,business,businessAddress,bank} = sellerData;
       // create a business
       const createBusiness = await tx.business.create({
         data:{
-          name: business.businessName,
+          name: business.name,
           email: business.email,
           mobile: business.mobile,
           gstIn: business.gstIn,
