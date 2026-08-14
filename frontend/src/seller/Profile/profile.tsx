@@ -10,7 +10,7 @@ import {
 	SupportAgentOutlined,
 	VerifiedOutlined,
 } from '@mui/icons-material'
-import SellerNavbar from '../Navbar'
+
 
 type Stat = {
 	label: string

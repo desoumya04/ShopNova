@@ -9,7 +9,7 @@ import {
 	Search,
 	ScheduleOutlined,
 } from '@mui/icons-material'
-import SellerNavbar from '../Navbar'
+
 
 type PayoutStatus = 'Scheduled' | 'Processing' | 'Paid' | 'On hold'
 

@@ -1,6 +1,5 @@
 import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
 import { api } from "../../config/api";
-import reducer from "../Auth/authSlice";
 
 
 const API_URL = "/user";
@@ -12,7 +11,7 @@ const initialState = {
   role: null,
   joined: null,
   loading: false,
-  error: null,
+  error: null as string | null,
 }
 
 
@@ -68,7 +67,12 @@ export const updateUserData = createAsyncThunk(
 const userSlice = createSlice({
   name:"user",
   initialState:initialState,
-  reducers:{},
+  reducers:{
+    updateUser:(state,action)=>{
+      state.name = action.payload.name;
+      state.phone = action.payload.phone;
+    }
+  },
   extraReducers:(builder)=>{
     builder
     .addCase(fetchUserData.pending,(state)=>{

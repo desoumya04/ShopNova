@@ -1,4 +1,4 @@
-import React from 'react'
+
 import ElectronicCategoryCard from './ElectronicCatagoryCard'
 
 const electronic=[

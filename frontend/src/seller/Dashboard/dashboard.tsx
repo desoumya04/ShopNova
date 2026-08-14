@@ -9,7 +9,7 @@ import {
 	ShoppingBagOutlined,
 	TrendingUp,
 } from '@mui/icons-material'
-import SellerNavbar from '../Navbar'
+
 
 type Metric = {
 	label: string

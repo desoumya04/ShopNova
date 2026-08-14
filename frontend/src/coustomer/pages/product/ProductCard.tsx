@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../../Redux_toolkit/store";
+
 
 const Productcard = ({item}:{item:any}) => {
   const [currentImage, setCurrentImage] = useState(0)

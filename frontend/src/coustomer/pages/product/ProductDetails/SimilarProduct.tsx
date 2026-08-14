@@ -1,4 +1,4 @@
-import React from 'react'
+
 import Productcard from '../ProductCard'
 
 const Products = {
@@ -21,7 +21,7 @@ const Products = {
 const SimilarProduct = () => {
   return (
     <div className='grid lg:grid-cols-6 md:grid-cols-4 sm:grid-cols-1 grid-cols-1  justify-between gap-4 gap-y-4'>
-      {[1,1,1,1,1,1].map((item) =><Productcard item={Products}/>)}
+      {[1,1,1,1,1,1].map(() =><Productcard item={Products}/>)}
 
     </div>
   )

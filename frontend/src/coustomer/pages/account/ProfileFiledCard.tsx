@@ -33,7 +33,10 @@ const ProfileFiledCard = ( {user}: { user: User } ) => {
   }
 
   const handleSave = () => {
-    useDispatch(updateUserData( draft));
+    useDispatch(updateUserData({
+      name: draft.name ?? '',
+      phone: draft.phone ?? '', 
+    }));
     setIsEditing(false);
   }
 

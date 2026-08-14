@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Button } from "@mui/material";
 import { Add, Close, Remove } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
@@ -9,7 +9,7 @@ const CartItemCard = () => {
       <div className="p-5 flex gap-3">
         <div>
           <img
-            className="w-[90px] rounded-md"
+            className="w-22.5 h-22.5 rounded-md"
             src="https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/v/w/q/free-fandy-vivan-fab-unstitched-original-imahgzzh6vyqbzsw.jpeg?q=90"
             alt=""
           />
@@ -31,7 +31,7 @@ const CartItemCard = () => {
         </div>
       </div>
       <div className="flex  px-5 py-2 justify-between items-center">
-        <div className="flex items-center gap-2 w-[140px] justify-between">
+        <div className="flex items-center gap-2 w-35 justify-between">
           <Button size="small">
             <Remove/>
           </Button>

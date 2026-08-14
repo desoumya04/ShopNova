@@ -1,8 +1,8 @@
-import React from 'react'
+
 
 const Grid = () => {
   return (
-    <div className="grid gap-4 grid-rows-12 grid-cols-12 lg:h-[600px] px-5 lg:px-5 py-5">
+    <div className="grid gap-4 grid-rows-12 grid-cols-12 lg:h-150 px-5 lg:px-5 py-5">
     <div className="row-span-12 col-span-3 text-white rounded-md">
         <img
           className="w-full h-full object-cover rounded-md"

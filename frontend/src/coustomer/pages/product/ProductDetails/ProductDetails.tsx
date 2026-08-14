@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Add, AddShoppingCart, Favorite, Remove, Star} from '@mui/icons-material'
 import { Button, Divider } from '@mui/material'
 import SimilarProduct from './SimilarProduct'

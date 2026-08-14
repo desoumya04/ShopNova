@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 import { Avatar, Typography } from '@mui/material';
 import { Logout, Person, ReceiptLong } from '@mui/icons-material';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import Order from './Order';
 import ProfileDetails from '../account/UserDetails';

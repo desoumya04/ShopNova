@@ -38,20 +38,23 @@ function App() {
       <Routes>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-        {/* Customer Routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route element={<CoustomerLayout />}>
-            <Route path="/products/:CategoryId" element={<Product />} />
-
-            <Route path="/electronics" element={<Product />} />
-            <Route path="/fashion" element={<Product />} />
-            <Route path="/grocery" element={<Product />} />
-            <Route path="/account/*" element={<ProfileDetails />} />
-
-            <Route path="/product-details/:CategoryId/:productId" element={<ProductDetails />} />
-            <Route path="/" element={<Home />} />
           
-          </Route>
+        {/* Customer Routes */}
+        
+          <Route element={<CoustomerLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/products/:CategoryId" element={<Product />} />
+
+              <Route path="/electronics" element={<Product />} />
+              <Route path="/fashion" element={<Product />} />
+              <Route path="/grocery" element={<Product />} />
+              <Route path="/account/*" element={<ProfileDetails />} />
+
+              <Route path="/product-details/:CategoryId/:productId" element={<ProductDetails />} />
+              
+          
+            </Route>
         </Route>
         
         
