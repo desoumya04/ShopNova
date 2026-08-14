@@ -13,9 +13,12 @@ class EmailService {
       pass: process.env.EMAIL_PASS,
     },
     tls: {
-      rejectUnauthorized: false, // avoid self-signed cert issues on some hosts
+      rejectUnauthorized: false,
     },
-  });
+    // Force IPv4 — Render free tier blocks all outbound IPv6.
+    // smtp.gmail.com resolves to IPv6 by default, causing ENETUNREACH.
+    family: 4,
+  } as any);
 
   async sendEmail(to: string, subject: string, text: string) {
     try {
