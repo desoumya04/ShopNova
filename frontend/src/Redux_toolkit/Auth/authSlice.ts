@@ -1,5 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../config/api";
+import axios from "axios";
+
+// Helper to extract a plain serializable error from an AxiosError
+function extractErrorMessage(error: unknown): string {
+  if (axios.isAxiosError(error)) {
+    return (
+      error.response?.data?.message ||
+      error.response?.data?.error ||
+      error.message ||
+      "An unexpected error occurred."
+    );
+  }
+  if (error instanceof Error) return error.message;
+  return "An unexpected error occurred.";
+}
 
 const API_URL = "/auth";
 
@@ -24,8 +39,7 @@ export const sendLoginOtp = createAsyncThunk<any, { name: string; mobile: string
       console.log("sendLoginOtp response:", response.data);
       return response.data;
     } catch (error) {
-      
-      return rejectWithValue(error);
+      return rejectWithValue(extractErrorMessage(error));
     }
   },
 );
@@ -51,8 +65,7 @@ export const login = createAsyncThunk<any, { email: string }>(
 
       return { jwt,  name };
     } catch (error) {
-      
-      return rejectWithValue(error);
+      return rejectWithValue(extractErrorMessage(error));
     }
   },
 );
@@ -76,8 +89,8 @@ export const signup = createAsyncThunk<any, { email: string; otp: string }>(
 
       return { jwt, name };
     } catch (error) {
-      console.error("Error logging in:", error);
-      return rejectWithValue(error);
+      console.error("Error verifying OTP:", error);
+      return rejectWithValue(extractErrorMessage(error));
     }
   },
 );
@@ -106,9 +119,10 @@ const authSlice = createSlice({
         state.loading = false;
         state.otpSent = true;
       })
-      .addCase(sendLoginOtp.rejected, (state) => {
+      .addCase(sendLoginOtp.rejected, (state, action) => {
         state.loading = false;
         state.otpSent = false;
+        state.error = (action.payload as string) ?? "Failed to send OTP.";
       })
       .addCase(login.pending, (state) => {
         state.loading = true;
@@ -120,9 +134,9 @@ const authSlice = createSlice({
         state.name = action.payload.name;
         state.error = null;
       })
-      .addCase(login.rejected, (state) => {
+      .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = "Unable to log in with this email.";
+        state.error = (action.payload as string) ?? "Unable to log in with this email.";
       })
       .addCase(signup.pending, (state) => {
         state.loading = true;
@@ -133,9 +147,9 @@ const authSlice = createSlice({
         state.jwt = action.payload.jwt;
         state.name = action.payload.name;
       })
-      .addCase(signup.rejected, (state) => {
+      .addCase(signup.rejected, (state, action) => {
         state.loading = false;
-        state.error = "Unable to verify the code.";
+        state.error = (action.payload as string) ?? "Unable to verify the code.";
       });
   },
 });
