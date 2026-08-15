@@ -7,10 +7,9 @@ const API_URL= "/seller"
 
 type SellerState = {
   seller: {
-    fullName: string;
-    email: string;
-    mobile: string;
+   
     role: string;
+    password:string;
   };
 
   sellerAddress: {
@@ -22,7 +21,7 @@ type SellerState = {
   };
 
   business: {
-    businessName: string;
+    name: string;
     email: string;
     mobile: string;
 	  category: string;
@@ -50,10 +49,8 @@ type SellerState = {
 
 const initialState: SellerState = {
   seller:{
-    fullName: "",
-    email: "",
-    mobile: "",
-    role: "", 
+    role: "",
+    password:"", 
   },
   sellerAddress: {
     address: "",
@@ -63,7 +60,7 @@ const initialState: SellerState = {
   
   },
   business: {
-    businessName: "",
+    name: "",
     category: "",
     email: "",
     mobile: "",
@@ -91,16 +88,8 @@ export const sellerDetails = createAsyncThunk(
   async( seller: any, { rejectWithValue }) => { 
    
     try {
-      const jwt = localStorage.getItem("jwt");
-      if (!jwt) {
-        throw new Error("JWT not found in localStorage");
-      }
-
-      const response = await api.post(`${API_URL}/register`, seller, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+      // Cookie is sent automatically via withCredentials
+      const response = await api.post(`${API_URL}/register`, seller);
 
       console.log("sellerDetails response:", response.data);
      

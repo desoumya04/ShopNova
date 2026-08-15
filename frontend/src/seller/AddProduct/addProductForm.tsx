@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch,useAppSelector } from '../../Redux_toolkit/store'
+import { useAppDispatch, useAppSelector } from '../../Redux_toolkit/store'
 import { fetchCategory, createProduct } from '../../Redux_toolkit/Product/product'
 
 const MAX_IMAGES = 5
@@ -14,7 +14,6 @@ const AddProductForm = () => {
 
 	const [product, setProduct] = useState({
 		name: "",
-		slug: "",
 		description: "",
 		brand: "",
 		categoryId: "",
@@ -33,15 +32,29 @@ const AddProductForm = () => {
 		weight: "",
 		warranty: "",
 	})
-	
-	const[productImages,setProductImages] = useState<File[]>([])
 
-	const categories = useAppSelector((state) => state.product.categories )
-	useEffect(() =>{
+	const [productImages, setProductImages] = useState<File[]>([])
+
+	const categories = useAppSelector((state) => state.product.categories)
+	const loading = useAppSelector((state) => state.product.loading)
+	const selectedCategoryName = categories.find((c: any) => c.id === product.categoryId)?.name?.toUpperCase() || "";
+	// calculate 
+	useEffect(() => {
 		dispatch(fetchCategory())
-	},[dispatch])
+	}, [dispatch])
 	
+	// calculate the price acording to the cost price and discount price
+	useEffect(() => {
+		const costPrice = Number(product.costPrice) || 0;
+		const discountPrice = Number(product.discountPrice) || 0;
 
+		const price = Math.max(0, costPrice - discountPrice);
+
+		setProduct((prev) => ({
+			...prev,
+			price: price.toFixed(2),
+		}));
+	}, [product.costPrice, product.discountPrice]);
 
 	const [imageError, setImageError] = useState('')
 
@@ -74,11 +87,11 @@ const AddProductForm = () => {
 		} else {
 			setImageError('')
 		}
-		setProductImages((current) =>[
+		setProductImages((current) => [
 			...current,
 			...nextFiles
 		])
-	
+
 		if (fileInputRef.current) {
 			fileInputRef.current.value = ''
 		}
@@ -102,14 +115,14 @@ const AddProductForm = () => {
 
 		formData.append("product", JSON.stringify(product))
 		formData.append("productVariants", JSON.stringify(productVariant))
-	 
+
 		productImages.forEach((file) => {
-			formData.append("productImages", file)	
-		})	
+			formData.append("productImages", file)
+		})
 
 		const result = await dispatch(createProduct(formData))
 
-		if (createProduct.fulfilled.match(result)){
+		if (createProduct.fulfilled.match(result)) {
 			navigate("/seller/products")
 		}
 	}
@@ -213,30 +226,21 @@ const AddProductForm = () => {
 								/>
 							</Field>
 
-							<Field label="Slug">
-								<input
-									value={product.slug}
-									onChange={(event) => setProduct((prev) => ({ ...prev, slug: event.target.value }))}
-									placeholder="product-slug"
-									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
-								/>
-							</Field>
-
 							<Field label="Category">
-							<select
-								value={product.categoryId}
-								onChange={(event) => setProduct((prev) => ({ ...prev, categoryId: event.target.value }))}
-								className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
-							>
-								<option value="">Select Category</option>
+								<select
+									value={product.categoryId}
+									onChange={(event) => setProduct((prev) => ({ ...prev, categoryId: event.target.value }))}
+									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+								>
+									<option value="">Select Category</option>
 
-								{categories.map((category) => (
-									<option key={category.id} value={category.id}>
-										{category.name}
-									</option>
-								))}
-							</select>
-						</Field>
+									{categories.map((category) => (
+										<option key={category.id} value={category.id}>
+											{category.name}
+										</option>
+									))}
+								</select>
+							</Field>
 
 							<Field label="Brand">
 								<input
@@ -259,48 +263,18 @@ const AddProductForm = () => {
 								</select>
 							</Field>
 
-							<Field label="Color">
-								<input
-									value={productVariant.color}
-									onChange={(event) => setProductVariant((prev) => ({ ...prev, color: event.target.value }))}
-									placeholder="Black, Blue, etc."
-									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
-								/>
-							</Field>
 
-							<Field label="Size">
-								<input
-									value={productVariant.size}
-									onChange={(event) => setProductVariant((prev) => ({ ...prev, size: event.target.value }))}
-									placeholder="M, L, XL"
-									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
-								/>
-							</Field>
-
-							<Field label="Storage">
-								<input
-									value={productVariant.storage}
-									onChange={(event) => setProductVariant((prev) => ({ ...prev, storage: event.target.value }))}
-									placeholder="128GB, 512GB"
-									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
-								/>
-							</Field>
-
-							<Field label="RAM">
-								<input
-									value={productVariant.ram}
-									onChange={(event) => setProductVariant((prev) => ({ ...prev, ram: event.target.value }))}
-									placeholder="8GB, 16GB"
-									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
-								/>
-							</Field>
-
-							<Field label="Price">
+							<Field label="Cost Price">
 								<input
 									type="number"
 									min="0"
-									value={product.price}
-									onChange={(event) => setProduct((prev) => ({ ...prev, price: event.target.value }))}
+									value={product.costPrice}
+									onChange={(event) =>
+										setProduct((prev) => ({
+											...prev,
+											costPrice: event.target.value,
+										}))
+									}
 									placeholder="0.00"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
@@ -311,20 +285,25 @@ const AddProductForm = () => {
 									type="number"
 									min="0"
 									value={product.discountPrice}
-									onChange={(event) => setProduct((prev) => ({ ...prev, discountPrice: event.target.value }))}
-									placeholder="0.00"	
+									onChange={(event) =>
+										setProduct((prev) => ({
+											...prev,
+											discountPrice: event.target.value,
+										}))
+									}
+									placeholder="0.00"
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
 								/>
 							</Field>
 
-							<Field label="Cost Price">
+							<Field label="Price">
 								<input
 									type="number"
 									min="0"
-									value={product.costPrice}
-									onChange={(event) => setProduct((prev) => ({ ...prev, costPrice: event.target.value }))}
+									value={product.price}
+									readOnly
 									placeholder="0.00"
-									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+									className="w-full rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 text-slate-600 outline-none"
 								/>
 							</Field>
 
@@ -339,23 +318,70 @@ const AddProductForm = () => {
 								/>
 							</Field>
 
-							<Field label="Weight">
-								<input
-									value={productVariant.weight}
-									onChange={(event) => setProductVariant((prev) => ({ ...prev, weight: event.target.value }))}
-									placeholder="1.2kg"
-									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
-								/>
-							</Field>
+							{/* Conditional Variant Fields */}
+							{(selectedCategoryName === 'FASHION' || selectedCategoryName === 'ELECTRONICS' || !selectedCategoryName) && (
+								<Field label="Color">
+									<input
+										value={productVariant.color}
+										onChange={(event) => setProductVariant((prev) => ({ ...prev, color: event.target.value }))}
+										placeholder="Black, Blue, etc."
+										className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+									/>
+								</Field>
+							)}
 
-							<Field label="Warranty">
-								<input
-									value={productVariant.warranty}
-									onChange={(event) => setProductVariant((prev) => ({ ...prev, warranty: event.target.value }))}
-									placeholder="1 year"
-									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
-								/>
-							</Field>
+							{selectedCategoryName === 'FASHION' && (
+								<Field label="Size">
+									<input
+										value={productVariant.size}
+										onChange={(event) => setProductVariant((prev) => ({ ...prev, size: event.target.value }))}
+										placeholder="M, L, XL"
+										className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+									/>
+								</Field>
+							)}
+
+							{selectedCategoryName === 'ELECTRONICS' && (
+								<>
+									<Field label="Storage">
+										<input
+											value={productVariant.storage}
+											onChange={(event) => setProductVariant((prev) => ({ ...prev, storage: event.target.value }))}
+											placeholder="128GB, 512GB"
+											className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+										/>
+									</Field>
+
+									<Field label="RAM">
+										<input
+											value={productVariant.ram}
+											onChange={(event) => setProductVariant((prev) => ({ ...prev, ram: event.target.value }))}
+											placeholder="8GB, 16GB"
+											className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+										/>
+									</Field>
+
+									<Field label="Warranty">
+										<input
+											value={productVariant.warranty}
+											onChange={(event) => setProductVariant((prev) => ({ ...prev, warranty: event.target.value }))}
+											placeholder="1 year"
+											className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+										/>
+									</Field>
+								</>
+							)}
+
+							{selectedCategoryName !== 'FASHION' && (
+								<Field label="Weight">
+									<input
+										value={productVariant.weight}
+										onChange={(event) => setProductVariant((prev) => ({ ...prev, weight: event.target.value }))}
+										placeholder="1.2kg"
+										className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
+									/>
+								</Field>
+							)}
 
 							<div className="sm:col-span-2">
 								<Field label="Description">
@@ -421,10 +447,10 @@ const AddProductForm = () => {
 							</button>
 							<button
 								type="submit"
-								
-								className="flex-1 rounded-full bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+								disabled={loading}
+								className={`flex-1 rounded-full px-4 py-3 text-sm font-semibold text-white transition ${loading ? 'bg-slate-500 cursor-not-allowed' : 'bg-slate-950 hover:bg-slate-800'}`}
 							>
-								Publish Product
+								{loading ? 'Publishing...' : 'Publish Product'}
 							</button>
 						</div>
 					</aside>

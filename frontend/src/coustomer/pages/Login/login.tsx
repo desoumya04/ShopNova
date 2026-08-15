@@ -1,42 +1,54 @@
-import { useState, type FormEvent } from "react";
+
 import { useNavigate } from "react-router-dom";
-import { login } from "../../../Redux_toolkit/Auth/authSlice";
-import { useAppDispatch} from "../../../Redux_toolkit/store";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import z from "zod"
+import { toast } from "sonner";
+import { api } from "../../../config/api";
+
+
+
+const loginData = z.object({
+	email: z.string().email(),
+	password: z.string().min(6),
+});
+
+type loginDataType = z.infer<typeof loginData>
+
 
 function Login() {
-	const dispatch = useAppDispatch();
+
 	const navigate = useNavigate();
-	
-	const[email, setEmail] = useState("");
 
-	const [loading, setLoading] = useState(false);
-	const [message, setMessage] = useState("");
-
-	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const trimmedEmail = email.trim();
-
-		if (!trimmedEmail) {
-			setMessage("Please enter your email address.");
-			return;
+	const loginFrom = useForm<loginDataType>({
+		resolver: zodResolver(loginData),
+		defaultValues: {
+			email: "",
+			password: ""
 		}
+	})
 
-		setLoading(true);
-		setMessage("");
+
+	const handleLogin = async (data: loginDataType) => {
 
 		try {
-			const resultAction = await dispatch(login({ email: trimmedEmail }));
+			const resultAction = await api.post("/auth/login", {
+				email: data.email,
+				password: data.password
+			});
 
-			if (login.fulfilled.match(resultAction)) {
-				setMessage("Login successful.");
-				navigate("/");
-			} else {
-				setMessage("Unable to log in with this email. Please try again.");
-			}
-		} catch {
-			setMessage("Unable to log in with this email. Please try again.");
-		} finally {
-			setLoading(false);
+			if (resultAction.status === 200) { }
+
+			navigate("/");
+
+		} catch (error: any) {
+			const message =
+				error?.response?.data?.message ||
+				error?.response?.data?.error ||
+				"Failed to login";
+			toast.error(message);
+			console.error(error);
 		}
 	};
 
@@ -76,16 +88,29 @@ function Login() {
 							</div>
 
 							<div className="rounded-2xl border border-white/10 bg-slate-950/60 p-6 shadow-xl shadow-black/20">
-								<form onSubmit={handleLogin} className="space-y-5">
+								<form onSubmit={loginFrom.handleSubmit(handleLogin)} className="space-y-5">
 									<label className="block">
 										<span className="mb-2 block text-sm font-medium text-slate-200">
 											Email address
 										</span>
 										<input
 											type="email"
-											value={email}
-											onChange={(e) => setEmail(e.target.value)}
+
 											placeholder="name@example.com"
+											{...loginFrom.register("email")}
+											className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
+											required
+										/>
+									</label>
+									<label className="block">
+										<span className="mb-2 block text-sm font-medium text-slate-200">
+											Password
+										</span>
+										<input
+											type="password"
+
+											placeholder="Enter your password"
+											{...loginFrom.register("password")}
 											className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 											required
 										/>
@@ -93,18 +118,13 @@ function Login() {
 
 									<button
 										type="submit"
-										disabled={loading}
+										disabled={loginFrom.formState.isSubmitting}
 										className="flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
 									>
-										{loading ? "Signing in..." : "Continue with email"}
+										{loginFrom.formState.isSubmitting ? "Signing in..." : "Continue with email"}
 									</button>
 								</form>
 
-								{message ? (
-									<p className="mt-5 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200">
-										{message}
-									</p>
-								) : null}
 							</div>
 						</div>
 					</div>

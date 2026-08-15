@@ -32,6 +32,7 @@ const ProductPage = () => {
 	useEffect(() =>{
 		dispatch(fetchSellerProducts())
 	},[dispatch])
+	console.log("products", products)	
 	
 
 	const filteredProducts = useMemo(() => {

@@ -33,12 +33,6 @@ const SellerLogin = () => {
     const resultAction = await dispatch(loginSeller(trimmedEmail));
 
     if (loginSeller.fulfilled.match(resultAction)) {
-      const jwt = (resultAction.payload as { jwt?: string } | undefined)?.jwt;
-
-      if (jwt) {
-        localStorage.setItem('jwt', jwt);
-      }
-
       navigate('/seller');
     }
   };

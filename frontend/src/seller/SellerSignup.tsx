@@ -1,22 +1,31 @@
-import { type FormEvent } from 'react'
+import { useEffect, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../Redux_toolkit/store'
-import { updateSeller,updateSellerAddress } from '../Redux_toolkit/seller/seller'
+import { updateSeller, updateSellerAddress } from '../Redux_toolkit/seller/seller'
+import { fetchUserData } from '../Redux_toolkit/coustomer/userSlice'
+
+
 
 const SellerSignup = () => {
 	const navigate = useNavigate()
 
-  const dispatch = useAppDispatch()
+	const dispatch = useAppDispatch()
 
 	const seller = useAppSelector(
-    (state) => state.seller.seller
-  )
-  const sellerAddress = useAppSelector(
-    (state) => state.seller.sellerAddress
-  )
+		(state) => state.seller.seller
+	)
+	const sellerAddress = useAppSelector(
+		(state) => state.seller.sellerAddress
+	)
+
+	const userDetails = useAppSelector((state) => state.user)
+	useEffect(()=>{
+		dispatch(fetchUserData())
+	},[dispatch])
 
 
 	console.log("seller:", seller)
+	console.log("userDetails", userDetails)
 
 	const handleBasicSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -62,9 +71,9 @@ const SellerSignup = () => {
 											<span className="mb-2 block text-sm font-medium text-slate-200">Full name</span>
 											<input
 												type="text"
-												value={seller.fullName}
+												value={userDetails.name ?? ""}
 												onChange={(event) =>
-                           dispatch(updateSeller({ fullName: event.target.value }))}
+													dispatch(updateSeller({ name: event.target.value }))}
 												placeholder="Enter your name"
 												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
@@ -75,9 +84,9 @@ const SellerSignup = () => {
 											<span className="mb-2 block text-sm font-medium text-slate-200">Email</span>
 											<input
 												type="email"
-												value={seller.email}
+												value={userDetails.email ?? ""}
 												onChange={(event) =>
-                           dispatch(updateSeller({ email: event.target.value }))}
+													dispatch(updateSeller({ email: event.target.value }))}
 												placeholder="you@example.com"
 												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
@@ -85,17 +94,17 @@ const SellerSignup = () => {
 										</label>
 
 										<label className="block">
-											<span className="mb-2 block text-sm font-medium text-slate-200">Role</span>
-											<select
-												value={seller.role}
+											<span className="mb-2 block text-sm font-medium text-slate-200">PassWord</span>
+											<input
+												value={seller.password}
 												onChange={(event) =>
-                           dispatch(updateSeller({ role: event.target.value }))}
+													dispatch(updateSeller({ password: event.target.value }))}
+												placeholder="Enter 8 digit password"
 												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
-											>
-												<option className="bg-slate-950" value="SELLER">SELLER</option>
-												<option className="bg-slate-950" value="ADMIN">ADMIN</option>
-											</select>
+											/>
+												
+											
 										</label>
 									</div>
 
@@ -104,13 +113,14 @@ const SellerSignup = () => {
 											<span className="mb-2 block text-sm font-medium text-slate-200">Phone number</span>
 											<input
 												type="tel"
-												value={seller.mobile}
+												value={userDetails.mobile ??""}
 												onChange={(event) =>
-                           dispatch(updateSeller({ mobile: event.target.value }))}
-												placeholder="+91 98765 43210"
+													dispatch(updateSeller({ mobile: event.target.value }))}
+												
 												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
 											/>
+											{}
 										</label>
 
 										<label className="block">
@@ -119,8 +129,8 @@ const SellerSignup = () => {
 												type="text"
 												value={sellerAddress.locality}
 												onChange={(event) =>
-                           dispatch(updateSellerAddress({ locality: event.target.value }))}
-												placeholder="Local area or sector"
+													dispatch(updateSellerAddress({ locality: event.target.value }))}
+												placeholder="Local area or sector"	
 												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
 											/>
@@ -136,7 +146,7 @@ const SellerSignup = () => {
 												pattern="[0-9]*"
 												value={sellerAddress.pinCode}
 												onChange={(event) =>
-                           dispatch(updateSellerAddress({ pinCode: event.target.value }))}
+													dispatch(updateSellerAddress({ pinCode: event.target.value }))}
 												placeholder="400001"
 												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
@@ -149,7 +159,7 @@ const SellerSignup = () => {
 												type="text"
 												value={sellerAddress.state}
 												onChange={(event) =>
-                           dispatch(updateSellerAddress({ state: event.target.value }))}
+													dispatch(updateSellerAddress({ state: event.target.value }))}
 												placeholder="State"
 												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
@@ -162,7 +172,7 @@ const SellerSignup = () => {
 										<textarea
 											value={sellerAddress.address}
 											onChange={(event) =>
-                           dispatch(updateSellerAddress({ address: event.target.value }))}
+												dispatch(updateSellerAddress({ address: event.target.value }))}
 											placeholder="Street, city, state, pin code"
 											rows={4}
 											className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"

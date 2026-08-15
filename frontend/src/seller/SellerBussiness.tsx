@@ -1,7 +1,7 @@
-import {  type FormEvent } from 'react'
+import { type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../Redux_toolkit/store'
-import { updateBusiness ,updateBusinessAddress} from '../Redux_toolkit/seller/seller'
+import { updateBusiness, updateBusinessAddress } from '../Redux_toolkit/seller/seller'
 
 
 
@@ -15,12 +15,12 @@ const SellerBussiness = () => {
 	const businessAddress = useAppSelector(
 		(state) => state.seller.businessAddress
 	)
-	
+
 	console.log("business:", business)
 	console.log("businessAddress:", businessAddress)
 	const handleBusinessSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		
+
 		navigate('/seller/onboarding/account')
 	}
 
@@ -62,8 +62,8 @@ const SellerBussiness = () => {
 											<span className="mb-2 block text-sm font-medium text-slate-200">Store name</span>
 											<input
 												type="text"
-												value={business.businessName}
-												onChange={(event) => dispatch(updateBusiness({ businessName: event.target.value }))}
+												value={business.name}
+												onChange={(event) => dispatch(updateBusiness({ name: event.target.value }))}
 												placeholder="Nova Traders"
 												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
@@ -71,15 +71,42 @@ const SellerBussiness = () => {
 										</label>
 
 										<label className="block">
-											<span className="mb-2 block text-sm font-medium text-slate-200">Store category</span>
-											<input
-												type="text"
+											<span className="mb-2 block text-sm font-medium text-slate-200">
+												Store category
+											</span>
+
+											<select
 												value={business.category}
-												onChange={(event) => dispatch(updateBusiness({ category: event.target.value }))}
-												placeholder="Electronics, fashion, grocery"
-												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
+												onChange={(event) =>
+													dispatch(updateBusiness({ category: event.target.value }))
+												}
+												className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/30"
 												required
-											/>
+											>
+												<option value="" disabled className="bg-slate-900 text-slate-400">
+													Select a category
+												</option>
+
+												<option value="ELECTRONICS" className="bg-slate-900">
+													Electronics
+												</option>
+
+												<option value="FASHION" className="bg-slate-900">
+													Fashion
+												</option>
+
+												<option value="GROCERY" className="bg-slate-900">
+													Grocery
+												</option>
+
+												<option value="HOME" className="bg-slate-900">
+													Home &amp; Living
+												</option>
+
+												<option value="BEAUTY" className="bg-slate-900">
+													Beauty
+												</option>
+											</select>
 										</label>
 									</div>
 

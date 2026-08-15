@@ -2,7 +2,11 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../config/api";
 
-const ProtectedRoute = () => {
+/**
+ * GuestRoute - Only allows access when the user is NOT logged in.
+ * If the user has a valid cookie session, they are redirected to the home page.
+ */
+const GuestRoute = () => {
   const [status, setStatus] = useState<"loading" | "authenticated" | "unauthenticated">("loading");
 
   useEffect(() => {
@@ -19,11 +23,12 @@ const ProtectedRoute = () => {
     );
   }
 
-  if (status === "unauthenticated") {
-    return <Navigate to="/login" replace />;
+  if (status === "authenticated") {
+    // Valid session — user is logged in, redirect away from auth pages
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;
 };
 
-export default ProtectedRoute;
+export default GuestRoute;

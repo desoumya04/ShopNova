@@ -59,12 +59,12 @@ const ProductDetails = () => {
             </div> 
           </div>
           <div className="price flex items-center gap-3 pt-5">
-          <span className="font-semibold text-teal-700"> ₹{product.costPrice}
+          <span className="font-semibold text-teal-700"> ₹{product.price}
           </span>
-          <span className="font-thin text line line-through text-gray-400">₹{product.price}
+          <span className="font-thin text line line-through text-gray-400">₹{product.costPrice}
           </span>
           <span className="font-semibold text-teal-700">
-            {product.discountPrice}
+            {product.discountPrice}%
           </span>
         </div>
         <div className='mt-7 space-y-2'>

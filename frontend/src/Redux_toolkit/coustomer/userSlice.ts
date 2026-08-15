@@ -6,7 +6,7 @@ const API_URL = "/user";
 type UserState = {
   name: string | null;
   email: string | null;
-  phone: string | null;
+  mobile: string | null;
   joined: string | null;
   role: string | null;
   loading: boolean;
@@ -16,7 +16,7 @@ type UserState = {
 const initialState: UserState = {
   name: "",
   email: "",
-  phone: "",
+  mobile: "",
   joined: "",
   role: "",
   loading: false,
@@ -29,24 +29,16 @@ export const fetchUserData = createAsyncThunk(
   "user/profile",
   async (_, { rejectWithValue }) => {
     try {
-      const jwt = localStorage.getItem("jwt");
-      if (!jwt) {
-        throw new Error("JWT not found in localStorage");
-      }
-
-      const response = await api.get(`${API_URL}/profile`,{
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+      // Cookie is sent automatically via withCredentials
+      const response = await api.get(`${API_URL}/profile`);
       if(!response.data || !response.data.data){
         throw new Error("Invalid response data");
       }
 
       console.log("fetchUserData response:", response.data);
       return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || "An error occurred");
     }
   }
 );
@@ -55,22 +47,13 @@ export const updateUserData = createAsyncThunk(
   "user/update",
   async (userData: { name: string; phone: string }, { rejectWithValue }) => {
     try {
-      const jwt = localStorage.getItem("jwt");
-      if (!jwt) {
-        throw new Error("JWT not found in localStorage");
-      }
-
-      const response = await api.post(`${API_URL}/profile/update`, userData, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-
+      // Cookie is sent automatically via withCredentials
+      const response = await api.post(`${API_URL}/profile/update`, userData);
 
       console.log("updateUserData response:", response.data);
       return response.data.data;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message || "An error occurred");
     }
   }
 );
@@ -83,8 +66,9 @@ const userSlice = createSlice({
   reducers:{
     updateUser:(state,action)=>{
       state.name = action.payload.name;
-      state.phone = action.payload.phone;
-    }
+      state.mobile = action.payload.mobile;
+    },
+    clearUser: () => initialState,
   },
   extraReducers:(builder)=>{
     builder
@@ -96,7 +80,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.name = action.payload.name;
       state.email = action.payload.email;
-      state.phone = action.payload.phone;
+      state.mobile = action.payload.mobile;
       state.joined = action.payload.joined;
       state.role = action.payload.role;
     })
@@ -111,7 +95,7 @@ const userSlice = createSlice({
     .addCase(updateUserData.fulfilled,(state,action)=>{
       state.loading = false;
       state.name = action.payload.name;
-      state.phone = action.payload.phone;
+      state.mobile = action.payload.mobile;
      
     })
     .addCase(updateUserData.rejected,(state,action)=>{
@@ -121,4 +105,5 @@ const userSlice = createSlice({
   }
 })
 
+export const { updateUser, clearUser } = userSlice.actions;
 export default userSlice.reducer

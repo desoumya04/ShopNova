@@ -27,6 +27,7 @@ import SellerBussiness from './seller/SellerBussiness';
 import SellerAccount from './seller/SellerAccount';
 import SellerLogin from './seller/SellerLogin';
 import ProtectedRoute from './routes/ProtectedRoute';
+import GuestRoute from './routes/GuestRoute';
 
 
 function App() {
@@ -36,8 +37,12 @@ function App() {
     <ThemeProvider theme={customTheme}>
 
       <Routes>
+        {/* Guest-only routes — redirect to home if already logged in */}
+        <Route element={<GuestRoute />}>
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/seller/login" element={<SellerLogin />} />
+        </Route>
           
         {/* Customer Routes */}
         
@@ -53,16 +58,11 @@ function App() {
 
               <Route path="/product-details/:CategoryId/:productId" element={<ProductDetails />} />
               
-          
+              <Route path="/seller/signup" element={<SellerSignup />} />
+              <Route path="/seller/onboarding/business" element={<SellerBussiness />} />
+              <Route path="/seller/onboarding/account" element={<SellerAccount />} />
             </Route>
         </Route>
-        
-        
-        
-        <Route path="/seller/signup" element={<SellerSignup />} />
-        <Route path="/seller/onboarding/business" element={<SellerBussiness />} />
-        <Route path="/seller/onboarding/account" element={<SellerAccount />} />
-        <Route path="/seller/login" element={<SellerLogin />} />
         {/* Seller Routes */}
         <Route element={<ProtectedRoute />}>
           <Route element={<SellerLayout />} >      

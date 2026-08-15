@@ -16,7 +16,7 @@ type category = {
 type Product = {
     id:string
     name:string
-    slug?:string
+    
     description:string
     brand:string
     categoryId?:string
@@ -52,7 +52,6 @@ const initialState : ProductState = {
   product: {
     id: "",
     name: "",
-    slug: "",
     description: "",
     brand: "",
     categoryId: "",
@@ -102,13 +101,9 @@ export const fetchSellerProducts =  createAsyncThunk<Product[]>(
   "/product/sellerProductDetails",
   async(_,{rejectWithValue}) =>{
     try{
-      const response = await api.get(`${api_path}/sellerProductDetails`,{
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem("jwt")}`
-        }
-      })
-      console.log(response.data)
-      return response.data.data.products
+      const response = await api.get(`${api_path}/sellerProductDetails`)
+      console.log("products",response.data.data)
+      return response.data.data
     }catch(error:any){
       return rejectWithValue(error.response.data)
     }

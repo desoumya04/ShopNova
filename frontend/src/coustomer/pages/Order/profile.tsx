@@ -2,6 +2,8 @@ import { type ReactNode } from 'react';
 import { Avatar, Typography } from '@mui/material';
 import { Logout, Person, ReceiptLong } from '@mui/icons-material';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../../Redux_toolkit/store';
+import { api } from '../../../config/api';
 
 import Order from './Order';
 import ProfileDetails from '../account/UserDetails';
@@ -90,13 +92,17 @@ const Profile = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const userName = localStorage.getItem('userName') || 'User';
+  const userName = useAppSelector((state) => state.user.name) || 'User';
   const userInitial = userName.trim().charAt(0).toUpperCase() || 'U';
 
-  const handleLogout = () => {
-    localStorage.removeItem('isLogin');
-    localStorage.removeItem('userName');
+  const handleLogout = async () => {
+    try {
+      await api.post('/auth/logout');
+    } catch {
+      // ignore errors
+    }
     navigate('/');
+    window.location.reload();
   };
 
   return (

@@ -27,10 +27,9 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  // Get user login status and details from localStorage
-  const jwt = useAppSelector((state)=>state.auth.jwt)
-  const name = useAppSelector((state)=>state.auth.name)
-  
+  // Get user login status and details from user slice (fetched via cookie-based API)
+  const {name,email}= useAppSelector((state)=>state.user)
+ 
  
   useEffect(() => {
     dispatch(fetchUserData());
@@ -38,8 +37,8 @@ const Navbar = () => {
   const role = useAppSelector((state) => state.user.role);
   const isSeller = role === "SELLER";
 
-  console.log("role", role);
-  const isLoggedIn = jwt!== null;
+  console.log("role", isSeller);
+  const isLoggedIn = !!email;
   const userName = name || "User";
 
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
@@ -55,6 +54,16 @@ const Navbar = () => {
     if (mobileOpen) document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, [mobileOpen]);
+
+
+
+  const handleSellerNavigation = () => {
+  if (isSeller) {
+    navigate("/seller");
+  } else {
+    navigate("/seller/signup");
+  }
+};
 
   // Lock body scroll when drawer is open
   useEffect(() => {
@@ -142,10 +151,23 @@ const Navbar = () => {
                 <span>{userName}</span>
               </button>
             ) : (
-              <button className="nb-icon-btn" aria-label="Login">
-                <Login />
-                <span onClick={() => navigate("/signup")}>Signup</span>
-              </button>
+              <div className="flex items-center gap-3">
+                <button 
+                  className="flex items-center gap-1.5 text-blue-600 border border-blue-600 hover:bg-blue-50 transition-all font-medium text-sm px-5 py-2 rounded-full shadow-sm hover:shadow-md active:scale-95" 
+                  aria-label="Login" 
+                  onClick={() => navigate("/login")}
+                >
+                  <Login fontSize="small" />
+                  <span>Login</span>
+                </button>
+                <button 
+                  className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-medium text-sm transition-all shadow-sm hover:shadow-md active:scale-95" 
+                  aria-label="Signup" 
+                  onClick={() => navigate("/signup")}
+                >
+                  <span>Signup</span>
+                </button>
+              </div>
             )}
 
             <button className="nb-icon-btn" aria-label="Cart" onClick={() => navigate("/order")}>
@@ -154,7 +176,7 @@ const Navbar = () => {
               </Badge>
             </button>
 
-            <button className="nb-seller-btn" onClick={() => navigate(isSeller? '/seller/login' : '/seller/signup')}>
+            <button className="nb-seller-btn" onClick={handleSellerNavigation}>
               {isSeller? 'Seller' : 'Become a Seller'}
             </button>
           </div>
@@ -204,7 +226,10 @@ const Navbar = () => {
         </div>
 
         {/* Drawer nav links */}
-        <button className="nb-drawer-action" onClick={() => navigate("/profile")}>
+        <button className="nb-drawer-action" onClick={() => {
+            navigate(isLoggedIn ? "/account" : "/login");
+            setMobileOpen(false);
+          }}>
             {isLoggedIn ? (
               <>
                 <Avatar sx={{ width: 28, height: 28, fontSize: 12 }}>
@@ -246,7 +271,8 @@ const Navbar = () => {
         {/* Drawer footer */}
         <div className="nb-drawer-footer">
           <button className="nb-drawer-seller" onClick={() => {
-            navigate(isSeller? '/seller/login' : '/seller/signup')
+            handleSellerNavigation();
+            setMobileOpen(false);
           }}>
             <Storefront style={{ fontSize: 18 }} />
             {isSeller ? 'Seller' : 'Become a Seller'}

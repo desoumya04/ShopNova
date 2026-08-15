@@ -16,7 +16,7 @@ const UserDetails = () => {
   const user = {
     name: userState.name ?? undefined,
     email: userState.email ?? undefined,
-    phone: userState.phone ?? undefined,
+    phone: userState.mobile ?? undefined,
     role: userState.role ?? undefined,
     joined: userState.joined ?? undefined,
   };

@@ -7,30 +7,21 @@ export const api = axios.create({
   
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("jwt");
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
+// No request interceptor needed — the cookie is sent automatically with withCredentials: true
 
 api.interceptors.response.use(
   (response) => response,
 
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("jwt");
-      localStorage.removeItem("name");
-      
+    // Don't redirect on 401 for auth/profile check requests — route guards and components handle those
+    const requestUrl = error.config?.url || "";
+    const skipRedirectPaths = ["/auth/check", "/auth/logout", "/user/profile"];
+    const shouldSkip = skipRedirectPaths.some((path) => requestUrl.includes(path));
+
+    if ((error.response?.status === 401 || error.response?.status === 404) && !shouldSkip) {
       window.location.href = "/login";
     }
 
     return Promise.reject(error);
   }
 );
-
-
-
