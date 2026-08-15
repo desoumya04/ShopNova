@@ -8,7 +8,6 @@ import { JWTProviderInstance } from "../utils/jwtProvider.js";
 interface productPayload {
   products: {
     name: string;
-    slug?: string;
     description: string;
     categoryId: string;
     brand: string;
@@ -38,9 +37,11 @@ class productService {
     if (!decode) {
       throw new apiError(401, "user is not a valid authorization");
     }
+    
     const existingSeller = await prisma.seller.findUnique({
       where: { userId: decode.id },
     });
+    console.log("Existing seller : ",existingSeller)
     if (!existingSeller) {
       throw new apiError(404, "seller not found");
     }
@@ -62,7 +63,6 @@ class productService {
       const product = await tx.product.create({
         data: {
           name: products.name,
-          slug: products.slug,
           description: products.description,
           brand: products.brand,
           status: products.status || "DRAFT",
@@ -122,10 +122,12 @@ class productService {
       }
       
     })
-
+    if(!existSeller){
+      throw new apiError(404,"seller not found")
+    }
     const products = await prisma.product.findMany({
       where: {
-        sellerId: existSeller?.id
+        sellerId: existSeller.id
       },
       include: {
         category: true,
@@ -134,9 +136,7 @@ class productService {
       },
     });
     
-    if(!existSeller){
-      throw new apiError(404,"the seller have no product")
-    }
+   
     return products
 
   }

@@ -17,6 +17,7 @@ model Seller {
   id        String   @id @default(uuid())
   userId    String   @unique
 
+  password String
   business Business?
   bank     Bank?
 
@@ -33,7 +34,8 @@ model User {
   name      String
   mobile    String? @unique
   email     String   @unique
- 
+  password  String
+  
   otp             String?
   otpExpiresAt    DateTime?   // ⭐ expiry timee
   otpAttempts     Int        @default(0)
@@ -110,7 +112,6 @@ model Product {
   id              String   @id @default(uuid())
 
   name            String
-  slug            String   @unique
   description     String
 
   brand           String?

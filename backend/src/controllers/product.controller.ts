@@ -9,7 +9,13 @@ class productController{
   createProduct = asyncHandler(async(req,res) =>{
     const authHeader = req.headers.authorization
     
-    const token = ((authHeader?.startsWith("Bearer") ? authHeader.split(" ")[1] : "undefined"))
+    const token = 
+      req.cookies?.token ||
+      (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined);
+
+    if(!token){
+      throw new apiError(401, 'Unauthorized: No token provided');
+    }
 
     const newProduct = await productServiceInstance.createProduct(token,req.body,req.files)
     
@@ -19,7 +25,13 @@ class productController{
   sellerProductDetails = asyncHandler(async(req,res) =>{
     const authHeader = req.headers.authorization
 
-    const token = (authHeader?.startsWith("Bearer")?authHeader.split(" ")[1] : "undefined")
+    const token = 
+      req.cookies?.token ||
+      (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined);
+   
+    if(!token){
+      throw new apiError(401, 'Unauthorized: No token provided');
+    }
 
     const fetchDetails = await productServiceInstance.sellerProductDetails(token)
     res.status(201).json(new apiResponse(201,fetchDetails,"the details is fetch successfully"))
@@ -32,8 +44,11 @@ class productController{
 
   getCategoryProducts = asyncHandler(async(req,res) =>{
     const authHeader = req.headers.authorization
-   
-    if(!authHeader){
+    const token = 
+      req.cookies?.token ||
+      (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined);
+
+    if(!token){
       throw new apiError(401,"user is not authorized")
     }
 
@@ -46,8 +61,11 @@ class productController{
 
   getProductById = asyncHandler(async(req,res)=>{
     const authHeader = req.headers.authorization
+    const token = 
+      req.cookies?.token ||
+      (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined);
     
-    if(!authHeader){
+    if(!token){
       throw new apiError(401,"user is not authorized")
     }
 

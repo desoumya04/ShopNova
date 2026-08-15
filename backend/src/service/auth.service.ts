@@ -3,32 +3,16 @@ import { apiError } from '../utils/apiError.js';
 import { JWTProviderInstance } from '../utils/jwtProvider.js';
 import { EmailServiceInstance } from '../utils/sendEmail.js';
 
+interface otpData{
+  email:string,
+  otp:string
+}
 
 
 class authService{
-  async login (loginData: any){
-    const { email } = loginData;
-    const hasMissingField = [email].some(v => !v);
-    // check for missing fields
-    if(hasMissingField){
-      throw new apiError(400, 'Missing required fields: email');
-    }
-    const existingSeller = await prisma.user.findUnique({
-      where:{ email: loginData.email}
-    })    
-    if(!existingSeller){
-      throw new apiError(404, 'Seller not found');
-    }
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    await prisma.user.update({
-      where: { email: loginData.email },
-      data: { otp: otp, otpExpiresAt: new Date(Date.now() + 2 * 60 * 1000) }, // OTP valid for 5 minutes
-    })
-    EmailServiceInstance.sendEmail(existingSeller.email, 'Your OTP Code', `Your OTP code is: ${otp}`);
-    return otp;
-  }
+  
   // verify otp for signup and login
-  async verifyOtp(otpData: any){
+  async verifyOtp(otpData: otpData){
     const { email, otp } = otpData;
     const existingUser = await prisma.user.findUnique({
       where:{ email: email}

@@ -1,8 +1,8 @@
-import express from 'express'
-const router = express.Router()
+import {Router} from 'express'
+const healthRouter = Router()
 
-router.get('/health', (req, res) => {
+healthRouter.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK' })
 })
 
-export default router
+export { healthRouter}

@@ -1,13 +1,23 @@
 import { Resend } from 'resend';
 
-// Render free tier blocks ALL outbound SMTP (ports 465 & 587).
-// Resend uses HTTPS API — no SMTP, no port blocking.
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 class EmailService {
+  private resend: Resend | null = null;
+
+  private getClient(): Resend {
+    if (!this.resend) {
+      const apiKey = process.env.RESEND_API_KEY;
+      if (!apiKey) {
+        throw new Error('RESEND_API_KEY is not set in environment variables');
+      }
+      this.resend = new Resend(apiKey);
+    }
+    return this.resend;
+  }
+
   async sendEmail(to: string, subject: string, text: string) {
     try {
-      const { data, error } = await resend.emails.send({
+      const client = this.getClient();
+      const { data, error } = await client.emails.send({
         from: process.env.EMAIL_FROM || 'ShopNova <onboarding@resend.dev>',
         to,
         subject,

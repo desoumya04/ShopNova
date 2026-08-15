@@ -27,6 +27,7 @@ export type AggregateSeller = {
 export type SellerMinAggregateOutputType = {
   id: string | null
   userId: string | null
+  password: string | null
   accountStatus: $Enums.Account | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -35,6 +36,7 @@ export type SellerMinAggregateOutputType = {
 export type SellerMaxAggregateOutputType = {
   id: string | null
   userId: string | null
+  password: string | null
   accountStatus: $Enums.Account | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +45,7 @@ export type SellerMaxAggregateOutputType = {
 export type SellerCountAggregateOutputType = {
   id: number
   userId: number
+  password: number
   accountStatus: number
   createdAt: number
   updatedAt: number
@@ -53,6 +56,7 @@ export type SellerCountAggregateOutputType = {
 export type SellerMinAggregateInputType = {
   id?: true
   userId?: true
+  password?: true
   accountStatus?: true
   createdAt?: true
   updatedAt?: true
@@ -61,6 +65,7 @@ export type SellerMinAggregateInputType = {
 export type SellerMaxAggregateInputType = {
   id?: true
   userId?: true
+  password?: true
   accountStatus?: true
   createdAt?: true
   updatedAt?: true
@@ -69,6 +74,7 @@ export type SellerMaxAggregateInputType = {
 export type SellerCountAggregateInputType = {
   id?: true
   userId?: true
+  password?: true
   accountStatus?: true
   createdAt?: true
   updatedAt?: true
@@ -150,6 +156,7 @@ export type SellerGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 export type SellerGroupByOutputType = {
   id: string
   userId: string
+  password: string
   accountStatus: $Enums.Account
   createdAt: Date
   updatedAt: Date
@@ -179,6 +186,7 @@ export type SellerWhereInput = {
   NOT?: Prisma.SellerWhereInput | Prisma.SellerWhereInput[]
   id?: Prisma.StringFilter<"Seller"> | string
   userId?: Prisma.StringFilter<"Seller"> | string
+  password?: Prisma.StringFilter<"Seller"> | string
   accountStatus?: Prisma.EnumAccountFilter<"Seller"> | $Enums.Account
   createdAt?: Prisma.DateTimeFilter<"Seller"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Seller"> | Date | string
@@ -191,6 +199,7 @@ export type SellerWhereInput = {
 export type SellerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -206,6 +215,7 @@ export type SellerWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SellerWhereInput | Prisma.SellerWhereInput[]
   OR?: Prisma.SellerWhereInput[]
   NOT?: Prisma.SellerWhereInput | Prisma.SellerWhereInput[]
+  password?: Prisma.StringFilter<"Seller"> | string
   accountStatus?: Prisma.EnumAccountFilter<"Seller"> | $Enums.Account
   createdAt?: Prisma.DateTimeFilter<"Seller"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Seller"> | Date | string
@@ -218,6 +228,7 @@ export type SellerWhereUniqueInput = Prisma.AtLeast<{
 export type SellerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -232,6 +243,7 @@ export type SellerScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SellerScalarWhereWithAggregatesInput | Prisma.SellerScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Seller"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Seller"> | string
+  password?: Prisma.StringWithAggregatesFilter<"Seller"> | string
   accountStatus?: Prisma.EnumAccountWithAggregatesFilter<"Seller"> | $Enums.Account
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Seller"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Seller"> | Date | string
@@ -239,6 +251,7 @@ export type SellerScalarWhereWithAggregatesInput = {
 
 export type SellerCreateInput = {
   id?: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -251,6 +264,7 @@ export type SellerCreateInput = {
 export type SellerUncheckedCreateInput = {
   id?: string
   userId: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -261,6 +275,7 @@ export type SellerUncheckedCreateInput = {
 
 export type SellerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -273,6 +288,7 @@ export type SellerUpdateInput = {
 export type SellerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -284,6 +300,7 @@ export type SellerUncheckedUpdateInput = {
 export type SellerCreateManyInput = {
   id?: string
   userId: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -291,6 +308,7 @@ export type SellerCreateManyInput = {
 
 export type SellerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -299,6 +317,7 @@ export type SellerUpdateManyMutationInput = {
 export type SellerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -307,6 +326,7 @@ export type SellerUncheckedUpdateManyInput = {
 export type SellerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -315,6 +335,7 @@ export type SellerCountOrderByAggregateInput = {
 export type SellerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -323,6 +344,7 @@ export type SellerMaxOrderByAggregateInput = {
 export type SellerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  password?: Prisma.SortOrder
   accountStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -426,6 +448,7 @@ export type SellerUpdateOneRequiredWithoutProductsNestedInput = {
 
 export type SellerCreateWithoutUserInput = {
   id?: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -436,6 +459,7 @@ export type SellerCreateWithoutUserInput = {
 
 export type SellerUncheckedCreateWithoutUserInput = {
   id?: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -462,6 +486,7 @@ export type SellerUpdateToOneWithWhereWithoutUserInput = {
 
 export type SellerUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -472,6 +497,7 @@ export type SellerUpdateWithoutUserInput = {
 
 export type SellerUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -482,6 +508,7 @@ export type SellerUncheckedUpdateWithoutUserInput = {
 
 export type SellerCreateWithoutBusinessInput = {
   id?: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -493,6 +520,7 @@ export type SellerCreateWithoutBusinessInput = {
 export type SellerUncheckedCreateWithoutBusinessInput = {
   id?: string
   userId: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -518,6 +546,7 @@ export type SellerUpdateToOneWithWhereWithoutBusinessInput = {
 
 export type SellerUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -529,6 +558,7 @@ export type SellerUpdateWithoutBusinessInput = {
 export type SellerUncheckedUpdateWithoutBusinessInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -538,6 +568,7 @@ export type SellerUncheckedUpdateWithoutBusinessInput = {
 
 export type SellerCreateWithoutBankInput = {
   id?: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -549,6 +580,7 @@ export type SellerCreateWithoutBankInput = {
 export type SellerUncheckedCreateWithoutBankInput = {
   id?: string
   userId: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -574,6 +606,7 @@ export type SellerUpdateToOneWithWhereWithoutBankInput = {
 
 export type SellerUpdateWithoutBankInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -585,6 +618,7 @@ export type SellerUpdateWithoutBankInput = {
 export type SellerUncheckedUpdateWithoutBankInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -594,6 +628,7 @@ export type SellerUncheckedUpdateWithoutBankInput = {
 
 export type SellerCreateWithoutProductsInput = {
   id?: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -605,6 +640,7 @@ export type SellerCreateWithoutProductsInput = {
 export type SellerUncheckedCreateWithoutProductsInput = {
   id?: string
   userId: string
+  password: string
   accountStatus?: $Enums.Account
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -630,6 +666,7 @@ export type SellerUpdateToOneWithWhereWithoutProductsInput = {
 
 export type SellerUpdateWithoutProductsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -641,6 +678,7 @@ export type SellerUpdateWithoutProductsInput = {
 export type SellerUncheckedUpdateWithoutProductsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
   accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -682,6 +720,7 @@ export type SellerCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types
 export type SellerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  password?: boolean
   accountStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -695,6 +734,7 @@ export type SellerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 export type SellerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  password?: boolean
   accountStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -704,6 +744,7 @@ export type SellerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type SellerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
+  password?: boolean
   accountStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -713,12 +754,13 @@ export type SellerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type SellerSelectScalar = {
   id?: boolean
   userId?: boolean
+  password?: boolean
   accountStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SellerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "accountStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["seller"]>
+export type SellerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "password" | "accountStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["seller"]>
 export type SellerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   business?: boolean | Prisma.Seller$businessArgs<ExtArgs>
   bank?: boolean | Prisma.Seller$bankArgs<ExtArgs>
@@ -744,6 +786,7 @@ export type $SellerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     userId: string
+    password: string
     accountStatus: $Enums.Account
     createdAt: Date
     updatedAt: Date
@@ -1176,6 +1219,7 @@ export interface Prisma__SellerClient<T, Null = never, ExtArgs extends runtime.T
 export interface SellerFieldRefs {
   readonly id: Prisma.FieldRef<"Seller", 'String'>
   readonly userId: Prisma.FieldRef<"Seller", 'String'>
+  readonly password: Prisma.FieldRef<"Seller", 'String'>
   readonly accountStatus: Prisma.FieldRef<"Seller", 'Account'>
   readonly createdAt: Prisma.FieldRef<"Seller", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Seller", 'DateTime'>

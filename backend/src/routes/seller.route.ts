@@ -1,14 +1,16 @@
 import express from 'express';
-import { sellerController } from '../controllers/seller.controller.js';
-import { authController } from '../controllers/auth.controller.js';
-import {productControllerInstance } from '../controllers/product.controller.js';  
+import { sellerController } from '../controllers/seller.controller.js'; 
+import { authMiddleware } from '../middleware/auth.middleware.js';
 
-const router = express.Router();
 
-router.post('/seller/register', sellerController.createSeller)
-router.post('/seller/login', sellerController.sellerLogin)
+const sellerRouter = express.Router();
 
 
 
+sellerRouter.post('/seller/register',authMiddleware, sellerController.createSeller)
+sellerRouter.post('/seller/login', authMiddleware,sellerController.sellerLogin)
 
-export default router;
+
+
+
+export {sellerRouter}
