@@ -107,7 +107,7 @@ class SellerService {
 
       return createSeller;
     })
-    console.log("newSeller", newSeller)
+
     return { newSeller };
 
   }
@@ -130,8 +130,28 @@ class SellerService {
     return { existingSeller };
   }
 
-  async getSeller(token: string) {
-
+  async getSeller(userId: string) {
+    const seller = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+            address: true,
+            seller:{
+              include:{
+                bank:true,
+                business:{
+                  include:{
+                    address: true,
+                  }
+                }
+              }
+            }
+        }
+    })
+  if (!seller) {
+    throw new apiError(404, 'Seller not found');
+  }
+  return seller;
+  
   }
 
 }

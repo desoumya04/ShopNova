@@ -11,7 +11,7 @@ import { JWTProviderInstance } from "../utils/jwtProvider.js";
 class SellerController {
   
   createSeller = asyncHandler(async (req,res) =>{
-    console.log(req.body)
+   
     const safeSllerDataParse = sellerSignupSchema.safeParse(req.body.seller)
     const safeSellerAddressParse = sellerAddressSchema.safeParse(req.body.sellerAddress)
     const safeBusinessParse = sellerBusinessSchema.safeParse(req.body.business)
@@ -38,7 +38,7 @@ class SellerController {
     if (!userId) {
       throw new apiError(401, 'Unauthorized: User ID missing');
     }
-    console.log("userId",userId)
+    
     const data= { 
       seller:safeSllerDataParse.data,
       sellerAddress:safeSellerAddressParse.data,
@@ -81,7 +81,18 @@ class SellerController {
 
   })
 
+  sellerDetails = asyncHandler(async(req,res)=>{
+    const userId = req.user?.id
   
+    if (!userId) {
+      throw new apiError(401, 'Unauthorized: User ID missing');
+    }
+    const seller = await sellerService.getSeller(userId)
+
+    res.status(200).json(
+      new apiResponse(200, seller, 'Seller details fetched successfully')
+    )
+  })
 }
 
 export const sellerController = new SellerController();

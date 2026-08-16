@@ -1,9 +1,9 @@
 import { prisma } from "../config/db.js";
 import { apiError } from "../utils/apiError.js";
-import { apiResponse } from "../utils/apiResponse.js";
-import uploadImage from "../config/cloudinary.js";
-import { AnyCnameRecord } from "node:dns";
-import { JWTProviderInstance } from "../utils/jwtProvider.js";
+
+import uploadImage, { deleteCloudinaryImage } from "../config/cloudinary.js";
+
+
 
 interface productPayload {
   products: {
@@ -32,16 +32,12 @@ interface productPayload {
 
 class productService {
   // Create a new product
-  async createProduct(jwt: string, productData: any, files: any) {
-    const decode = JWTProviderInstance.verifyToken(jwt);
-    if (!decode) {
-      throw new apiError(401, "user is not a valid authorization");
-    }
+  async createProduct(userId: string, productData: any, files: any) {
     
     const existingSeller = await prisma.seller.findUnique({
-      where: { userId: decode.id },
+      where: { userId: userId },
     });
-    console.log("Existing seller : ",existingSeller)
+   
     if (!existingSeller) {
       throw new apiError(404, "seller not found");
     }
@@ -50,15 +46,15 @@ class productService {
     const productVariants = JSON.parse(productData.productVariants);
     // Assuming the seller is authenticated and their ID is available in req.user
 
-    const imageUrl : string[]  = [];
+    const imageUrl : { url: string, publicId: string }[]  = [];
 
     for (const file of files) {
       const uploadResult = await uploadImage(file.path);
-      imageUrl.push(uploadResult.data.url);
+      imageUrl.push({ url: uploadResult.data.url, publicId: uploadResult.data.publicId });
     }
 
     // Create the product in the database
-    console.log("category",products.categoryId)
+   
     const newProduct = await prisma.$transaction(async (tx) => {
       const product = await tx.product.create({
         data: {
@@ -92,10 +88,11 @@ class productService {
         },
       });
 
-      for(const [index,url] of imageUrl.entries())
+      for(const image of imageUrl)
         await tx.productImage.create({
           data: {
-            url: url,
+            url: image.url,
+            publicId: image.publicId,
             product: {
               connect: { id: product.id },
             },
@@ -107,18 +104,13 @@ class productService {
     return newProduct;
   }
 
-  async sellerProductDetails(jwt: string){
-    if(!jwt){
-      throw new apiError(401,"user is ot authorized")
-    }
-    const decode = JWTProviderInstance.verifyToken(jwt)
-    
-    if(!decode){
-      throw new apiError(401,"user is ot authorized")
+  async sellerProductDetails(userId: string){
+    if(!userId){
+      throw new apiError(401,"user is not authorized")
     }
     const existSeller = await prisma.seller.findUnique({
       where: {
-        userId: decode.id
+        userId: userId
       }
       
     })
@@ -163,6 +155,11 @@ class productService {
       where:{name: categoryName },
       include:{
         products:{
+          where:{
+            status: {
+              in: ["ACTIVE", "LOW_STOCK"],
+            },
+          },
           include:{
             images:true
           }
@@ -181,23 +178,143 @@ class productService {
     }
 
     const productDetails = await prisma.product.findUnique({
-      where:{id:productId},
+      where:{
+        id:productId,
+      },
       include:{
         images:true,
         variants:true
       }
     })
 
+
+   
     if(!productDetails){
       throw new apiError(404,"productId is not valid")
     }
-    console.log(productDetails)
-    return productDetails
+  
+    return {images:productDetails.images,variants:productDetails.variants,product:productDetails}
 
   }
 
+  async updateProduct(userId: string, productId: string, productData: any, files: any) {
+    
+    const existingSeller = await prisma.seller.findUnique({
+      where: { userId },
+    });
+   
+    if (!existingSeller) {
+      throw new apiError(404, "seller not found");
+    }
 
+    const existingProduct = await prisma.product.findUnique({
+      where: { id: productId },
+      include: { 
+        variants: true ,
+        images: true
+      }
+    });
 
+    if (!existingProduct) {
+      throw new apiError(404, "Product not found");
+    }
+    
+    if (existingProduct.sellerId !== existingSeller.id) {
+      throw new apiError(403, "You do not have permission to edit this product");
+    }
+
+    const products = typeof productData.product === 'string' ? JSON.parse(productData.product) : productData.product;
+    const productVariants = typeof productData.productVariants === 'string' ? JSON.parse(productData.productVariants) : productData.productVariants;
+    const deleteImageIds = typeof productData.deletedImages === 'string' ? JSON.parse(productData.deletedImages) : productData.deletedImages;
+    const updateImages = files;
+
+    // 1. Upload new images to Cloudinary BEFORE the transaction
+    const uploadedImages: { url: string, publicId: string }[] = [];
+    if(updateImages && updateImages.length > 0){
+      console.log("uploadedImages", updateImages);
+      for (const file of updateImages) {
+        const uploadResult = await uploadImage(file.path);
+        uploadedImages.push({ url: uploadResult.data.url, publicId: uploadResult.data.publicId });
+      }
+    }
+
+    // 2. Fetch images to delete BEFORE the transaction
+    let deletedImagesFromDB: any[] = [];
+    if(deleteImageIds && deleteImageIds.length > 0){
+      deletedImagesFromDB = await prisma.productImage.findMany({
+        where: { id: { in: deleteImageIds } },
+      });
+    }
+  
+    const transactionResult = await prisma.$transaction(async (tx) => {
+      const updatedProduct = await tx.product.update({
+        where: { id: productId },
+        data: {
+          name: products.name,
+          description: products.description,
+          brand: products.brand,
+          status: products.status,
+          price: Number(products.price),
+          discountPrice: Number(products.discountPrice),
+          costPrice: Number(products.costPrice),
+          stock: Number(products.stock),
+          categoryId: products.categoryId,
+        },
+      });
+
+      if (existingProduct.variants && existingProduct.variants.length > 0) {
+        await tx.productVariant.update({
+          where: { id: existingProduct.variants[0].id },
+          data: {
+            color: productVariants.color,
+            size: productVariants.size,
+            storage: productVariants.storage,
+            ram: productVariants.ram,
+            weight: Number(productVariants.weight),
+            warranty: productVariants.warranty,
+          },
+        });
+      }
+      // deleted images from DB
+      if(deleteImageIds && deleteImageIds.length>0){
+        await tx.productImage.deleteMany({
+          where: { id: { in: deleteImageIds } },
+        });
+      }
+      
+      // save new images to DB
+      if(uploadedImages.length>0){
+        for(const image of uploadedImages){
+          await tx.productImage.create({
+            data: {
+              url: image.url,
+              publicId: image.publicId,
+              product: {
+                connect: { id: productId },
+              },
+            },
+          });
+        }
+      }
+     
+      return updatedProduct;
+    });
+
+    // 3. Delete images from Cloudinary AFTER transaction succeeds
+    if(deletedImagesFromDB.length > 0){
+      for(const image of deletedImagesFromDB){
+        if (image.publicId) {
+          try {
+            await deleteCloudinaryImage(image.publicId);
+          } catch (error) {
+            console.error("Failed to delete image from Cloudinary:", error);
+          }
+        }
+      }
+    }
+
+    return transactionResult;
+  }
 
   async getCategory() {
     const categories = await prisma.category.findMany();

@@ -193,6 +193,7 @@ export type SellerWhereInput = {
   business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
   bank?: Prisma.XOR<Prisma.BankNullableScalarRelationFilter, Prisma.BankWhereInput> | null
   products?: Prisma.ProductListRelationFilter
+  orderItems?: Prisma.OrderItemListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
@@ -206,6 +207,7 @@ export type SellerOrderByWithRelationInput = {
   business?: Prisma.BusinessOrderByWithRelationInput
   bank?: Prisma.BankOrderByWithRelationInput
   products?: Prisma.ProductOrderByRelationAggregateInput
+  orderItems?: Prisma.OrderItemOrderByRelationAggregateInput
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -222,6 +224,7 @@ export type SellerWhereUniqueInput = Prisma.AtLeast<{
   business?: Prisma.XOR<Prisma.BusinessNullableScalarRelationFilter, Prisma.BusinessWhereInput> | null
   bank?: Prisma.XOR<Prisma.BankNullableScalarRelationFilter, Prisma.BankWhereInput> | null
   products?: Prisma.ProductListRelationFilter
+  orderItems?: Prisma.OrderItemListRelationFilter
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
 
@@ -258,6 +261,7 @@ export type SellerCreateInput = {
   business?: Prisma.BusinessCreateNestedOneWithoutSellerInput
   bank?: Prisma.BankCreateNestedOneWithoutSellerInput
   products?: Prisma.ProductCreateNestedManyWithoutSellerInput
+  orderItems?: Prisma.OrderItemCreateNestedManyWithoutSellerInput
   user: Prisma.UserCreateNestedOneWithoutSellerInput
 }
 
@@ -271,6 +275,7 @@ export type SellerUncheckedCreateInput = {
   business?: Prisma.BusinessUncheckedCreateNestedOneWithoutSellerInput
   bank?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutSellerInput
+  orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutSellerInput
 }
 
 export type SellerUpdateInput = {
@@ -282,6 +287,7 @@ export type SellerUpdateInput = {
   business?: Prisma.BusinessUpdateOneWithoutSellerNestedInput
   bank?: Prisma.BankUpdateOneWithoutSellerNestedInput
   products?: Prisma.ProductUpdateManyWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUpdateManyWithoutSellerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutSellerNestedInput
 }
 
@@ -295,6 +301,7 @@ export type SellerUncheckedUpdateInput = {
   business?: Prisma.BusinessUncheckedUpdateOneWithoutSellerNestedInput
   bank?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutSellerNestedInput
 }
 
 export type SellerCreateManyInput = {
@@ -432,6 +439,22 @@ export type SellerUpdateOneRequiredWithoutBankNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SellerUpdateToOneWithWhereWithoutBankInput, Prisma.SellerUpdateWithoutBankInput>, Prisma.SellerUncheckedUpdateWithoutBankInput>
 }
 
+export type SellerCreateNestedOneWithoutOrderItemsInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutOrderItemsInput, Prisma.SellerUncheckedCreateWithoutOrderItemsInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutOrderItemsInput
+  connect?: Prisma.SellerWhereUniqueInput
+}
+
+export type SellerUpdateOneWithoutOrderItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.SellerCreateWithoutOrderItemsInput, Prisma.SellerUncheckedCreateWithoutOrderItemsInput>
+  connectOrCreate?: Prisma.SellerCreateOrConnectWithoutOrderItemsInput
+  upsert?: Prisma.SellerUpsertWithoutOrderItemsInput
+  disconnect?: Prisma.SellerWhereInput | boolean
+  delete?: Prisma.SellerWhereInput | boolean
+  connect?: Prisma.SellerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SellerUpdateToOneWithWhereWithoutOrderItemsInput, Prisma.SellerUpdateWithoutOrderItemsInput>, Prisma.SellerUncheckedUpdateWithoutOrderItemsInput>
+}
+
 export type SellerCreateNestedOneWithoutProductsInput = {
   create?: Prisma.XOR<Prisma.SellerCreateWithoutProductsInput, Prisma.SellerUncheckedCreateWithoutProductsInput>
   connectOrCreate?: Prisma.SellerCreateOrConnectWithoutProductsInput
@@ -455,6 +478,7 @@ export type SellerCreateWithoutUserInput = {
   business?: Prisma.BusinessCreateNestedOneWithoutSellerInput
   bank?: Prisma.BankCreateNestedOneWithoutSellerInput
   products?: Prisma.ProductCreateNestedManyWithoutSellerInput
+  orderItems?: Prisma.OrderItemCreateNestedManyWithoutSellerInput
 }
 
 export type SellerUncheckedCreateWithoutUserInput = {
@@ -466,6 +490,7 @@ export type SellerUncheckedCreateWithoutUserInput = {
   business?: Prisma.BusinessUncheckedCreateNestedOneWithoutSellerInput
   bank?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutSellerInput
+  orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutSellerInput
 }
 
 export type SellerCreateOrConnectWithoutUserInput = {
@@ -493,6 +518,7 @@ export type SellerUpdateWithoutUserInput = {
   business?: Prisma.BusinessUpdateOneWithoutSellerNestedInput
   bank?: Prisma.BankUpdateOneWithoutSellerNestedInput
   products?: Prisma.ProductUpdateManyWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUpdateManyWithoutSellerNestedInput
 }
 
 export type SellerUncheckedUpdateWithoutUserInput = {
@@ -504,6 +530,7 @@ export type SellerUncheckedUpdateWithoutUserInput = {
   business?: Prisma.BusinessUncheckedUpdateOneWithoutSellerNestedInput
   bank?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutSellerNestedInput
 }
 
 export type SellerCreateWithoutBusinessInput = {
@@ -514,6 +541,7 @@ export type SellerCreateWithoutBusinessInput = {
   updatedAt?: Date | string
   bank?: Prisma.BankCreateNestedOneWithoutSellerInput
   products?: Prisma.ProductCreateNestedManyWithoutSellerInput
+  orderItems?: Prisma.OrderItemCreateNestedManyWithoutSellerInput
   user: Prisma.UserCreateNestedOneWithoutSellerInput
 }
 
@@ -526,6 +554,7 @@ export type SellerUncheckedCreateWithoutBusinessInput = {
   updatedAt?: Date | string
   bank?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutSellerInput
+  orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutSellerInput
 }
 
 export type SellerCreateOrConnectWithoutBusinessInput = {
@@ -552,6 +581,7 @@ export type SellerUpdateWithoutBusinessInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bank?: Prisma.BankUpdateOneWithoutSellerNestedInput
   products?: Prisma.ProductUpdateManyWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUpdateManyWithoutSellerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutSellerNestedInput
 }
 
@@ -564,6 +594,7 @@ export type SellerUncheckedUpdateWithoutBusinessInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bank?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutSellerNestedInput
 }
 
 export type SellerCreateWithoutBankInput = {
@@ -574,6 +605,7 @@ export type SellerCreateWithoutBankInput = {
   updatedAt?: Date | string
   business?: Prisma.BusinessCreateNestedOneWithoutSellerInput
   products?: Prisma.ProductCreateNestedManyWithoutSellerInput
+  orderItems?: Prisma.OrderItemCreateNestedManyWithoutSellerInput
   user: Prisma.UserCreateNestedOneWithoutSellerInput
 }
 
@@ -586,6 +618,7 @@ export type SellerUncheckedCreateWithoutBankInput = {
   updatedAt?: Date | string
   business?: Prisma.BusinessUncheckedCreateNestedOneWithoutSellerInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutSellerInput
+  orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutSellerInput
 }
 
 export type SellerCreateOrConnectWithoutBankInput = {
@@ -612,6 +645,7 @@ export type SellerUpdateWithoutBankInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   business?: Prisma.BusinessUpdateOneWithoutSellerNestedInput
   products?: Prisma.ProductUpdateManyWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUpdateManyWithoutSellerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutSellerNestedInput
 }
 
@@ -624,6 +658,71 @@ export type SellerUncheckedUpdateWithoutBankInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   business?: Prisma.BusinessUncheckedUpdateOneWithoutSellerNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutSellerNestedInput
+}
+
+export type SellerCreateWithoutOrderItemsInput = {
+  id?: string
+  password: string
+  accountStatus?: $Enums.Account
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  business?: Prisma.BusinessCreateNestedOneWithoutSellerInput
+  bank?: Prisma.BankCreateNestedOneWithoutSellerInput
+  products?: Prisma.ProductCreateNestedManyWithoutSellerInput
+  user: Prisma.UserCreateNestedOneWithoutSellerInput
+}
+
+export type SellerUncheckedCreateWithoutOrderItemsInput = {
+  id?: string
+  userId: string
+  password: string
+  accountStatus?: $Enums.Account
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  business?: Prisma.BusinessUncheckedCreateNestedOneWithoutSellerInput
+  bank?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutSellerInput
+}
+
+export type SellerCreateOrConnectWithoutOrderItemsInput = {
+  where: Prisma.SellerWhereUniqueInput
+  create: Prisma.XOR<Prisma.SellerCreateWithoutOrderItemsInput, Prisma.SellerUncheckedCreateWithoutOrderItemsInput>
+}
+
+export type SellerUpsertWithoutOrderItemsInput = {
+  update: Prisma.XOR<Prisma.SellerUpdateWithoutOrderItemsInput, Prisma.SellerUncheckedUpdateWithoutOrderItemsInput>
+  create: Prisma.XOR<Prisma.SellerCreateWithoutOrderItemsInput, Prisma.SellerUncheckedCreateWithoutOrderItemsInput>
+  where?: Prisma.SellerWhereInput
+}
+
+export type SellerUpdateToOneWithWhereWithoutOrderItemsInput = {
+  where?: Prisma.SellerWhereInput
+  data: Prisma.XOR<Prisma.SellerUpdateWithoutOrderItemsInput, Prisma.SellerUncheckedUpdateWithoutOrderItemsInput>
+}
+
+export type SellerUpdateWithoutOrderItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  business?: Prisma.BusinessUpdateOneWithoutSellerNestedInput
+  bank?: Prisma.BankUpdateOneWithoutSellerNestedInput
+  products?: Prisma.ProductUpdateManyWithoutSellerNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSellerNestedInput
+}
+
+export type SellerUncheckedUpdateWithoutOrderItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  accountStatus?: Prisma.EnumAccountFieldUpdateOperationsInput | $Enums.Account
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  business?: Prisma.BusinessUncheckedUpdateOneWithoutSellerNestedInput
+  bank?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutSellerNestedInput
 }
 
 export type SellerCreateWithoutProductsInput = {
@@ -634,6 +733,7 @@ export type SellerCreateWithoutProductsInput = {
   updatedAt?: Date | string
   business?: Prisma.BusinessCreateNestedOneWithoutSellerInput
   bank?: Prisma.BankCreateNestedOneWithoutSellerInput
+  orderItems?: Prisma.OrderItemCreateNestedManyWithoutSellerInput
   user: Prisma.UserCreateNestedOneWithoutSellerInput
 }
 
@@ -646,6 +746,7 @@ export type SellerUncheckedCreateWithoutProductsInput = {
   updatedAt?: Date | string
   business?: Prisma.BusinessUncheckedCreateNestedOneWithoutSellerInput
   bank?: Prisma.BankUncheckedCreateNestedOneWithoutSellerInput
+  orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutSellerInput
 }
 
 export type SellerCreateOrConnectWithoutProductsInput = {
@@ -672,6 +773,7 @@ export type SellerUpdateWithoutProductsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   business?: Prisma.BusinessUpdateOneWithoutSellerNestedInput
   bank?: Prisma.BankUpdateOneWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUpdateManyWithoutSellerNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutSellerNestedInput
 }
 
@@ -684,6 +786,7 @@ export type SellerUncheckedUpdateWithoutProductsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   business?: Prisma.BusinessUncheckedUpdateOneWithoutSellerNestedInput
   bank?: Prisma.BankUncheckedUpdateOneWithoutSellerNestedInput
+  orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutSellerNestedInput
 }
 
 
@@ -693,10 +796,12 @@ export type SellerUncheckedUpdateWithoutProductsInput = {
 
 export type SellerCountOutputType = {
   products: number
+  orderItems: number
 }
 
 export type SellerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | SellerCountOutputTypeCountProductsArgs
+  orderItems?: boolean | SellerCountOutputTypeCountOrderItemsArgs
 }
 
 /**
@@ -716,6 +821,13 @@ export type SellerCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types
   where?: Prisma.ProductWhereInput
 }
 
+/**
+ * SellerCountOutputType without action
+ */
+export type SellerCountOutputTypeCountOrderItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderItemWhereInput
+}
+
 
 export type SellerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -727,6 +839,7 @@ export type SellerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   business?: boolean | Prisma.Seller$businessArgs<ExtArgs>
   bank?: boolean | Prisma.Seller$bankArgs<ExtArgs>
   products?: boolean | Prisma.Seller$productsArgs<ExtArgs>
+  orderItems?: boolean | Prisma.Seller$orderItemsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SellerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["seller"]>
@@ -765,6 +878,7 @@ export type SellerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   business?: boolean | Prisma.Seller$businessArgs<ExtArgs>
   bank?: boolean | Prisma.Seller$bankArgs<ExtArgs>
   products?: boolean | Prisma.Seller$productsArgs<ExtArgs>
+  orderItems?: boolean | Prisma.Seller$orderItemsArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SellerCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -781,6 +895,7 @@ export type $SellerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     business: Prisma.$BusinessPayload<ExtArgs> | null
     bank: Prisma.$BankPayload<ExtArgs> | null
     products: Prisma.$ProductPayload<ExtArgs>[]
+    orderItems: Prisma.$OrderItemPayload<ExtArgs>[]
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1187,6 +1302,7 @@ export interface Prisma__SellerClient<T, Null = never, ExtArgs extends runtime.T
   business<T extends Prisma.Seller$businessArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Seller$businessArgs<ExtArgs>>): Prisma.Prisma__BusinessClient<runtime.Types.Result.GetResult<Prisma.$BusinessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   bank<T extends Prisma.Seller$bankArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Seller$bankArgs<ExtArgs>>): Prisma.Prisma__BankClient<runtime.Types.Result.GetResult<Prisma.$BankPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   products<T extends Prisma.Seller$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Seller$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  orderItems<T extends Prisma.Seller$orderItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Seller$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1678,6 +1794,30 @@ export type Seller$productsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ProductScalarFieldEnum | Prisma.ProductScalarFieldEnum[]
+}
+
+/**
+ * Seller.orderItems
+ */
+export type Seller$orderItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderItem
+   */
+  select?: Prisma.OrderItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrderItem
+   */
+  omit?: Prisma.OrderItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderItemInclude<ExtArgs> | null
+  where?: Prisma.OrderItemWhereInput
+  orderBy?: Prisma.OrderItemOrderByWithRelationInput | Prisma.OrderItemOrderByWithRelationInput[]
+  cursor?: Prisma.OrderItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderItemScalarFieldEnum | Prisma.OrderItemScalarFieldEnum[]
 }
 
 /**

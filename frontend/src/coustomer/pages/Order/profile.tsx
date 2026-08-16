@@ -8,6 +8,7 @@ import { api } from '../../../config/api';
 import Order from './Order';
 import ProfileDetails from '../account/UserDetails';
 import OrderDetails from './Orderdetails';
+import Wishlist from '../account/Wishlist';
 
 type MenuItem = {
   label: string;
@@ -35,7 +36,7 @@ const menuItems: MenuItem[] = [
   {
     label: 'Saved items',
     icon: <Person />,
-    path: '/account/saved',
+    path: '/account/wishlist',
   },
   {
     label: 'Logout',
@@ -61,14 +62,14 @@ const accountPages: AccountPage[] = [
     ),
   },
   {
-    path: 'saved',
+    path: 'wishlist',
     element: (
       <section>
         <Typography variant="h5" gutterBottom>
           Saved Items
         </Typography>
         <div className="space-y-4">
-          <ProfileDetails />
+          <Wishlist />
         </div>
       </section>
     ),

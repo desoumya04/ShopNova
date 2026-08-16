@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
 	ArrowForward,
@@ -10,7 +10,7 @@ import {
 	SupportAgentOutlined,
 	VerifiedOutlined,
 } from '@mui/icons-material'
-
+import { api } from '../../config/api'
 
 type Stat = {
 	label: string
@@ -22,6 +22,29 @@ type Stat = {
 
 const SellerProfilePage = () => {
 	const navigate = useNavigate()
+	const [sellerData, setSellerData] = useState<any>(null)
+	const [loading, setLoading] = useState(true)
+
+	useEffect(() => {
+		const fetchProfile = async () => {
+			try {
+				const response = await api.get("/seller/profile")
+				console.log("seller details",response.data)
+				setSellerData(response.data.data)
+			} catch (error) {
+				console.error("Failed to fetch seller profile:", error)
+			} finally {
+				setLoading(false)
+			}
+		}
+		fetchProfile()
+	}, [])
+
+	const seller = sellerData?.seller
+	const business = seller?.business
+	const businessAddress = business?.address
+	const bank = seller?.bank
+	const userAddress = sellerData?.address?.[0]
 
 	const stats = useMemo<Stat[]>(
 		() => [
@@ -57,23 +80,13 @@ const SellerProfilePage = () => {
 		[],
 	)
 
-	const activity = [
-		{
-			title: 'Profile verified',
-			detail: 'Your seller account verification was completed successfully.',
-			time: 'Today',
-		},
-		{
-			title: 'Business details updated',
-			detail: 'Store address and GST information were changed.',
-			time: 'Yesterday',
-		},
-		{
-			title: 'Security check passed',
-			detail: 'Two-factor authentication is enabled for your account.',
-			time: '2 days ago',
-		},
-	]
+	if (loading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center bg-slate-100">
+				<div className="text-lg font-semibold text-slate-500">Loading profile...</div>
+			</div>
+		)
+	}
 
 	return (
 		<div className="min-h-screen bg-slate-100">
@@ -97,7 +110,7 @@ const SellerProfilePage = () => {
 							<div className="flex flex-wrap gap-3">
 								<button
 									type="button"
-									onClick={() => navigate('/seller/dashboard')}
+									onClick={() => navigate('/seller')}
 									className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
 								>
 									Dashboard
@@ -151,10 +164,12 @@ const SellerProfilePage = () => {
 									</div>
 									<div>
 										<h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-											Nova Traders
+											{business?.name || 'Your Store'}
 										</h2>
-										<p className="mt-1 text-sm font-medium text-slate-500">seller@novatraders.com</p>
-										<p className="mt-1 text-sm text-slate-500">Mumbai, Maharashtra</p>
+										<p className="mt-1 text-sm font-medium text-slate-500">{business?.email || '-'}</p>
+										<p className="mt-1 text-sm text-slate-500">
+											{businessAddress?.locality ? `${businessAddress.locality}, ${businessAddress.state}` : '-'}
+										</p>
 									</div>
 								</div>
 
@@ -168,12 +183,14 @@ const SellerProfilePage = () => {
 							</div>
 
 							<div className="mt-6 grid gap-4 sm:grid-cols-2">
-								<InfoCard label="Store name" value="Nova Traders" />
-								<InfoCard label="Owner name" value="Amit Sharma" />
-								<InfoCard label="Phone" value="+91 98765 43210" />
-								<InfoCard label="Joined" value="March 2024" />
-								<InfoCard label="Business type" value="Individual seller" />
-								<InfoCard label="GST number" value="22AAAAA0000A1Z5" />
+								<InfoCard label="Store name" value={business?.name || '-'} />
+								<InfoCard label="Owner name" value={sellerData?.name || '-'} />
+								<InfoCard label="Phone" value={business?.mobile || '-'} />
+								<InfoCard label="Category" value={business?.category || '-'} />
+								<InfoCard label="GST number" value={business?.gstIn || 'N/A'} />
+								<InfoCard label="Address" value={userAddress?.address || '-'} />
+								<InfoCard label="Bank" value={bank?.bankName || '-'} />
+								<InfoCard label="Account Holder" value={bank?.accountHolder || '-'} />
 							</div>
 						</article>
 
@@ -226,28 +243,7 @@ const SellerProfilePage = () => {
 							</div>
 						</article>
 
-						<article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm lg:col-span-2">
-							<div className="flex items-center justify-between gap-3">
-								<div>
-									<h2 className="text-lg font-semibold text-slate-900">Recent Activity</h2>
-									<p className="text-sm text-slate-500">Latest profile and account events.</p>
-								</div>
-							</div>
 
-							<div className="mt-5 grid gap-4 md:grid-cols-3">
-								{activity.map((item) => (
-									<div key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-										<div className="flex items-start justify-between gap-3">
-											<div>
-												<h3 className="font-semibold text-slate-900">{item.title}</h3>
-												<p className="mt-1 text-sm leading-6 text-slate-500">{item.detail}</p>
-											</div>
-											<span className="shrink-0 text-xs font-medium text-slate-400">{item.time}</span>
-										</div>
-									</div>
-								))}
-							</div>
-						</article>
 					</div>
 				</section>
 			</main>

@@ -7,33 +7,41 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 class productController{
   createProduct = asyncHandler(async(req,res) =>{
-    const authHeader = req.headers.authorization
-    
-    const token = 
-      req.cookies?.token ||
-      (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined);
-
-    if(!token){
-      throw new apiError(401, 'Unauthorized: No token provided');
+    const userId = req.user?.id;
+    if(!userId){
+      throw new apiError(401, 'Unauthorized');
     }
 
-    const newProduct = await productServiceInstance.createProduct(token,req.body,req.files)
+    const newProduct = await productServiceInstance.createProduct(userId,req.body,req.files)
     
     res.status(201).json(new apiResponse(201, newProduct, 'Product created successfully'));
   })
 
-  sellerProductDetails = asyncHandler(async(req,res) =>{
-    const authHeader = req.headers.authorization
-
-    const token = 
-      req.cookies?.token ||
-      (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined);
-   
-    if(!token){
-      throw new apiError(401, 'Unauthorized: No token provided');
+  updateProduct = asyncHandler(async(req,res) =>{
+    console.log("req.body:", req.body);
+    console.log("req.files:", req.files);
+    const userId = req.user?.id;
+    if(!userId){
+      throw new apiError(401, 'Unauthorized');
     }
 
-    const fetchDetails = await productServiceInstance.sellerProductDetails(token)
+    const productId = req.params.productId as string;
+    if(!productId) {
+        throw new apiError(400, "Product ID is required");
+    }
+    console.log("productId",productId)
+    const updatedProduct = await productServiceInstance.updateProduct(userId, productId, req.body,req.files)
+    
+    res.status(200).json(new apiResponse(200, updatedProduct, 'Product updated successfully'));
+  })
+
+  sellerProductDetails = asyncHandler(async(req,res) =>{
+    const userId = req.user?.id;
+    if(!userId){
+      throw new apiError(401, 'Unauthorized');
+    }
+
+    const fetchDetails = await productServiceInstance.sellerProductDetails(userId)
     res.status(201).json(new apiResponse(201,fetchDetails,"the details is fetch successfully"))
   })
 
@@ -43,33 +51,19 @@ class productController{
   })
 
   getCategoryProducts = asyncHandler(async(req,res) =>{
-    const authHeader = req.headers.authorization
-    const token = 
-      req.cookies?.token ||
-      (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined);
-
-    if(!token){
-      throw new apiError(401,"user is not authorized")
-    }
-
+    // authMiddleware ensures user is authenticated
     const products = await productServiceInstance.fetchCategoryWishProduct(req.body.category)
-    console.log("products",products)
-  res
-  .status(200)
-  .json(new apiResponse(200,products,"successfully Fetch the products"))
+    
+    res
+    .status(200)
+    .json(new apiResponse(200,products,"successfully Fetch the products"))
   })
 
   getProductById = asyncHandler(async(req,res)=>{
-    const authHeader = req.headers.authorization
-    const token = 
-      req.cookies?.token ||
-      (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined);
-    
-    if(!token){
-      throw new apiError(401,"user is not authorized")
-    }
-
+    // authMiddleware ensures user is authenticated
     const productId = req.query.productId as string;
+
+    
     if(!productId){
       throw new apiError(400,"productId is required")
     }
@@ -81,7 +75,6 @@ class productController{
     .json(new apiResponse(200,products,"successfully Fetch the products"))
   })
   
-
 }
 
 export const productControllerInstance = new productController

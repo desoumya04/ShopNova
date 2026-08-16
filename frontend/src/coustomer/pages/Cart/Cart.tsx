@@ -3,15 +3,30 @@ import CartItemCard from "./CartItemCard";
 import Pricing from "./Pricing";
 import { Button, Divider } from "@mui/material";
 import { Favorite, LocalOffer } from "@mui/icons-material";
+import { useAppSelector, useAppDispatch } from "../../../Redux_toolkit/store";
+import { useEffect } from "react";
+import { fetchUserCart } from "../../../Redux_toolkit/cart/cartSlice";
 
 const Cart = () => {
+  const dispatch = useAppDispatch()
+  const { cartItems } = useAppSelector((state) => state.cart);
+
+  useEffect(() => {
+    dispatch(fetchUserCart())
+  }, [dispatch])
+
+  console.log("cart items",cartItems)
   return (
     <div className="pt-10 px-5 sm:px-10 md:px-60 min--screen">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div className="lg:col-span-2 space-y-3">
-          {[1, 1, 1, 1, 1].map(() => (
-            <CartItemCard />
-          ))}
+          {cartItems && cartItems.length > 0 ? (
+            cartItems.map((item: any) => (
+              <CartItemCard key={item.id} item={item} />
+            ))
+          ) : (
+            <p className="text-gray-500">Your cart is empty.</p>
+          )}
         </div>
 
         <div className="col-span-1 space-y-3 w-full">
@@ -38,7 +53,7 @@ const Cart = () => {
             <section  className="grid-cols-1 items-center gap-2" >
               <h1 className="font-semibold text-lg text-gray-600">Price Details</h1>
               <Divider className="my-2" />
-              <Pricing/>
+              <Pricing item={cartItems??[]}/>
 
               <div className="py-5">
                 <Button variant="contained" color="primary" fullWidth>

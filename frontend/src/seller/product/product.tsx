@@ -250,6 +250,7 @@ const ProductPage = () => {
 											<div className="flex items-center justify-end gap-2">
 												<button
 													type="button"
+													onClick={() => navigate(`/seller/products/edit/${product.id}`)}
 													className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:bg-slate-50"
 													aria-label={`Edit ${product.name}`}
 												>

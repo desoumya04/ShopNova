@@ -223,27 +223,7 @@ const Checkout = () => {
                 </h3>
               </div>
 
-              <Pricing
-                tone="light"
-                className="space-y-5"
-                rows={[
-                  {
-                    label: "Subtotal",
-                    value: `₹${subtotal.toFixed(2)}`,
-                  },
-                  {
-                    label: "Delivery Charge",
-                    value: `₹${deliveryCharge.toFixed(2)}`,
-                  },
-                  {
-                    label: "Tax",
-                    value: `₹${tax.toFixed(2)}`,
-                  },
-                ]}
-                totalLabel="Total Amount"
-                totalValue={`₹${totalAmount.toFixed(2)}`}
-                footerText="Includes all applicable charges"
-              />
+              <Pricing/>
             </div>
             <div className="mt-6">
               <Button

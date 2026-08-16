@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Redux_toolkit/store";
 import { fetchUserData } from "../../Redux_toolkit/coustomer/userSlice";
+import { fetchUserCart } from "../../Redux_toolkit/cart/cartSlice";
 
 const NAV_LINKS = [
   { label: "Electronics", to: "/products/electronics" },
@@ -22,18 +23,23 @@ const NAV_LINKS = [
 ];
 
 const Navbar = () => {
- const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
 
   // Get user login status and details from user slice (fetched via cookie-based API)
-  const {name,email}= useAppSelector((state)=>state.user)
- 
- 
+  const { name, email } = useAppSelector((state) => state.user)
+  const { cartItems } = useAppSelector((state) => state.cart);
+  const totalCartItems = cartItems?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
+
+
   useEffect(() => {
     dispatch(fetchUserData());
-  },[dispatch]);
+    dispatch(fetchUserCart());
+  }, [dispatch]);
+
+  console.log("items", cartItems)
   const role = useAppSelector((state) => state.user.role);
   const isSeller = role === "SELLER";
 
@@ -42,7 +48,7 @@ const Navbar = () => {
   const userName = name || "User";
 
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
-  
+
   const navigate = useNavigate();
   // Close drawer on outside click
   useEffect(() => {
@@ -58,12 +64,12 @@ const Navbar = () => {
 
 
   const handleSellerNavigation = () => {
-  if (isSeller) {
-    navigate("/seller");
-  } else {
-    navigate("/seller/signup");
-  }
-};
+    if (isSeller) {
+      navigate("/seller");
+    } else {
+      navigate("/seller/signup");
+    }
+  };
 
   // Lock body scroll when drawer is open
   useEffect(() => {
@@ -109,9 +115,9 @@ const Navbar = () => {
             <button
               className="nb-mobile-icon-btn"
               aria-label="Cart"
-              onClick={() => navigate("/order")}
+              onClick={() => navigate("/cart")}
             >
-              <Badge badgeContent={3} color="error">
+              <Badge badgeContent={totalCartItems} color="error">
                 <ShoppingCart />
               </Badge>
             </button>
@@ -152,17 +158,17 @@ const Navbar = () => {
               </button>
             ) : (
               <div className="flex items-center gap-3">
-                <button 
-                  className="flex items-center gap-1.5 text-blue-600 border border-blue-600 hover:bg-blue-50 transition-all font-medium text-sm px-5 py-2 rounded-full shadow-sm hover:shadow-md active:scale-95" 
-                  aria-label="Login" 
+                <button
+                  className="flex items-center gap-1.5 text-blue-600 border border-blue-600 hover:bg-blue-50 transition-all font-medium text-sm px-5 py-2 rounded-full shadow-sm hover:shadow-md active:scale-95"
+                  aria-label="Login"
                   onClick={() => navigate("/login")}
                 >
                   <Login fontSize="small" />
                   <span>Login</span>
                 </button>
-                <button 
-                  className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-medium text-sm transition-all shadow-sm hover:shadow-md active:scale-95" 
-                  aria-label="Signup" 
+                <button
+                  className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-medium text-sm transition-all shadow-sm hover:shadow-md active:scale-95"
+                  aria-label="Signup"
                   onClick={() => navigate("/signup")}
                 >
                   <span>Signup</span>
@@ -170,14 +176,14 @@ const Navbar = () => {
               </div>
             )}
 
-            <button className="nb-icon-btn" aria-label="Cart" onClick={() => navigate("/order")}>
-              <Badge badgeContent={3} color="error">
+            <button className="nb-icon-btn" aria-label="Cart" onClick={() => navigate("/cart")}>
+              <Badge badgeContent={totalCartItems} color="error">
                 <ShoppingCart />
               </Badge>
             </button>
 
             <button className="nb-seller-btn" onClick={handleSellerNavigation}>
-              {isSeller? 'Seller' : 'Become a Seller'}
+              {isSeller ? 'Seller' : 'Become a Seller'}
             </button>
           </div>
         </div>
@@ -201,7 +207,7 @@ const Navbar = () => {
         {/* Drawer header */}
         <div className="nb-drawer-head">
           <div className="nb-drawer-head-main">
-            
+
             <button onClick={() => navigate("/")} >
               SOP<span>NOVA</span>
             </button>
@@ -227,23 +233,23 @@ const Navbar = () => {
 
         {/* Drawer nav links */}
         <button className="nb-drawer-action" onClick={() => {
-            navigate(isLoggedIn ? "/account" : "/login");
-            setMobileOpen(false);
-          }}>
-            {isLoggedIn ? (
-              <>
-                <Avatar sx={{ width: 28, height: 28, fontSize: 12 }}>
-                  {userInitial}
-                </Avatar>
-                {userName}
-              </>
-            ) : (
-              <>
-                <Login />
-                Login / Sign up
-              </>
-            )}
-          </button>
+          navigate(isLoggedIn ? "/account" : "/login");
+          setMobileOpen(false);
+        }}>
+          {isLoggedIn ? (
+            <>
+              <Avatar sx={{ width: 28, height: 28, fontSize: 12 }}>
+                {userInitial}
+              </Avatar>
+              {userName}
+            </>
+          ) : (
+            <>
+              <Login />
+              Login / Sign up
+            </>
+          )}
+        </button>
         <nav className="nb-drawer-nav" aria-label="Mobile primary">
           {NAV_LINKS.map((l) => (
             <Link
@@ -258,10 +264,10 @@ const Navbar = () => {
 
           <div className="nb-drawer-divider" />
 
-          
 
-          <button className="nb-drawer-action" onClick={() => navigate("/order")}>
-            <Badge badgeContent={3} color="error">
+
+          <button className="nb-drawer-action" onClick={() => navigate("/cart")}>
+            <Badge badgeContent={totalCartItems} color="error">
               <ShoppingCart />
             </Badge>
             My Cart

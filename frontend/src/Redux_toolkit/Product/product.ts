@@ -137,24 +137,20 @@ export const fetchCategory = createAsyncThunk<category[]>(
     }
   }
 )
-
-
-export const getProductByProductId = createAsyncThunk(
-  "/product/getProductByProductId",
-  async(productId:string,{rejectWithValue})=>{
+export const updateProductData = createAsyncThunk(
+  "product/updateProductData",
+  async ({ productId, productData }: { productId: string; productData: FormData }, { rejectWithValue }) => {
     try {
-      const response = await api.get(`${api_path}/getProductByProductId`,{
-        params:{
-          productId
-        }
-      })
-      console.log(response.data)
-      return response.data.data
-    } catch (error:any) {
-      return rejectWithValue(error.response.data)
+      const response = await api.put(`${api_path}/${productId}`, productData);
+      console.log(response.data);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
     }
   }
-)
+);
+
+
 
 
 
@@ -198,6 +194,17 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      .addCase(updateProductData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProductData.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(updateProductData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
       .addCase(fetchCategory.pending , (state)=>{
         state.loading = true
         state.error = null
@@ -221,14 +228,7 @@ const productSlice = createSlice({
         state.error = action.payload as string
         
       })
-      .addCase(getProductByProductId.fulfilled,(state,action) =>{
-        state.products = action.payload
-
-      })
-      .addCase(getProductByProductId.rejected,(state,action) =>{
-        state.error = action.payload as string
-        
-      })
+      
   }
 })
 export const { updateProduct, updateProductVariants } = productSlice.actions;

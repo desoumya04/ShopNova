@@ -5,58 +5,53 @@ type PricingRow = {
 };
 
 type PricingProps = {
-  rows?: PricingRow[];
-  totalLabel?: string;
-  totalValue?: string;
-  footerText?: string;
-  tone?: "light" | "dark";
-  className?: string;
+  item?: any[];
 };
 
-const defaultRows: PricingRow[] = [
-  {
-    label: "Price (5 items)",
-    value: "₹6,499",
-    valueClassName: "font-semibold text-lg",
-  },
-  {
-    label: "Discount",
-    value: "-₹1,200",
-    valueClassName: "font-semibold text-lg text-green-600",
-  },
-  {
-    label: "Delivery Charges",
-    value: "Free",
-    valueClassName: "font-semibold text-lg text-green-600",
-  },
-];
-
 const Pricing = ({
-  rows = defaultRows,
-  totalLabel = "Total Amount",
-  totalValue = "₹5,299",
-  footerText = "You will save ₹1,200 on this order",
-  tone = "light",
-  className = "",
+  item = [],
 }: PricingProps) => {
-  const isDark = tone === "dark";
-  const labelClassName = isDark ? "text-slate-300" : "text-gray-600";
-  const totalLabelClassName = isDark
-    ? "text-slate-100 font-semibold text-lg"
-    : "text-gray-600 font-semibold text-lg";
-  const totalValueClassName = isDark
-    ? "font-semibold text-xl text-emerald-300"
-    : "font-semibold text-xl text-teal-700";
-  const footerClassName = isDark ? "text-xs text-slate-400 mt-3" : "text-xs text-gray-400 mt-3";
+
+
+
+
+
+  const totalItems = item.reduce((acc, curr) => acc + (curr.quantity || 1), 0);
+  const totalMRP = item.reduce((acc, curr) => acc + (curr.product?.costPrice || 0) * (curr.quantity || 1), 0);
+  const totalSellingPrice = item.reduce((acc, curr) => acc + (curr.product?.price || 0) * (curr.quantity || 1), 0);
+  const totalDiscount = totalMRP > totalSellingPrice ? totalMRP - totalSellingPrice : 0;
+
+
+
+
+
+
+  const rows: PricingRow[] = [
+    {
+      label: `Price (${totalItems} item${totalItems !== 1 ? 's' : ''})`,
+      value: `₹${totalMRP}`,
+      valueClassName: "font-medium text-[15px] text-gray-800",
+    },
+    {
+      label: "Discount",
+      value: totalDiscount > 0 ? `-₹${totalDiscount}` : "₹0",
+      valueClassName: "font-medium text-[15px] text-green-600",
+    },
+    {
+      label: "Delivery Charges",
+      value: "Free",
+      valueClassName: "font-medium text-[15px] text-green-600",
+    },
+  ];
 
   return (
-    <div className={className}>
-      <div className="space-y-3">
+    <div className={`w-full`}>
+      <div className="space-y-4 pt-2">
         {rows.map((row) => (
-          <div key={row.label} className="flex justify-between items-center gap-4">
-            <span className={labelClassName}>{row.label}</span>
+          <div key={row.label} className="flex justify-between items-center">
+            <span className="text-gray-600 text-[15px]">{row.label}</span>
             <span
-              className={row.valueClassName ?? (isDark ? "font-semibold text-lg text-white" : "font-semibold text-lg")}
+              className={row.valueClassName ?? "font-medium text-[15px] text-gray-800"}
             >
               {row.value}
             </span>
@@ -64,14 +59,23 @@ const Pricing = ({
         ))}
       </div>
 
-      <hr className={isDark ? "my-4 border-slate-700" : "my-3"} />
+      <div className="my-4 border-t border-dashed border-gray-300" />
 
-      <div className="flex justify-between items-center gap-4">
-        <span className={totalLabelClassName}>{totalLabel}</span>
-        <span className={totalValueClassName}>{totalValue}</span>
+      <div className="flex justify-between items-center pb-2">
+        <span className="text-gray-800 font-bold text-[17px]">Total Amount</span>
+        <span className="font-bold text-[18px] text-gray-900">₹{totalSellingPrice}</span>
       </div>
 
-      {footerText && <p className={footerClassName}>{footerText}</p>}
+      {totalDiscount > 0 && (
+        <>
+          <div className="my-2 border-t border-dashed border-gray-300" />
+          <div className="pt-2">
+            <p className="font-semibold text-[15px] text-green-600">
+              You will save ₹{totalDiscount} on this order
+            </p>
+          </div>
+        </>
+      )}
     </div>
   );
 };

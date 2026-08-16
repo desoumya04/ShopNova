@@ -48,10 +48,20 @@ export type UserAddress = Prisma.UserAddressModel
  */
 export type BusinessAddress = Prisma.BusinessAddressModel
 /**
- * Model Orders
+ * Model Order
  * 
  */
-export type Orders = Prisma.OrdersModel
+export type Order = Prisma.OrderModel
+/**
+ * Model OrderItem
+ * 
+ */
+export type OrderItem = Prisma.OrderItemModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
 /**
  * Model Product
  * 
@@ -77,3 +87,28 @@ export type Category = Prisma.CategoryModel
  * 
  */
 export type Review = Prisma.ReviewModel
+/**
+ * Model Cart
+ * 
+ */
+export type Cart = Prisma.CartModel
+/**
+ * Model CartItem
+ * 
+ */
+export type CartItem = Prisma.CartItemModel
+/**
+ * Model Wishlist
+ * 
+ */
+export type Wishlist = Prisma.WishlistModel
+/**
+ * Model WishlistItem
+ * 
+ */
+export type WishlistItem = Prisma.WishlistItemModel
+/**
+ * Model Inventory
+ * 
+ */
+export type Inventory = Prisma.InventoryModel

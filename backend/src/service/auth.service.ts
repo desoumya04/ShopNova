@@ -1,7 +1,7 @@
 import { prisma } from '../config/db.js';
 import { apiError } from '../utils/apiError.js';
 import { JWTProviderInstance } from '../utils/jwtProvider.js';
-import { EmailServiceInstance } from '../utils/sendEmail.js';
+
 
 interface otpData{
   email:string,

@@ -86,7 +86,7 @@ class UserService {
     const existingUser = await prisma.user.findUnique({
       where: { id: userId }
     })
-    console.log('existingUser:', existingUser);
+  
     if (!existingUser) {
       throw new apiError(404, 'User not found');
     }

@@ -1,14 +1,18 @@
-import { configureStore,combineReducers } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, type TypedUseSelectorHook } from 'react-redux';
 import userReducer from './coustomer/userSlice';
 import sellerReducer from './seller/seller';
 import productReducer from './Product/product';
+import cartReducer from './cart/cartSlice';
+import wishListReducer from './wishlist/wishListSlice';
 
 const rootReducer = combineReducers({
   // Add your reducers here
-  user:userReducer,
-  seller:sellerReducer,
-  product:productReducer,
+  user: userReducer,
+  seller: sellerReducer,
+  product: productReducer,
+  cart: cartReducer,
+  wishlist: wishListReducer,
 });
 const store = configureStore({
   reducer: rootReducer,

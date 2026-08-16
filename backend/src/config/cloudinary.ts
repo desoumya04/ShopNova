@@ -20,7 +20,7 @@ const uploadImage = async (filePath: string) => {
     })
     console.log('Image uploaded successfully',result.url);
     fs.unlinkSync(filePath);
-    return new apiResponse(200, {url: result.url}, 'Image uploaded successfully');
+    return new apiResponse(200, {url: result.url,publicId: result.public_id}, 'Image uploaded successfully');
   }catch(error){
     fs.unlinkSync(filePath);
 
@@ -30,4 +30,10 @@ const uploadImage = async (filePath: string) => {
   }
 }
 
+
+export const deleteCloudinaryImage = async (publicId: string) => {
+  return await cloudinary.uploader.destroy(publicId, {
+    invalidate: true,
+  });
+}
 export default uploadImage;

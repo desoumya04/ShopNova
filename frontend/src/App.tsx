@@ -15,6 +15,7 @@ import Login from './coustomer/pages/Login/login';
 
 
 import AddProductForm from './seller/AddProduct/addProductForm';
+import EditProductForm from './seller/AddProduct/editProductForm';
 import SellerProduct from './seller/product/product';
 import SellerDashboard from './seller/Dashboard/dashboard';
 import SellerOrders from './seller/Orders/order';
@@ -28,6 +29,7 @@ import SellerAccount from './seller/SellerAccount';
 import SellerLogin from './seller/SellerLogin';
 import ProtectedRoute from './routes/ProtectedRoute';
 import GuestRoute from './routes/GuestRoute';
+import Cart from './coustomer/pages/Cart/Cart';
 
 
 function App() {
@@ -61,6 +63,7 @@ function App() {
               <Route path="/seller/signup" element={<SellerSignup />} />
               <Route path="/seller/onboarding/business" element={<SellerBussiness />} />
               <Route path="/seller/onboarding/account" element={<SellerAccount />} />
+              <Route path="/cart" element={<Cart/>} />
             </Route>
         </Route>
         {/* Seller Routes */}
@@ -73,6 +76,7 @@ function App() {
             <Route path="/seller/analytics" element={<div>Seller Analytics</div>} />
             <Route path="/seller/payouts" element={<SellerPayouts/>} />
             <Route path="/seller/products/new" element={<AddProductForm />} />
+            <Route path="/seller/products/edit/:productId" element={<EditProductForm />} />
           </Route>
         </Route>
       </Routes>

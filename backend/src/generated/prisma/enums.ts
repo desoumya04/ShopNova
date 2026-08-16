@@ -48,7 +48,42 @@ export type BusinessCategory = (typeof BusinessCategory)[keyof typeof BusinessCa
 export const ProductStatus = {
   DRAFT: 'DRAFT',
   ACTIVE: 'ACTIVE',
-  LOW_STOCK: 'LOW_STOCK'
+  LOW_STOCK: 'LOW_STOCK',
+  ARCHIVED: 'ARCHIVED',
+  DELETED: 'DELETED'
 } as const
 
 export type ProductStatus = (typeof ProductStatus)[keyof typeof ProductStatus]
+
+
+export const OrderStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED',
+  RETURNED: 'RETURNED'
+} as const
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const PaymentStatus = {
+  UNPAID: 'UNPAID',
+  PAID: 'PAID',
+  REFUNDED: 'REFUNDED',
+  FAILED: 'FAILED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const PaymentMethod = {
+  COD: 'COD',
+  UPI: 'UPI',
+  CARD: 'CARD',
+  NET_BANKING: 'NET_BANKING',
+  WALLET: 'WALLET'
+} as const
+
+export type PaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod]

@@ -32,9 +32,7 @@ const Productcard = ({item}:{item:any}) => {
         onMouseLeave={() => setHover(false)}
         className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-xl"
       >
-        <div className="absolute left-4 top-4 z-10 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm">
-          {item.categoryId || "Featured"}
-        </div>
+       
         {images.map((image:any,index:number) => (
           <img
             key={index}
@@ -58,13 +56,13 @@ const Productcard = ({item}:{item:any}) => {
         </div>
         <div className="flex items-center gap-3 text-sm">
           <span className="font-semibold text-emerald-700">
-            ₹{Number(item.costPrice)?.toLocaleString("en-IN")}
-          </span>
-          <span className="font-thin text-slate-400 line-through">
             ₹{Number(item.price)?.toLocaleString("en-IN")}
           </span>
+          <span className="font-thin text-slate-400 line-through">
+            ₹{Number(item.costPrice)?.toLocaleString("en-IN")}
+          </span>
           <span className="font-semibold text-emerald-700">
-            {Number(item.discountPrice)}% off
+            ₹{Number(item.discountPrice)} off
           </span>
 
         </div>

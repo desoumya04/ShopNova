@@ -7,7 +7,6 @@ const API_URL= "/seller"
 
 type SellerState = {
   seller: {
-   
     role: string;
     password:string;
   };
@@ -116,6 +115,8 @@ export const loginSeller = createAsyncThunk(
 )
 
 
+
+
 const sellerSlice = createSlice({
   name: "seller",
   initialState: initialState,
@@ -182,6 +183,7 @@ const sellerSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     })
+    
 
   }
 })
