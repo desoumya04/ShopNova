@@ -34,10 +34,11 @@ class jwtProvider {
   }
 
   cookieOptions(){
+    const isProduction = process.env.NODE_ENV === 'production';
     return {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict' as const,
+      secure: isProduction,
+      sameSite: (isProduction ? 'none' : 'lax') as 'none' | 'lax',
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     };
   }
