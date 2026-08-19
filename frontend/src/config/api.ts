@@ -1,5 +1,11 @@
 import axios from "axios";
-const api_path = `${import.meta.env.VITE_BACKEND_URL}/api/v1`; ;
+
+// In production, VITE_BACKEND_URL is empty so we use a relative path (/api/v1).
+// Vercel proxies /api/* to the Render backend, making the cookie same-origin.
+// In local dev, VITE_BACKEND_URL points to localhost:5001.
+const api_path = import.meta.env.VITE_BACKEND_URL
+  ? `${import.meta.env.VITE_BACKEND_URL}/api/v1`
+  : `/api/v1`;
 
 export const api = axios.create({
   baseURL: api_path,
