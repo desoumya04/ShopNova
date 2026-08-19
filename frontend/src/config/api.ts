@@ -15,7 +15,7 @@ api.interceptors.response.use(
   (error) => {
     // Don't redirect on 401 for auth/profile check requests — route guards and components handle those
     const requestUrl = error.config?.url || "";
-    const skipRedirectPaths = ["/auth/check", "/auth/logout", "/user/profile"];
+    const skipRedirectPaths = ["/auth/check", "/auth/logout", "/user/profile", "/cart"];
     const shouldSkip = skipRedirectPaths.some((path) => requestUrl.includes(path));
 
     if ((error.response?.status === 401 || error.response?.status === 404) && !shouldSkip) {

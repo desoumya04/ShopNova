@@ -58,7 +58,18 @@ const Checkout = () => {
     }
   }, [orderId]);
 
-  
+  // Load Razorpay script dynamically
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   // featch the old address
   useEffect(() => {
     const fetchAddresses = async () => {
