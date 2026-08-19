@@ -7,7 +7,7 @@ class wishList{
 
     addToWishlist = asyncHandler(async (req,res)=>{
 
-        console.log("req",req.body)
+        
         const userId = req.user?.id
         if(!userId){
             throw new apiError(401,'Unauthorized: User ID missing')

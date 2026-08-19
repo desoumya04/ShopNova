@@ -11,8 +11,8 @@ import ProductDetails from './coustomer/pages/product/ProductDetails/ProductDeta
 import ProfileDetails from './coustomer/pages/Order/profile';
 import Signup from './coustomer/pages/Signup/signup';
 import Login from './coustomer/pages/Login/login';
-
-
+import Checkout from './coustomer/pages/Address/Checkout';
+import Order from './coustomer/pages/Order/Order';
 
 import AddProductForm from './seller/AddProduct/addProductForm';
 import EditProductForm from './seller/AddProduct/editProductForm';
@@ -57,9 +57,9 @@ function App() {
               <Route path="/fashion" element={<Product />} />
               <Route path="/grocery" element={<Product />} />
               <Route path="/account/*" element={<ProfileDetails />} />
-
+              <Route path="/order" element={<Order/>} />
               <Route path="/product-details/:CategoryId/:productId" element={<ProductDetails />} />
-              
+              <Route path="/checkout/:orderId" element={<Checkout/>} />
               <Route path="/seller/signup" element={<SellerSignup />} />
               <Route path="/seller/onboarding/business" element={<SellerBussiness />} />
               <Route path="/seller/onboarding/account" element={<SellerAccount />} />

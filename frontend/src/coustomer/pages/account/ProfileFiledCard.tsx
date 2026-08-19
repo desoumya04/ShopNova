@@ -23,8 +23,7 @@ const ProfileFiledCard = ( {user}: { user: User } ) => {
   useEffect(() => {
     setDraft(u)
   }, [u])
-  
-  console.log("ProfileFiledCard ioo - user prop:",isEditing, u);
+
   const handleChange = (field: keyof User, value: string) => {
     setDraft((current) => ({
       ...current,

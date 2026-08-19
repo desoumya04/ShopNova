@@ -150,6 +150,18 @@ export const updateProductData = createAsyncThunk(
   }
 );
 
+export const archiveProduct = createAsyncThunk(
+  "product/archiveProduct",
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      await api.patch(`${api_path}/${productId}/archive`);
+      return productId; // return the ID so we can update state
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "Failed to archive product");
+    }
+  }
+);
+
 
 
 
@@ -227,6 +239,14 @@ const productSlice = createSlice({
       .addCase(fetchCategoryProducts.rejected,(state,action) =>{
         state.error = action.payload as string
         
+      })
+      .addCase(archiveProduct.fulfilled, (state, action) => {
+        const archivedProductId = action.payload;
+        // Find the product and update its status to ARCHIVED
+        const productIndex = state.products.findIndex(p => p.id === archivedProductId);
+        if (productIndex !== -1) {
+          state.products[productIndex].status = "ARCHIVED";
+        }
       })
       
   }

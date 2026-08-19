@@ -1,50 +1,15 @@
+import { useEffect } from 'react';
 import Ordercard from './Ordercard';
-
-const ORDER_ITEMS = [
-  { id: 1,
-    title: 'Josh Bager',
-    seller: 'Jio Mart Private Limited',
-    image: 'https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/v/w/q/free-fandy-vivan-fab-unstitched-original-imahgzzh6vyqbzsw.jpeg?q=90',
-    price: '₹1,299',
-    quantity: 2,
-    status: 'Delivered',
-  },
-  {
-    
-    title: 'Noise Headphones',
-    seller: 'Noise India',
-    image: 'https://rukminim2.flixcart.com/image/312/312/xif0q/headphone/g/r/1/-original-imagyqg3k3zjz2rn.jpeg?q=70',
-    price: '₹2,499',
-    quantity: 1,
-    status: 'Shipped',
-  },
-  {
-    title: 'Josh Bager',
-    seller: 'Jio Mart Private Limited',
-    image: 'https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/v/w/q/free-fandy-vivan-fab-unstitched-original-imahgzzh6vyqbzsw.jpeg?q=90',
-    price: '₹1,299',
-    quantity: 2,
-    status: 'Delivered',
-  },
-  {
-    title: 'Josh Bager',
-    seller: 'Jio Mart Private Limited',
-    image: 'https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/v/w/q/free-fandy-vivan-fab-unstitched-original-imahgzzh6vyqbzsw.jpeg?q=90',
-    price: '₹1,299',
-    quantity: 2,
-    status: 'Delivered',
-  },
-  {
-    title: 'Josh Bager',
-    seller: 'Jio Mart Private Limited',
-    image: 'https://rukminim2.flixcart.com/image/2940/2940/xif0q/sari/v/w/q/free-fandy-vivan-fab-unstitched-original-imahgzzh6vyqbzsw.jpeg?q=90',
-    price: '₹1,299',
-    quantity: 2,
-    status: 'Delivered',
-  },
-];
+import { useAppDispatch, useAppSelector } from '../../../Redux_toolkit/store';
+import { fetchSuccessOrder } from '../../../Redux_toolkit/order/orderSlice';
 
 const Order = () => {
+  const dispatch = useAppDispatch();
+  const { orders = [], loading = false, error = null } = useAppSelector((state) => state.order || {});
+
+  useEffect(() => {
+    dispatch(fetchSuccessOrder());
+  }, [dispatch]);
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -58,9 +23,26 @@ const Order = () => {
         
 
           <div className="space-y-4">
-            {ORDER_ITEMS.map((item) => (
-              <Ordercard key={`${item.title}-${item.status}`} {...item} />
-            ))}
+            {loading && <p>Loading orders...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && (!orders || orders.length === 0) && <p>No orders found.</p>}
+            {!loading &&
+              Array.isArray(orders) &&
+              orders.map((order) =>
+                Array.isArray(order?.items)
+                  ? order.items.map((item) => (
+                      <Ordercard
+                        key={item?.id || Math.random()}
+                        title={item?.product?.title || 'Unknown Product'}
+                        seller={item?.product?.seller?.shopName || 'Unknown Seller'}
+                        image={item?.product?.images?.[0]?.url || ''}
+                        price={`₹${(item?.product?.price || 0) * (item?.quantity || 1)}`}
+                        quantity={item?.quantity || 1}
+                        status={order?.paymentStatus || 'Unknown'}
+                      />
+                    ))
+                  : null
+              )}
           </div>
         </div>
 

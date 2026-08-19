@@ -39,11 +39,11 @@ const Navbar = () => {
     dispatch(fetchUserCart());
   }, [dispatch]);
 
-  console.log("items", cartItems)
+
   const role = useAppSelector((state) => state.user.role);
   const isSeller = role === "SELLER";
 
-  console.log("role", isSeller);
+
   const isLoggedIn = !!email;
   const userName = name || "User";
 

@@ -99,6 +99,42 @@ class UserService {
     })
     return { name: updatedUser.name, phone: updatedUser.mobile, joined: updatedUser.createdAt };
   }
+
+
+  async fetchUserAdresss(userId:string){
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId } 
+    })
+    if (!existingUser) {
+      throw new apiError(404, 'User not found');
+    }
+    const updatedUser = await prisma.userAddress.findMany({
+      where: { userId: userId },
+    })
+    return updatedUser;
+  }
+
+  async addNewAress(userId:string, addressData:any){
+    const existingUser = await prisma.user.findUnique({
+      where: { id: userId } 
+    })
+    if (!existingUser) {
+      throw new apiError(404, 'User not found');
+    }
+    const updatedUser = await prisma.userAddress.create({
+      data: {
+       user:{
+        connect:{id:userId}
+       },
+        address: addressData.address,
+        locality  : addressData.locality,
+        state: addressData.state,
+        pinCode: addressData.pinCode,
+       
+      },
+    })
+    return updatedUser;
+  }
 }
 
 

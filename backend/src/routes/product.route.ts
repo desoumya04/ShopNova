@@ -10,6 +10,7 @@ productRouter.get('/product/getCategory', productControllerInstance.getCategory)
 productRouter.post('/product/createProduct', authMiddleware, upload.array("productImages", 5), productControllerInstance.createProduct)
 productRouter.put('/product/:productId', authMiddleware,upload.array("updatedImage", 5), productControllerInstance.updateProduct)
 productRouter.get('/product/sellerProductDetails', authMiddleware, productControllerInstance.sellerProductDetails)
+productRouter.patch('/product/:productId/archive', authMiddleware, productControllerInstance.archiveProduct)
 
 productRouter.post("/product/categoryProducts", authMiddleware, productControllerInstance.getCategoryProducts)
 productRouter.get("/product/getProductByProductId", authMiddleware, productControllerInstance.getProductById)

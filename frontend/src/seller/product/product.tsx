@@ -12,7 +12,7 @@ import {
 	VisibilityOutlined,
 } from '@mui/icons-material'
 
-import { fetchSellerProducts } from '../../Redux_toolkit/Product/product'
+import { archiveProduct, fetchSellerProducts } from '../../Redux_toolkit/Product/product'
 
 type ProductStatus = 'ACTIVE' | 'DRAFT' | 'LOW_STOCK'
 
@@ -256,15 +256,10 @@ const ProductPage = () => {
 												>
 													<EditOutlined fontSize="small" />
 												</button>
+											
 												<button
 													type="button"
-													className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:bg-slate-50"
-													aria-label={`View ${product.name}`}
-												>
-													<VisibilityOutlined fontSize="small" />
-												</button>
-												<button
-													type="button"
+													onClick={() => dispatch(archiveProduct(product.id))}
 													className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-rose-200 text-rose-600 transition hover:bg-rose-50"
 													aria-label={`Delete ${product.name}`}
 												>

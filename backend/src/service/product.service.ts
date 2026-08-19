@@ -72,6 +72,12 @@ class productService {
           category: {
             connect: { id: products.categoryId },
           },
+          inventory:{
+            create:{
+              quantity: Number(products.stock),
+              reserved: 0
+            }
+          }
         },
       });
       await tx.productVariant.create({
@@ -99,6 +105,7 @@ class productService {
           },
         });
       
+
     });
     
     return newProduct;
@@ -231,7 +238,7 @@ class productService {
     // 1. Upload new images to Cloudinary BEFORE the transaction
     const uploadedImages: { url: string, publicId: string }[] = [];
     if(updateImages && updateImages.length > 0){
-      console.log("uploadedImages", updateImages);
+     
       for (const file of updateImages) {
         const uploadResult = await uploadImage(file.path);
         uploadedImages.push({ url: uploadResult.data.url, publicId: uploadResult.data.publicId });
@@ -307,7 +314,7 @@ class productService {
           try {
             await deleteCloudinaryImage(image.publicId);
           } catch (error) {
-            console.error("Failed to delete image from Cloudinary:", error);
+            throw new apiError(500,"failed to delete image")
           }
         }
       }
@@ -320,6 +327,38 @@ class productService {
     const categories = await prisma.category.findMany();
     return categories;
   }
+
+  async archiveProduct(userId: string, productId: string) {
+    const existingSeller = await prisma.seller.findUnique({
+      where: { userId },
+    });
+
+    if (!existingSeller) {
+      throw new apiError(404, "Seller not found");
+    }
+
+    const existingProduct = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!existingProduct) {
+      throw new apiError(404, "Product not found");
+    }
+
+    if (existingProduct.sellerId !== existingSeller.id) {
+      throw new apiError(403, "You do not have permission to archive this product");
+    }
+
+    const archivedProduct = await prisma.product.update({
+      where: { id: productId },
+      data: {
+        status: "ARCHIVED"
+      }
+    });
+
+    return archivedProduct;
+  }
+
 }
 
 export const productServiceInstance = new productService();

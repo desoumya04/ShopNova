@@ -6,16 +6,50 @@ import { Favorite, LocalOffer } from "@mui/icons-material";
 import { useAppSelector, useAppDispatch } from "../../../Redux_toolkit/store";
 import { useEffect } from "react";
 import { fetchUserCart } from "../../../Redux_toolkit/cart/cartSlice";
+import { api } from "../../../config/api";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useAppDispatch()
   const { cartItems } = useAppSelector((state) => state.cart);
+  const navigate = useNavigate();
+  const handleBuyCart = async () => {
 
+    const addressResponse = await api.get("/user/address");
+    const addresses = addressResponse.data?.data || [];
+    console.log("add", addresses)
+    let shippingDetails = {
+      shippingAddress: "",
+      shippingCity: "",
+      shippingState: "",
+      shippingPinCode: 0
+    };
+
+    if (addresses && addresses.length > 0) {
+      const addr = addresses[0];
+      console.log("address", addr)
+      shippingDetails = {
+        shippingAddress: addr.address || "",
+        shippingCity: addr.locality || "",
+        shippingState: addr.state || "",
+        shippingPinCode: addr.pinCode ? Number(addr.pinCode) : 0
+      };
+    }
+
+    const res = await api.post("/checkOut/addOrderItem", {
+      checkOutMode: "CART",
+      shippingDetails: shippingDetails
+    })
+    console.log("cart items", res)
+    const orderId = res?.data?.data?.order?.id;
+
+    navigate(`/checkout/${orderId}`);
+  }
   useEffect(() => {
     dispatch(fetchUserCart())
   }, [dispatch])
 
-  console.log("cart items",cartItems)
+
   return (
     <div className="pt-10 px-5 sm:px-10 md:px-60 min--screen">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
@@ -49,25 +83,25 @@ const Cart = () => {
               </div>
             </div>
           </div>
-          <div className="border border-gray-300 px-3 py-3 rounded-md"> 
-            <section  className="grid-cols-1 items-center gap-2" >
+          <div className="border border-gray-300 px-3 py-3 rounded-md">
+            <section className="grid-cols-1 items-center gap-2" >
               <h1 className="font-semibold text-lg text-gray-600">Price Details</h1>
               <Divider className="my-2" />
-              <Pricing item={cartItems??[]}/>
+              <Pricing item={cartItems ?? []} />
 
               <div className="py-5">
-                <Button variant="contained" color="primary" fullWidth>
+                <Button onClick={handleBuyCart} variant="contained" color="primary" fullWidth>
                   Buy Now
                 </Button>
               </div>
             </section>
           </div>
-            <div className="border rounded-md border-gray-300 px-5 py-3 flex justify-between items-center cursor-pointer gap-2">
-              <span className="text-sm text-gray-500">
-                Add From Whishlist
-              </span>
-              <Favorite color="primary" />
-            </div>
+          <div className="border rounded-md border-gray-300 px-5 py-3 flex justify-between items-center cursor-pointer gap-2">
+            <span className="text-sm text-gray-500">
+              Add From Whishlist
+            </span>
+            <Favorite color="primary" />
+          </div>
         </div>
       </div>
     </div>

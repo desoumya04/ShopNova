@@ -18,8 +18,7 @@ class productController{
   })
 
   updateProduct = asyncHandler(async(req,res) =>{
-    console.log("req.body:", req.body);
-    console.log("req.files:", req.files);
+    
     const userId = req.user?.id;
     if(!userId){
       throw new apiError(401, 'Unauthorized');
@@ -29,7 +28,7 @@ class productController{
     if(!productId) {
         throw new apiError(400, "Product ID is required");
     }
-    console.log("productId",productId)
+    
     const updatedProduct = await productServiceInstance.updateProduct(userId, productId, req.body,req.files)
     
     res.status(200).json(new apiResponse(200, updatedProduct, 'Product updated successfully'));
@@ -74,7 +73,20 @@ class productController{
     .status(200)
     .json(new apiResponse(200,products,"successfully Fetch the products"))
   })
-  
-}
+  archiveProduct = asyncHandler(async(req,res) =>{
+    const userId = req.user?.id;
+    if(!userId){
+      throw new apiError(401, 'Unauthorized');
+    }
 
+    const productId = req.params.productId as string;
+    if(!productId){
+      throw new apiError(400, "Product ID is required");
+    }
+
+    await productServiceInstance.archiveProduct(userId, productId);
+
+    res.status(200).json(new apiResponse(200, {}, 'Product archived successfully'));
+  })
+}
 export const productControllerInstance = new productController

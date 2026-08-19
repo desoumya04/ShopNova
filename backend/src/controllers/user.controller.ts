@@ -72,6 +72,24 @@ class UserController {
     const userDetails = await userService.updateUser(userId, req.body);
     res.status(200).json(new apiResponse(200, userDetails, 'User details updated successfully'));
   })
+
+  fetchUserAddresss = asyncHandler(async (req, res) => {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new apiError(401, 'Unauthorized: User ID missing');
+    }
+    const userAddress = await userService.fetchUserAdresss(userId);
+    res.status(200).json(new apiResponse(200, userAddress, 'User Adresss fetched successfully'));
+  })
+
+  addNewAddress = asyncHandler(async (req, res) => {
+    const userId = req.user?.id;
+    if (!userId) {
+      throw new apiError(401, 'Unauthorized: User ID missing');
+    }
+    const userAddress = await userService.addNewAress(userId, req.body);
+    res.status(200).json(new apiResponse(200, userAddress, 'User Adresss fetched successfully'));
+  })
 }
 
 export const userController = new UserController();

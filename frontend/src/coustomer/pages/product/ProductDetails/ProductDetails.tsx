@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Add, AddShoppingCart, Favorite, Remove, Star } from '@mui/icons-material'
-import { Button, Divider } from '@mui/material'
+import { Button} from '@mui/material'
 import SimilarProduct from './SimilarProduct'
 import { useLocation } from 'react-router'
 import { useAppSelector, useAppDispatch } from '../../../../Redux_toolkit/store'
@@ -8,6 +8,7 @@ import { addItemToCart, updateCartItem } from '../../../../Redux_toolkit/cart/ca
 import { api } from '../../../../config/api'
 import { toast } from 'sonner'
 import { addToWishlist } from '../../../../Redux_toolkit/wishlist/wishListSlice'
+import {useNavigate} from 'react-router-dom'
 
 type ProductImage = {
   id: string
@@ -31,7 +32,7 @@ type Product = {
 const ProductDetails = () => {
   const dispatch = useAppDispatch()
   const location = useLocation()
-
+  const navigate = useNavigate()
   const routeKey = location.pathname.split("/").filter(Boolean).pop() as string
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
@@ -68,7 +69,55 @@ const ProductDetails = () => {
   }, [routeKey])
 
 
+  const handleBuyDirect = async () => {
+    try {
+      const buyQuantity = alreadyInCart > 0 ? alreadyInCart : quantity;
+      
+      if(buyQuantity <= 0){
+        toast.error("Please select a quantity")
+        return
+      }
+      // Fetch user addresses to send with checkout
+      const addressResponse = await api.get("/user/address");
+      const addresses = addressResponse.data?.data || [];
+      console.log("add",addresses)
+      let shippingDetails = {
+        shippingAddress: "",
+        shippingCity: "",
+        shippingState: "",
+        shippingPinCode: 0
+      };
 
+      if (addresses && addresses.length > 0) {
+        const addr = addresses[0];
+        console.log("address",addr)
+        shippingDetails = {
+          shippingAddress: addr.address || "",
+          shippingCity: addr.locality || "",
+          shippingState: addr.state || "",
+          shippingPinCode: addr.pinCode ? Number(addr.pinCode) : 0
+        };
+      }
+  
+      const response = await api.post("/checkOut/addOrderItem",{
+        productId:routeKey,
+        quantity:buyQuantity,
+        checkOutMode:"DIRECT", 
+        shippingDetails: shippingDetails
+      })
+      
+      console.log("order",response.data.data.order)
+      if(response.status !== 201 && response.status !== 200){
+        throw new Error("failed to add item to cart")
+      }
+      const orderId = response.data.data.order.id
+      toast.success("Item added for checkout!")
+      navigate(`/checkout/${orderId}`)
+
+    } catch (error: any) {
+      toast.error(error.message || "something went wrong in adding to cart")
+    }
+  }
 
   const handleWishList = async () => {
     try {
@@ -269,6 +318,7 @@ const ProductDetails = () => {
               )}
               <Button 
                 variant={alreadyInCart > 0 ? 'contained' : 'outlined'} 
+                onClick={handleBuyDirect}
                 className={`!flex-1 !rounded-xl !py-3.5 !text-base !font-semibold transition-shadow ${alreadyInCart > 0 ? '!shadow-none hover:!shadow-md' : 'border-2'}`}
                 disableElevation
               >

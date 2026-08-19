@@ -5,6 +5,7 @@ import sellerReducer from './seller/seller';
 import productReducer from './Product/product';
 import cartReducer from './cart/cartSlice';
 import wishListReducer from './wishlist/wishListSlice';
+import orderReducer from './order/orderSlice';
 
 const rootReducer = combineReducers({
   // Add your reducers here
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   product: productReducer,
   cart: cartReducer,
   wishlist: wishListReducer,
+  order: orderReducer,
 });
 const store = configureStore({
   reducer: rootReducer,

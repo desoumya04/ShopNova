@@ -16,8 +16,8 @@ userRouter.get('/auth/check', authController.checkAuth)
 userRouter.post('/auth/logout', authController.logout)
 userRouter.get('/user/profile', authMiddleware, userController.userDetails)
 userRouter.post('/user/profile/update', authMiddleware, userController.updateUser)
-
-
+userRouter.get('/user/address', authMiddleware, userController.fetchUserAddresss)
+userRouter.post('/user/address/add',authMiddleware, userController.addNewAddress)
 
 
 export { userRouter }
