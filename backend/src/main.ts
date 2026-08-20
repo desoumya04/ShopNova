@@ -2,8 +2,14 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import router from './routes/index.js';
+import { startAbndonedOrderCron } from './config/abandoneOrder.js';
 
 const app = express();
+
+//start cron the abandone order
+
+startAbndonedOrderCron()
+
 
 const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173').split(',').map(o => o.trim());
 

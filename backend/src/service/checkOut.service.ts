@@ -134,30 +134,11 @@ class checkOutService{
                 }
             })
           
-            // create a new payment
-            const newPayment = await tx.payment.create({
-                data:{
-                    userId: userId,
-                    orderId:newOrder.id,
-                    amount:totalPrice,
-                    status:"UNPAID",
-                }
-            })
-          
-            // clenup the cart if the mode is CART
-            if (itemData.checkOutMode === "CART"){
-                await tx.cartItem.deleteMany({
-                    where: {
-                        cart:{
-                            userId:userId
-                        }
-                    }
-                })
-            }
+            
 
             
             
-            return{order: newOrder, payment:newPayment}
+            return{order: newOrder}
         })
        
 

@@ -28,14 +28,23 @@ class paymentService {
             const order = await razorpay.orders.create(options);
 
             // store payment order in database
-            const updatePayment = await prisma.payment.update({
-                where: {
-                    orderId: orderId,
-                },
+            const updatePayment = await prisma.payment.create({
                 data: {
                     gatewayOrderId: order.id,
                     amount: getOrder.finalPrice,
-                    
+                    status: "UNPAID",
+                    method: "UPI",
+                    provider: "razorpay",
+                    order:{
+                        connect:{
+                            id:orderId,
+                        }
+                    },
+                    user:{
+                        connect:{
+                            id:getOrder.userId,
+                        }
+                    }
                 }
             })
 
@@ -82,7 +91,7 @@ class paymentService {
 
 
         if (expectedSignature != razorpay_signature) {
-            
+
 
             throw new apiError(400, "Invalid payment signature")
         }
@@ -113,6 +122,20 @@ class paymentService {
         })
         if(!updateorder){
             throw new apiError(500,"Unable to update order")
+        }
+        // delete from cart
+        const cart = await prisma.cart.findUnique({
+            where: { userId: orderData.userId }
+        });
+        if (cart) {
+            const deleteCart = await prisma.cartItem.deleteMany({
+                where:{
+                    cartId: cart.id,
+                }
+            })
+            if(!deleteCart){
+                throw new apiError(500,"Unable to delete cart")
+            }
         }
         // update inventry
         const items = await prisma.orderItem.findMany({
