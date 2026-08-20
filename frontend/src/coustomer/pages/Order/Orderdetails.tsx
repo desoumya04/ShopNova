@@ -1,13 +1,13 @@
 import Orederstep from './Orederstep';
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../Redux_toolkit/store';
 import { fetchSuccessOrder } from '../../../Redux_toolkit/order/orderSlice';
 
 const OrderDetails = () => {
   const { orderId, itemId } = useParams<{ orderId: string; itemId: string }>();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  
 
   const { orders = [], loading = false } = useAppSelector((state) => state.order || {});
   
