@@ -153,6 +153,7 @@ class productService {
     beauty: "Beauty",
     sports: "Sports",
     toys: "Toys",
+    home_appliances:"Home Appliances"
   };
 
   const categoryName = categoryMap[category.trim().toLowerCase()];
@@ -191,7 +192,8 @@ class productService {
       },
       include:{
         images:true,
-        variants:true
+        variants:true,
+        inventory:true
       }
     })
 
@@ -304,6 +306,13 @@ class productService {
           });
         }
       }
+      await tx.inventory.update({
+        where: { productId },
+        data: {
+          quantity: Number(products.stock),
+          
+        },
+      });
      
       return updatedProduct;
     });

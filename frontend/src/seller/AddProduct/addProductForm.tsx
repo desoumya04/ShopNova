@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../Redux_toolkit/store'
 import { fetchCategory, createProduct } from '../../Redux_toolkit/Product/product'
+import { CATEGORY_PRODUCT_NAMES } from '../../data/categoryProducts'
+import { colors } from '../../../data/filter/color'
 
 const MAX_IMAGES = 5
 
@@ -17,7 +19,7 @@ const AddProductForm = () => {
 		description: "",
 		brand: "",
 		categoryId: "",
-		status: "DRAFT",
+		status: "ACTIVE",
 		price: "",
 		discountPrice: "",
 		costPrice: "",
@@ -37,7 +39,9 @@ const AddProductForm = () => {
 
 	const categories = useAppSelector((state) => state.product.categories)
 	const loading = useAppSelector((state) => state.product.loading)
-	const selectedCategoryName = categories.find((c: any) => c.id === product.categoryId)?.name?.toUpperCase() || "";
+	const selectedCategoryName = categories.find((c: any) => c.id === product.categoryId)?.name || ""
+	const selectedCategoryNameUpper = selectedCategoryName.toUpperCase()
+	const availableProductNames = CATEGORY_PRODUCT_NAMES[selectedCategoryName] ?? []
 	// calculate 
 	useEffect(() => {
 		dispatch(fetchCategory())
@@ -218,22 +222,41 @@ const AddProductForm = () => {
 
 						<section className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 sm:grid-cols-2">
 							<Field label="Product Name">
-								<input
-									value={product.name}
-									onChange={(event) => setProduct((prev) => ({ ...prev, name: event.target.value }))}
-									placeholder="Enter product name"
-									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
-								/>
+								{availableProductNames.length > 0 ? (
+									<select
+										value={product.name}
+										onChange={(event) => setProduct((prev) => ({ ...prev, name: event.target.value }))}
+										required
+										className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+									>
+										<option value="">Select product name</option>
+										{availableProductNames.map((name) => (
+											<option key={name} value={name}>{name}</option>
+										))}
+									</select>
+								) : (
+									<input
+										value=""
+										readOnly
+										placeholder="Select a category first"
+										className="w-full rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 text-slate-400 outline-none cursor-not-allowed"
+									/>
+								)}
 							</Field>
 
 							<Field label="Category">
 								<select
 									value={product.categoryId}
-									onChange={(event) => setProduct((prev) => ({ ...prev, categoryId: event.target.value }))}
+									onChange={(event) =>
+										setProduct((prev) => ({
+											...prev,
+											categoryId: event.target.value,
+											name: "", // reset name when category changes
+										}))
+									}
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
 								>
 									<option value="">Select Category</option>
-
 									{categories.map((category) => (
 										<option key={category.id} value={category.id}>
 											{category.name}
@@ -257,7 +280,7 @@ const AddProductForm = () => {
 									onChange={(event) => setProduct((prev) => ({ ...prev, status: event.target.value }))}
 									className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
 								>
-									<option value="DRAFT">Draft</option>
+									
 									<option value="ACTIVE">Active</option>
 									<option value="LOW_STOCK">Low Stock</option>
 								</select>
@@ -319,18 +342,24 @@ const AddProductForm = () => {
 							</Field>
 
 							{/* Conditional Variant Fields */}
-							{(selectedCategoryName === 'FASHION' || selectedCategoryName === 'ELECTRONICS' || !selectedCategoryName) && (
+							{(selectedCategoryNameUpper === 'FASHION' || selectedCategoryNameUpper === 'ELECTRONICS' || !selectedCategoryNameUpper) && (
 								<Field label="Color">
-									<input
+									<select
 										value={productVariant.color}
 										onChange={(event) => setProductVariant((prev) => ({ ...prev, color: event.target.value }))}
-										placeholder="Black, Blue, etc."
-										className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition placeholder:text-slate-400 focus:border-slate-400 focus:bg-white"
-									/>
+										className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+									>
+										<option value="">Select Color</option>
+										{colors.map((c) => (
+											<option key={c.name} value={c.name}>
+												{c.name}
+											</option>
+										))}
+									</select>
 								</Field>
 							)}
 
-							{selectedCategoryName === 'FASHION' && (
+							{selectedCategoryNameUpper === 'FASHION' && (
 								<Field label="Size">
 									<input
 										value={productVariant.size}
@@ -341,7 +370,7 @@ const AddProductForm = () => {
 								</Field>
 							)}
 
-							{selectedCategoryName === 'ELECTRONICS' && (
+							{selectedCategoryNameUpper === 'ELECTRONICS' && (
 								<>
 									<Field label="Storage">
 										<input
@@ -372,7 +401,7 @@ const AddProductForm = () => {
 								</>
 							)}
 
-							{selectedCategoryName !== 'FASHION' && (
+							{selectedCategoryNameUpper !== 'FASHION' && (
 								<Field label="Weight">
 									<input
 										value={productVariant.weight}
@@ -412,7 +441,7 @@ const AddProductForm = () => {
 							<div className="mt-5 flex items-center justify-between rounded-2xl bg-white/5 px-4 py-3">
 								<div>
 									<p className="text-xs uppercase tracking-wide text-slate-400">Price</p>
-									<p className="text-xl font-semibold text-white">${product.price || '0.00'}</p>
+									<p className="text-xl font-semibold text-white">₹{product.price || '0.00'}</p>
 								</div>
 								<div className="text-right">
 									<p className="text-xs uppercase tracking-wide text-slate-400">Stock</p>
