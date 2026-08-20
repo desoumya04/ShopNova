@@ -7,11 +7,11 @@ interface OrderItem {
   productId: string;
   quantity: number;
   product: {
-    title: string;
+    name: string;
     description: string;
     price: number;
     images: { url: string }[];
-    seller: { shopName: string };
+    seller: { business?: { name: string } };
     variants: any[];
   };
 }
@@ -19,6 +19,11 @@ interface OrderItem {
 interface Order {
   id: string;
   paymentStatus: string;
+  status: string;
+  shippingAddress: string;
+  shippingCity: string;
+  shippingState: string;
+  shippingPinCode: number;
   items: OrderItem[];
   createdAt: string;
 }

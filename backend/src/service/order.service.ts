@@ -16,7 +16,11 @@ class orderService {
                         product:{
                             include:{
                                 images:true,
-                                seller:true,
+                                seller:{
+                                    include:{
+                                        business:true
+                                    }
+                                },
                                 variants:true
                             }
                         },

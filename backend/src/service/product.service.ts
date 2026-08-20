@@ -168,7 +168,8 @@ class productService {
             },
           },
           include:{
-            images:true
+            images:true,
+            variants: true
           }
         }
       }

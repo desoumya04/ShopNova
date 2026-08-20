@@ -3,7 +3,7 @@ import {prisma} from "../config/db.js";
 
 
 export const startAbndonedOrderCron = () => {
-    cron.schedule('0 0 * * *',async() =>{
+    cron.schedule('*/5 * * * *',async() =>{
         try{
             const cutoff = new Date(Date.now() - 15 * 60 * 1000)
             console.log(`Running abandon order cron at ${cutoff}`)

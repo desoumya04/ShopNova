@@ -9,7 +9,7 @@ import {
   Select,
 } from "@mui/material";
 import Productcard from "./ProductCard";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { getProductSection } from "./productData";
 import {  useAppDispatch,useAppSelector } from "../../../Redux_toolkit/store";
 import { fetchCategoryProducts } from "../../../Redux_toolkit/Product/product";
@@ -22,6 +22,7 @@ const Product = () => {
   
   const section = getProductSection(CategoryId)
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [sort, setSort] = useState("price-low");
   const handleChange = (e: any) => {
     setSort(e.target.value);
@@ -38,14 +39,54 @@ const Product = () => {
 
   
   const sortedProducts = useMemo(() => {
-    const list = [...products]
+    let list = [...products]
+
+    const colorFilter = searchParams.get("color");
+    const priceFilter = searchParams.get("price");
+    const discountFilter = searchParams.get("discount");
+
+    if (colorFilter) {
+      list = list.filter((p) =>
+        p.variants?.some((v) => v.color?.toLowerCase() === colorFilter.toLowerCase())
+      );
+    }
+
+    if (priceFilter) {
+      if (priceFilter.includes("-")) {
+        const [min, max] = priceFilter.split("-").map(Number);
+        if (!isNaN(min) && !isNaN(max)) {
+          list = list.filter((p) => Number(p.price) >= min && Number(p.price) <= max);
+        }
+      } else if (priceFilter.includes("+")) {
+        const min = Number(priceFilter.replace("+", ""));
+        if (!isNaN(min)) {
+          list = list.filter((p) => Number(p.price) >= min);
+        }
+      }
+    }
+
+    if (discountFilter) {
+      const minDiscount = Number(discountFilter);
+      if (!isNaN(minDiscount)) {
+        list = list.filter((p) => {
+          const price = Number(p.price);
+          const discountPrice = Number(p.discountPrice);
+          if (price > 0 && discountPrice > 0 && price > discountPrice) {
+            const discountPercent = ((price - discountPrice) / price) * 100;
+            return discountPercent >= minDiscount;
+          }
+          return false;
+        });
+      }
+    }
+
     return list.sort((left:any, right:any) => {
       if (sort === "price-high") {
         return right.price - left.price;
       }
       return left.price - right.price;
     });
-  }, [products, sort]);
+  }, [products, sort, searchParams]);
 
   
   return (

@@ -33,12 +33,15 @@ const Order = () => {
                   ? order.items.map((item) => (
                       <Ordercard
                         key={item?.id || Math.random()}
-                        title={item?.product?.title || 'Unknown Product'}
-                        seller={item?.product?.seller?.shopName || 'Unknown Seller'}
+                        orderId={order?.id}
+                        itemId={item?.id}
+                        title={item?.product?.name || 'Unknown Product'}
+                        seller={item?.product?.seller?.business?.name || 'Unknown Seller'}
                         image={item?.product?.images?.[0]?.url || ''}
                         price={`₹${(item?.product?.price || 0) * (item?.quantity || 1)}`}
                         quantity={item?.quantity || 1}
                         status={order?.paymentStatus || 'Unknown'}
+                        date={order?.createdAt}
                       />
                     ))
                   : null

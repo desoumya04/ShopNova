@@ -27,7 +27,7 @@ type Product = {
     costPrice?:string
     stock:string
     images: ProductImage[]
-
+    variants?: ProductVariant[]
   }
 type ProductVariant = {
     color?:string
@@ -161,13 +161,6 @@ export const archiveProduct = createAsyncThunk(
     }
   }
 );
-
-
-
-
-
-
-
 
 
 

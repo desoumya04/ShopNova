@@ -6,16 +6,19 @@ type OrderCardProps = {
   price: string;
   quantity: number;
   status: string;
+  date?: string;
+  orderId: string;
+  itemId: string;
 };
 import { useNavigate } from "react-router-dom";
 
 
-const Ordercard = ({ title, seller, image, price, quantity, status }: OrderCardProps) => {
+const Ordercard = ({ orderId, itemId, title, seller, image, price, quantity, status, date }: OrderCardProps) => {
   const navigate = useNavigate();
 
   return (
     
-    <div  onClick={() => navigate('/account/order/1/item/1')} className="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
+    <div  onClick={() => navigate(`/account/order/${orderId}/item/${itemId}`)} className="relative rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md">
       <div className="flex gap-4">
         <img
           className="h-24 w-24 rounded-xl object-cover ring-1 ring-slate-200"
@@ -28,6 +31,7 @@ const Ordercard = ({ title, seller, image, price, quantity, status }: OrderCardP
             <div>
               <h3 className="text-base font-semibold text-slate-900">{title}</h3>
               <p className="mt-1 text-sm text-slate-500">Sold by {seller}</p>
+              {date && <p className="mt-1 text-xs text-slate-400">Ordered on {new Date(date).toLocaleDateString()}</p>}
             </div>
 
             <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
