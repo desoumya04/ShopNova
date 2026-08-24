@@ -22,24 +22,24 @@ interface NormalizedItem {
 }
 
 
-class checkOutService{
-    addOrderItem = async (userId: string,itemData:CheckoutPayload) => {
-        
+class checkOutService {
+    addOrderItem = async (userId: string, itemData: CheckoutPayload) => {
+
 
         const order = await prisma.$transaction(async (tx) => {
             //step 1 : Normalize the data
             let itemToBuy: NormalizedItem[] = []
             // if mode is DIRECT
-            if (itemData.checkOutMode === "DIRECT"){
-                const {quantity,productId} = itemData
-                if(!quantity || !productId){
+            if (itemData.checkOutMode === "DIRECT") {
+                const { quantity, productId } = itemData
+                if (!quantity || !productId) {
                     throw new apiError(400, 'Product ID and quantity are required for direct checkout')
                 }
-                itemToBuy =[{productId,quantity}]
-           
+                itemToBuy = [{ productId, quantity }]
+
             }
             //if Mode is CART
-            else if(itemData.checkOutMode === "CART"){
+            else if (itemData.checkOutMode === "CART") {
                 const userCart = await tx.cart.findUnique({
                     where: { userId },
                     include: {
@@ -51,10 +51,10 @@ class checkOutService{
                         }
                     }
                 })
-                if(!userCart){
+                if (!userCart) {
                     throw new apiError(404, 'Cart not found')
                 }
-                if(userCart.items.length === 0){
+                if (userCart.items.length === 0) {
                     throw new apiError(400, 'Cart is empty')
                 }
                 itemToBuy = userCart.items
@@ -67,7 +67,7 @@ class checkOutService{
             // array to snapshot hold the snapshots from DB
             const orderItemData = []
 
-            for(const item of itemToBuy){
+            for (const item of itemToBuy) {
                 // featch the product details
                 const product = await tx.product.findUnique({
                     where: { id: item.productId },
@@ -75,112 +75,123 @@ class checkOutService{
                         name: true,
                         price: true,
                         sellerId: true,
-                        discountPrice:true
+                        discountPrice: true
                     }
                 })
-                if(!product){
+                if (!product) {
                     throw new apiError(404, 'Product not found')
                 }
-        
+
                 totalPrice += Number(product.price) * item.quantity
                 Discount += Number(product.discountPrice) * item.quantity
 
                 //here we will store all the order item details
                 const inventory = await tx.inventory.update({
-                    where:{
-                        productId:item.productId,    
+                    where: {
+                        productId: item.productId,
                     },
                     data: {
-                        reserved:item.quantity,   
+                        reserved: item.quantity,
                     }
                 })
-                if(inventory.reserved > item.quantity){
+                if (inventory.reserved > item.quantity) {
                     throw new apiError(400, 'Product is out of stock')
                 }
-               
-                orderItemData.push({
-                    productId:item.productId,
-                    productName:product.name,
-                    quantity:item.quantity,
-                    price:product.price,
-                    sellerId:product.sellerId  
+                // update the product stock
+                await tx.product.update({
+                    where: {
+                        id: item.productId
+                    },
+                    data: {
+                        stock: { decrement: item.quantity }
+                    }
                 })
-               
+                orderItemData.push({
+                    productId: item.productId,
+                    productName: product.name,
+                    quantity: item.quantity,
+                    price: product.price,
+                    sellerId: product.sellerId
+                })
+
             }
-            
+
             // create one order
             const newOrder = await tx.order.create({
                 data: {
                     userId: userId,
-                    totalPrice :totalPrice,
-                    finalPrice:totalPrice,
-                    discountAmount:Discount,
-                    status:"PENDING",
-                    paymentStatus:"UNPAID",
+                    totalPrice: totalPrice,
+                    finalPrice: totalPrice,
+                    discountAmount: Discount,
+                    status: "PENDING",
+                    paymentStatus: "UNPAID",
 
 
                     // here the addressId will be store
                     // the user have to choose the address from the address table
-                    
-                    shippingAddress: itemData.shippingDetails.shippingAddress,   
-                    shippingCity: itemData.shippingDetails.shippingCity,     
-                    shippingState: itemData.shippingDetails.shippingState,   
+
+                    shippingAddress: itemData.shippingDetails.shippingAddress,
+                    shippingCity: itemData.shippingDetails.shippingCity,
+                    shippingState: itemData.shippingDetails.shippingState,
                     shippingPinCode: itemData.shippingDetails.shippingPinCode,
-                    
-                    items:{
-                        create:orderItemData
+
+                    items: {
+                        create: orderItemData
                     },
-                    
+
                 }
+
+
             })
-          
             
 
-            
-            
-            return{order: newOrder}
+
+
+
+
+            return { order: newOrder }
         })
-       
+
 
         return order
-    } 
+    }
 
 
-    featchOrderDeatails = async(orderId:string) => {
+    featchOrderDeatails = async (orderId: string) => {
         return await prisma.order.findUnique({
-            where:{
-                id:orderId
-            },include:{
-                items:{
-                    include:{
-                        product:{
-                            include:{
-                                images:true,
-                                variants:true,
+            where: {
+                id: orderId
+            }, include: {
+                items: {
+                    include: {
+                        product: {
+                            include: {
+                                images: true,
+                                variants: true,
                             }
+                        }
                     }
                 }
-                }
             }
         })
 
-        
-    }   
 
-    changeSipingAdress = async(orderId:string,addressId:string) => {
+    }
+
+    changeSipingAdress = async (orderId: string, addressId: string) => {
         const address = await prisma.userAddress.findUnique({
-            where:{
-                id:addressId
+            where: {
+                id: addressId
             }
         })
-        if(!address){
-            throw new apiError(404,"Address not found")
+        if (!address) {
+            throw new apiError(404, "Address not found")
         }
         return await prisma.order.update({
-            where:{
-                id:orderId
+            where: {
+                id: orderId
             },
-            data:{
+            data: {
                 shippingAddress: address.address,
                 shippingCity: address.locality,
                 shippingState: address.state,
@@ -189,19 +200,19 @@ class checkOutService{
         })
     }
 
-    addShippingAddress = async(userId:string,orderId:string,addressData:any) => {
+    addShippingAddress = async (userId: string, orderId: string, addressData: any) => {
         const address = await prisma.userAddress.create({
-            data:{
+            data: {
                 userId: userId,
                 ...addressData
             }
         })
 
         await prisma.order.update({
-            where:{
-                id:orderId
+            where: {
+                id: orderId
             },
-            data:{
+            data: {
                 shippingAddress: address.address,
                 shippingCity: address.locality,
                 shippingState: address.state,
@@ -209,11 +220,11 @@ class checkOutService{
             }
         })
     }
-}    
-        
+}
 
 
-        
-        
-       
+
+
+
+
 export const checkOutServiceInstance = new checkOutService();
