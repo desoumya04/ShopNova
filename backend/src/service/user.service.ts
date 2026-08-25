@@ -49,7 +49,8 @@ class UserService {
       id: newUser.id,
       email: newUser.email,
       name: newUser.name,
-      mobile: newUser.mobile
+      mobile: newUser.mobile,
+      otp:otp
     };
 
   }
