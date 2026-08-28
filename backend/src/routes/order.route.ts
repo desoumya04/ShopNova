@@ -6,5 +6,8 @@ const orderRouter = Router()
 
 
 orderRouter.get('/fetchSuccessOrder',authMiddleware,orderControllerInstance.fetchSuccessOrder)
+orderRouter.get('/fetchSellerSuccessOrder',authMiddleware,orderControllerInstance.fetchSellerSuccessOrder)
+
+
 
 export default orderRouter

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
 	ArrowForward,
@@ -10,154 +10,145 @@ import {
 	TaskAltOutlined,
 } from '@mui/icons-material'
 
+import { api } from '../../config/api'
 
-type OrderStatus = 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled'
 
-type Order = {
+
+
+type OrderStatus = 'PENDING' | 'CONFIRMED' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED' | 'RETURNED'
+
+interface OrderItem {
 	id: string
-	customer: string
-	product: string
-	amount: string
-	date: string
-	status: OrderStatus
-	items: number
-	payment: 'Paid' | 'COD'
+	productName?: string
+	quantity: number
+	price: number
+	product?: {
+		id: string
+		name: string
+		images: { url: string }[]
+		seller?: { business?: { name: string } }
+		variants?: unknown[]
+	}
 }
 
-const ORDERS: Order[] = [
-	{
-		id: 'ORD-1001',
-		customer: 'Aarav Roy',
-		product: 'Wireless Headphones Pro',
-		amount: '$129.00',
-		date: 'Today, 10:45 AM',
-		status: 'Processing',
-		items: 1,
-		payment: 'Paid',
-	},
-	{
-		id: 'ORD-1002',
-		customer: 'Meera Das',
-		product: 'Premium Cotton Shirt',
-		amount: '$78.00',
-		date: 'Today, 09:15 AM',
-		status: 'Pending',
-		items: 2,
-		payment: 'COD',
-	},
-	{
-		id: 'ORD-1003',
-		customer: 'Kabir Ahmed',
-		product: 'Smart LED Desk Lamp',
-		amount: '$54.00',
-		date: 'Yesterday',
-		status: 'Shipped',
-		items: 1,
-		payment: 'Paid',
-	},
-	{
-		id: 'ORD-1004',
-		customer: 'Sana Khan',
-		product: 'Running Shoes X1',
-		amount: '$178.00',
-		date: 'Yesterday',
-		status: 'Delivered',
-		items: 2,
-		payment: 'Paid',
-	},
-	{
-		id: 'ORD-1005',
-		customer: 'Rohit Sen',
-		product: 'Bluetooth Speaker Max',
-		amount: '$89.00',
-		date: '2 days ago',
-		status: 'Cancelled',
-		items: 1,
-		payment: 'COD',
-	},
-]
+interface Order {
+	id: string
+	status: OrderStatus
+	totalPrice: number
+	finalPrice: number
+	paymentStatus: string
+	shippingAddress: string
+	shippingCity: string
+	createdAt: string
+	user?: { name: string }
+	items: OrderItem[]
+}
+
 
 const FILTERS: Array<'All' | OrderStatus> = [
 	'All',
-	'Pending',
-	'Processing',
-	'Shipped',
-	'Delivered',
-	'Cancelled',
+	'PENDING',
+	'CONFIRMED',
+	'SHIPPED',
+	'DELIVERED',
+	'CANCELLED',
+	'RETURNED',
 ]
 
 const statusConfig: Record<
 	OrderStatus,
 	{ label: string; className: string; icon: typeof CheckCircleOutline }
 > = {
-	Pending: {
+	PENDING: {
 		label: 'Pending',
 		className: 'bg-amber-50 text-amber-700',
 		icon: NotificationsActiveOutlined,
 	},
-	Processing: {
-		label: 'Processing',
+	CONFIRMED: {
+		label: 'Confirmed',
 		className: 'bg-cyan-50 text-cyan-700',
 		icon: ShoppingBagOutlined,
 	},
-	Shipped: {
+	SHIPPED: {
 		label: 'Shipped',
 		className: 'bg-sky-50 text-sky-700',
 		icon: LocalShippingOutlined,
 	},
-	Delivered: {
+	DELIVERED: {
 		label: 'Delivered',
 		className: 'bg-emerald-50 text-emerald-700',
 		icon: CheckCircleOutline,
 	},
-	Cancelled: {
+	CANCELLED: {
 		label: 'Cancelled',
 		className: 'bg-rose-50 text-rose-700',
+		icon: TaskAltOutlined,
+	},
+	RETURNED: {
+		label: 'Returned',
+		className: 'bg-purple-50 text-purple-700',
 		icon: TaskAltOutlined,
 	},
 }
 
 const SellerOrderPage = () => {
+	
 	const navigate = useNavigate()
 	const [search, setSearch] = useState('')
 	const [filter, setFilter] = useState<(typeof FILTERS)[number]>('All')
+	const [orders, setOrders] = useState<Order[]>([])
+	const [loading, setLoading] = useState(true)
+
+	useEffect(() => {
+		const fetchOrders = async () => {
+			try {
+				const res = await api.get('/fetchSellerSuccessOrder')
+				setOrders(res.data?.data ?? [])
+			} catch (err) {
+				console.error('Failed to fetch seller orders:', err)
+			} finally {
+				setLoading(false)
+			}
+		}
+		fetchOrders()
+	}, [])
 
 	const filteredOrders = useMemo(() => {
-		return ORDERS.filter((order) => {
-			const searchText = `${order.id} ${order.customer} ${order.product}`.toLowerCase()
+		return orders.filter((order) => {
+			const searchText = `${order.id} ${order.shippingAddress} ${order.items[0]?.product?.name}`.toLowerCase()
 			const matchesSearch = searchText.includes(search.toLowerCase())
 			const matchesFilter = filter === 'All' ? true : order.status === filter
 
 			return matchesSearch && matchesFilter
 		})
-	}, [filter, search])
-
+	}, [filter, search, orders])
+	console.log("Order length:",filteredOrders)
 	const metrics = useMemo(
 		() => [
 			{
 				label: 'Total Orders',
-				value: ORDERS.length,
+				value: orders.length,
 				note: '+14 this week',
 				icon: ShoppingBagOutlined,
 				accent: 'from-cyan-400 to-sky-500',
 			},
 			{
 				label: 'Pending',
-				value: ORDERS.filter((order) => order.status === 'Pending').length,
+				value: orders.filter((order) => order.status === 'PENDING').length,
 				note: 'Needs attention',
 				icon: NotificationsActiveOutlined,
 				accent: 'from-amber-400 to-orange-500',
 			},
 			{
 				label: 'Shipped',
-				value: ORDERS.filter((order) => order.status === 'Shipped').length,
+				value: orders.filter((order) => order.status === 'SHIPPED').length,
 				note: 'Out for delivery',
 				icon: LocalShippingOutlined,
 				accent: 'from-sky-400 to-cyan-500',
 			},
 			{
 				label: 'Delivered',
-				value: ORDERS.filter((order) => order.status === 'Delivered').length,
+				value: orders.filter((order) => order.status === 'DELIVERED').length,
 				note: 'Completed orders',
 				icon: CheckCircleOutline,
 				accent: 'from-emerald-400 to-green-500',
@@ -286,7 +277,7 @@ const SellerOrderPage = () => {
 															Order
 														</p>
 														<p className="font-semibold text-slate-900">{order.id}</p>
-														<p className="mt-1 text-sm text-slate-500">{order.date}</p>
+														<p className="mt-1 text-sm text-slate-500">{order.createdAt}</p>
 													</div>
 												</div>
 
@@ -295,26 +286,44 @@ const SellerOrderPage = () => {
 														<p className="text-xs font-semibold uppercase tracking-wide text-slate-400 lg:hidden">
 															Customer
 														</p>
-														<p className="font-medium text-slate-900">{order.customer}</p>
-														<p className="mt-1 text-sm text-slate-500">{order.payment}</p>
+														<p className="font-medium text-slate-900">{order.user?.name ?? '—'}</p>
+														<p className="mt-1 text-sm text-slate-500">{order.shippingCity}</p>
 													</div>
 												</div>
 
 												<div className="flex items-center justify-between gap-3 lg:block">
-													<div>
-														<p className="text-xs font-semibold uppercase tracking-wide text-slate-400 lg:hidden">
-															Product
-														</p>
-														<p className="font-medium text-slate-700">{order.product}</p>
-													</div>
+										<div className="flex items-center gap-3">
+											{order.items[0]?.product?.images?.[0]?.url ? (
+												<img
+													src={order.items[0].product.images[0].url}
+													alt={order.items[0]?.product?.name ?? 'Product'}
+													className="h-10 w-10 rounded-lg object-cover border border-slate-200 flex-shrink-0"
+												/>
+											) : (
+												<div className="h-10 w-10 rounded-lg bg-slate-100 border border-slate-200 flex-shrink-0 flex items-center justify-center">
+													<span className="text-slate-400 text-xs">N/A</span>
 												</div>
+											)}
+											<div>
+												<p className="text-xs font-semibold uppercase tracking-wide text-slate-400 lg:hidden">
+													Product
+												</p>
+												<p className="font-medium text-slate-700 text-sm leading-tight">
+													{order.items[0]?.product?.name ?? order.items[0]?.productName ?? '—'}
+												</p>
+												{order.items.length > 1 && (
+													<p className="text-xs text-slate-400 mt-0.5">+{order.items.length - 1} more</p>
+												)}
+											</div>
+										</div>
+									</div>
 
 												<div className="flex items-center justify-between gap-3 lg:block">
 													<div>
 														<p className="text-xs font-semibold uppercase tracking-wide text-slate-400 lg:hidden">
 															Items
 														</p>
-														<p className="font-medium text-slate-700">{order.items}</p>
+														<p className="font-medium text-slate-700">{order.items.length}</p>
 													</div>
 												</div>
 
@@ -323,7 +332,7 @@ const SellerOrderPage = () => {
 														<p className="text-xs font-semibold uppercase tracking-wide text-slate-400 lg:hidden">
 															Amount
 														</p>
-														<p className="font-semibold text-slate-900">{order.amount}</p>
+														<p className="font-semibold text-slate-900">₹{Number(order.finalPrice).toFixed(2)}</p>
 													</div>
 												</div>
 
@@ -360,10 +369,14 @@ const SellerOrderPage = () => {
 									})
 								) : (
 									<div className="px-5 py-16 text-center">
-										<p className="text-lg font-semibold text-slate-900">No orders found</p>
-										<p className="mt-2 text-sm text-slate-500">
-											Try a different search term or switch to another order status.
+										<p className="text-lg font-semibold text-slate-900">
+											{loading ? 'Loading orders…' : 'No orders found'}
 										</p>
+										{!loading && (
+											<p className="mt-2 text-sm text-slate-500">
+												Try a different search term or switch to another order status.
+											</p>
+										)}
 									</div>
 								)}
 							</div>

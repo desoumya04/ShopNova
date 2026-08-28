@@ -32,6 +32,7 @@ class UserService {
         mobile: userData.mobile,
         email: userData.email,
         password: hashPassword,
+        
         // OTP valid for 5 minutes
       },
     })
@@ -45,6 +46,10 @@ class UserService {
     EmailServiceInstance.sendEmail(newUser.email, 'Your OTP Code', `Your OTP code is: ${otp}`);
 
     // Only return the nessary details to client not full user deatils
+    await prisma.user.update({
+      where: { id: newUser.id },
+      data: { otp: otp, otpExpiresAt: new Date(Date.now() + 2 * 60 * 1000) }, // OTP valid for 5 minutes
+    })
     return {
       id: newUser.id,
       email: newUser.email,

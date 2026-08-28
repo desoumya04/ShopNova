@@ -12,6 +12,15 @@ class orderController{
         const orders = await orderServicInstance.featchSuccessOrder(userId)
         return res.status(200).json(new apiResponse(200,orders,"orders fetched successfully"))
     })
+    fetchSellerSuccessOrder = asyncHandler(async(req,res)=>{
+        const userId = req.user?.id;
+        if(!userId){
+            throw new apiError(401,"unauthorized")
+        }
+        
+        const orders = await orderServicInstance.featchSellerSuccessOrder(userId)
+        return res.status(200).json(new apiResponse(200,orders,"orders fetched successfully"))
+    })
 }
 
 export const orderControllerInstance = new orderController()

@@ -34,6 +34,51 @@ class orderService {
         }
         return orders;
     }
+
+    featchSellerSuccessOrder = async (userId:string)=> {
+
+        const seller = await prisma.seller.findUnique({
+            where:{userId:userId},
+        })
+       
+        const orders = await prisma.order.findMany({
+            where: {
+                items:{
+                    some: {
+                        product:{sellerId:seller?.id}
+                    }
+                },
+                paymentStatus: "PAID",
+            },
+            include: {
+                user:{
+                    select: {
+                        name:true,
+                    }
+                },
+                items: {
+                    include: {
+                        product:{
+                            include:{
+                                images:true,
+                                seller:{
+                                    include:{
+                                        business:true
+                                    }
+                                },
+                                variants:true
+                            }
+                        },
+                    },
+                },
+            },
+        });
+
+        if(!orders){
+            throw new apiError(404,"No orders found");
+        }
+        return orders;
+    }
 }
 
 
