@@ -14,7 +14,6 @@ const SELLER_LINKS = [
   { label: 'Dashboard', to: '/seller' },
   { label: 'Products', to: '/seller/products' },
   { label: 'Orders', to: '/seller/orders' },
-  { label: 'Analytics', to: '/seller/analytics' },
   { label: 'Payouts', to: '/seller/payouts' },
 ]
 

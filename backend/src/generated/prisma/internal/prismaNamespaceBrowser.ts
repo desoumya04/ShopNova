@@ -65,6 +65,8 @@ export const ModelName = {
   ProductVariant: 'ProductVariant',
   Category: 'Category',
   Review: 'Review',
+  Refund: 'Refund',
+  Payout: 'Payout',
   Cart: 'Cart',
   CartItem: 'CartItem',
   Wishlist: 'Wishlist',
@@ -174,6 +176,7 @@ export const OrderScalarFieldEnum = {
   totalPrice: 'totalPrice',
   discountAmount: 'discountAmount',
   finalPrice: 'finalPrice',
+  isPayoutGenerated: 'isPayoutGenerated',
   status: 'status',
   paymentStatus: 'paymentStatus',
   paymentMethod: 'paymentMethod',
@@ -288,6 +291,39 @@ export const ReviewScalarFieldEnum = {
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const RefundScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  reason: 'reason',
+  gatewayRefundId: 'gatewayRefundId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RefundScalarFieldEnum = (typeof RefundScalarFieldEnum)[keyof typeof RefundScalarFieldEnum]
+
+
+export const PayoutScalarFieldEnum = {
+  id: 'id',
+  sellerId: 'sellerId',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  method: 'method',
+  transferId: 'transferId',
+  failureReason: 'failureReason',
+  note: 'note',
+  payoutDate: 'payoutDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PayoutScalarFieldEnum = (typeof PayoutScalarFieldEnum)[keyof typeof PayoutScalarFieldEnum]
 
 
 export const CartScalarFieldEnum = {

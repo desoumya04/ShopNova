@@ -6,7 +6,7 @@ const paymentRouter = Router()
 
 
 paymentRouter.post('/payment/create-order/:orderId',authMiddleware,paymentControllerInstance.createPaymentOrder )
-paymentRouter.post('/payment/verify/:orderId',authMiddleware,paymentControllerInstance.verifyPayment )
+paymentRouter.post('/payment/verify/:orderId',paymentControllerInstance.verifyPayment )
 
 
 export default paymentRouter;

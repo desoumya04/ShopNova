@@ -2,6 +2,7 @@ import { prisma } from '../config/db.js';
 import { apiError } from '../utils/apiError.js';
 import { razorpay } from '../config/razorpay.js';
 import crypto from "crypto"
+import { calculateAndCreatePayouts } from './payout.service.js';
 
 
 class paymentService {
@@ -73,7 +74,7 @@ class paymentService {
         }
 
         if (orderData.gatewayOrderId !== razorpay_order_id) {
-            throw new apiError(404, "Order not found")
+            throw new apiError(404, "Gateway order id not match")
         }
 
         const body =
@@ -91,59 +92,56 @@ class paymentService {
 
 
         if (expectedSignature != razorpay_signature) {
-
-
             throw new apiError(400, "Invalid payment signature")
         }
-
-        // store payment order in database
-        const updatePayment = await prisma.payment.update({
-            where: {
-                orderId: orderId,
-            },
-            data: {
-                status: "PAID",
-               transactionId: razorpay_payment_id,
-            }
-        })
-
-        if(!updatePayment){
-            throw new apiError(500,"Unable to update payment")
-        }
-        // update order status
-        const updateorder = await prisma.order.update({
-            where:{
-                id:orderId,
-            },
-            data:{
-                paymentStatus:"PAID",
-                status:"CONFIRMED",
-            }
-        })
-        if(!updateorder){
-            throw new apiError(500,"Unable to update order")
-        }
-        // delete from cart
-        const cart = await prisma.cart.findUnique({
-            where: { userId: orderData.userId }
-        });
-        if (cart) {
-            const deleteCart = await prisma.cartItem.deleteMany({
-                where:{
-                    cartId: cart.id,
-                }
-            })
-            if(!deleteCart){
-                throw new apiError(500,"Unable to delete cart")
-            }
-        }
-        // update inventry
-        const items = await prisma.orderItem.findMany({
+       
+         const items = await prisma.orderItem.findMany({
             where:{
                 orderId:orderId,
             }
         })
+        await prisma.$transaction(async(tx)=>{
 
+        // store payment order in database
+            await tx.payment.update({
+                where: {
+                    orderId: orderId,
+                },
+                data: {
+                    status: "PAID",
+                   transactionId: razorpay_payment_id,
+                }
+            })
+        // store payment order in database
+            await tx.order.update({
+                where:{
+                    id:orderId,
+                },
+                data:{
+                    paymentStatus:"PAID",
+                    status:"CONFIRMED",
+                }
+            })
+            
+            // get the all productId of the items that sucessfully paid
+            const purchesedProducts:string[]= items.map((item) => item.productId).filter((id):id is string=> id!=null)
+
+            // remove items from cart
+            const cart = await prisma.cart.findUnique({
+            where: { userId: orderData.userId }
+            });
+            //remove which products are paid only
+            if (cart && purchesedProducts.length > 0) {
+                const deleteCart = await prisma.cartItem.deleteMany({
+                    where:{
+                        cartId: cart.id,
+                        productId:{
+                            in:purchesedProducts
+                        }
+                    }
+                })
+            }
+        
         for(const item of items){
             if (!item.productId) continue; // Skip if no product ID
             const updateInventory = await prisma.inventory.update({
@@ -155,14 +153,18 @@ class paymentService {
                     reserved: 0,
                 }
             })
-            if(!updateInventory){
-                throw new apiError(500,"Unable to update inventory")
-            }
+            
+        }
+        })
+
+        try {
+            await calculateAndCreatePayouts(orderId)
+        } catch (error) {
+            console.error("Error calculating and creating payouts",error)
         }
         
-        return orderData;
-
     }
+      
 }
 
 export const paymentServiceInstance = new paymentService();

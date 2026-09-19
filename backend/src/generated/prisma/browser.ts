@@ -88,6 +88,16 @@ export type Category = Prisma.CategoryModel
  */
 export type Review = Prisma.ReviewModel
 /**
+ * Model Refund
+ * 
+ */
+export type Refund = Prisma.RefundModel
+/**
+ * Model Payout
+ * 
+ */
+export type Payout = Prisma.PayoutModel
+/**
  * Model Cart
  * 
  */
