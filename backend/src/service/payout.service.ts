@@ -45,6 +45,7 @@ export async function calculateAndCreatePayouts(orderId: string) {
             return tx.payout.create({
                 data: {
                     sellerId: sellerId,
+                    orderId:orderId,
                     amount: netAmount,
                     currency:'INR',
                     status:"PENDING",

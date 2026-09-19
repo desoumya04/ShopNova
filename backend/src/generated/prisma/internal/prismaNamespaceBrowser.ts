@@ -310,6 +310,7 @@ export type RefundScalarFieldEnum = (typeof RefundScalarFieldEnum)[keyof typeof 
 
 export const PayoutScalarFieldEnum = {
   id: 'id',
+  orderId: 'orderId',
   sellerId: 'sellerId',
   amount: 'amount',
   currency: 'currency',

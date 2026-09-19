@@ -36,6 +36,7 @@ export type PayoutSumAggregateOutputType = {
 
 export type PayoutMinAggregateOutputType = {
   id: string | null
+  orderId: string | null
   sellerId: string | null
   amount: runtime.Decimal | null
   currency: string | null
@@ -51,6 +52,7 @@ export type PayoutMinAggregateOutputType = {
 
 export type PayoutMaxAggregateOutputType = {
   id: string | null
+  orderId: string | null
   sellerId: string | null
   amount: runtime.Decimal | null
   currency: string | null
@@ -66,6 +68,7 @@ export type PayoutMaxAggregateOutputType = {
 
 export type PayoutCountAggregateOutputType = {
   id: number
+  orderId: number
   sellerId: number
   amount: number
   currency: number
@@ -91,6 +94,7 @@ export type PayoutSumAggregateInputType = {
 
 export type PayoutMinAggregateInputType = {
   id?: true
+  orderId?: true
   sellerId?: true
   amount?: true
   currency?: true
@@ -106,6 +110,7 @@ export type PayoutMinAggregateInputType = {
 
 export type PayoutMaxAggregateInputType = {
   id?: true
+  orderId?: true
   sellerId?: true
   amount?: true
   currency?: true
@@ -121,6 +126,7 @@ export type PayoutMaxAggregateInputType = {
 
 export type PayoutCountAggregateInputType = {
   id?: true
+  orderId?: true
   sellerId?: true
   amount?: true
   currency?: true
@@ -223,6 +229,7 @@ export type PayoutGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type PayoutGroupByOutputType = {
   id: string
+  orderId: string
   sellerId: string
   amount: runtime.Decimal
   currency: string
@@ -261,6 +268,7 @@ export type PayoutWhereInput = {
   OR?: Prisma.PayoutWhereInput[]
   NOT?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
   id?: Prisma.StringFilter<"Payout"> | string
+  orderId?: Prisma.StringFilter<"Payout"> | string
   sellerId?: Prisma.StringFilter<"Payout"> | string
   amount?: Prisma.DecimalFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Payout"> | string
@@ -272,11 +280,13 @@ export type PayoutWhereInput = {
   payoutDate?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
+  order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   seller?: Prisma.XOR<Prisma.SellerScalarRelationFilter, Prisma.SellerWhereInput>
 }
 
 export type PayoutOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  orderId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -288,6 +298,7 @@ export type PayoutOrderByWithRelationInput = {
   payoutDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  order?: Prisma.OrderOrderByWithRelationInput
   seller?: Prisma.SellerOrderByWithRelationInput
 }
 
@@ -297,6 +308,7 @@ export type PayoutWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
   OR?: Prisma.PayoutWhereInput[]
   NOT?: Prisma.PayoutWhereInput | Prisma.PayoutWhereInput[]
+  orderId?: Prisma.StringFilter<"Payout"> | string
   sellerId?: Prisma.StringFilter<"Payout"> | string
   amount?: Prisma.DecimalFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Payout"> | string
@@ -307,11 +319,13 @@ export type PayoutWhereUniqueInput = Prisma.AtLeast<{
   payoutDate?: Prisma.DateTimeNullableFilter<"Payout"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
+  order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   seller?: Prisma.XOR<Prisma.SellerScalarRelationFilter, Prisma.SellerWhereInput>
 }, "id" | "transferId">
 
 export type PayoutOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  orderId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -335,6 +349,7 @@ export type PayoutScalarWhereWithAggregatesInput = {
   OR?: Prisma.PayoutScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PayoutScalarWhereWithAggregatesInput | Prisma.PayoutScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Payout"> | string
+  orderId?: Prisma.StringWithAggregatesFilter<"Payout"> | string
   sellerId?: Prisma.StringWithAggregatesFilter<"Payout"> | string
   amount?: Prisma.DecimalWithAggregatesFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringWithAggregatesFilter<"Payout"> | string
@@ -360,11 +375,13 @@ export type PayoutCreateInput = {
   payoutDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  order: Prisma.OrderCreateNestedOneWithoutPayoutsInput
   seller: Prisma.SellerCreateNestedOneWithoutPayoutsInput
 }
 
 export type PayoutUncheckedCreateInput = {
   id?: string
+  orderId: string
   sellerId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
@@ -390,11 +407,13 @@ export type PayoutUpdateInput = {
   payoutDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  order?: Prisma.OrderUpdateOneRequiredWithoutPayoutsNestedInput
   seller?: Prisma.SellerUpdateOneRequiredWithoutPayoutsNestedInput
 }
 
 export type PayoutUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -410,6 +429,7 @@ export type PayoutUncheckedUpdateInput = {
 
 export type PayoutCreateManyInput = {
   id?: string
+  orderId: string
   sellerId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
@@ -439,6 +459,7 @@ export type PayoutUpdateManyMutationInput = {
 
 export type PayoutUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
   sellerId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
@@ -464,6 +485,7 @@ export type PayoutOrderByRelationAggregateInput = {
 
 export type PayoutCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  orderId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -483,6 +505,7 @@ export type PayoutAvgOrderByAggregateInput = {
 
 export type PayoutMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  orderId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -498,6 +521,7 @@ export type PayoutMaxOrderByAggregateInput = {
 
 export type PayoutMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  orderId?: Prisma.SortOrder
   sellerId?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
@@ -557,6 +581,48 @@ export type PayoutUncheckedUpdateManyWithoutSellerNestedInput = {
   deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
 }
 
+export type PayoutCreateNestedManyWithoutOrderInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutOrderInput, Prisma.PayoutUncheckedCreateWithoutOrderInput> | Prisma.PayoutCreateWithoutOrderInput[] | Prisma.PayoutUncheckedCreateWithoutOrderInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutOrderInput | Prisma.PayoutCreateOrConnectWithoutOrderInput[]
+  createMany?: Prisma.PayoutCreateManyOrderInputEnvelope
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+}
+
+export type PayoutUncheckedCreateNestedManyWithoutOrderInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutOrderInput, Prisma.PayoutUncheckedCreateWithoutOrderInput> | Prisma.PayoutCreateWithoutOrderInput[] | Prisma.PayoutUncheckedCreateWithoutOrderInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutOrderInput | Prisma.PayoutCreateOrConnectWithoutOrderInput[]
+  createMany?: Prisma.PayoutCreateManyOrderInputEnvelope
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+}
+
+export type PayoutUpdateManyWithoutOrderNestedInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutOrderInput, Prisma.PayoutUncheckedCreateWithoutOrderInput> | Prisma.PayoutCreateWithoutOrderInput[] | Prisma.PayoutUncheckedCreateWithoutOrderInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutOrderInput | Prisma.PayoutCreateOrConnectWithoutOrderInput[]
+  upsert?: Prisma.PayoutUpsertWithWhereUniqueWithoutOrderInput | Prisma.PayoutUpsertWithWhereUniqueWithoutOrderInput[]
+  createMany?: Prisma.PayoutCreateManyOrderInputEnvelope
+  set?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  disconnect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  delete?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  update?: Prisma.PayoutUpdateWithWhereUniqueWithoutOrderInput | Prisma.PayoutUpdateWithWhereUniqueWithoutOrderInput[]
+  updateMany?: Prisma.PayoutUpdateManyWithWhereWithoutOrderInput | Prisma.PayoutUpdateManyWithWhereWithoutOrderInput[]
+  deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
+}
+
+export type PayoutUncheckedUpdateManyWithoutOrderNestedInput = {
+  create?: Prisma.XOR<Prisma.PayoutCreateWithoutOrderInput, Prisma.PayoutUncheckedCreateWithoutOrderInput> | Prisma.PayoutCreateWithoutOrderInput[] | Prisma.PayoutUncheckedCreateWithoutOrderInput[]
+  connectOrCreate?: Prisma.PayoutCreateOrConnectWithoutOrderInput | Prisma.PayoutCreateOrConnectWithoutOrderInput[]
+  upsert?: Prisma.PayoutUpsertWithWhereUniqueWithoutOrderInput | Prisma.PayoutUpsertWithWhereUniqueWithoutOrderInput[]
+  createMany?: Prisma.PayoutCreateManyOrderInputEnvelope
+  set?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  disconnect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  delete?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  connect?: Prisma.PayoutWhereUniqueInput | Prisma.PayoutWhereUniqueInput[]
+  update?: Prisma.PayoutUpdateWithWhereUniqueWithoutOrderInput | Prisma.PayoutUpdateWithWhereUniqueWithoutOrderInput[]
+  updateMany?: Prisma.PayoutUpdateManyWithWhereWithoutOrderInput | Prisma.PayoutUpdateManyWithWhereWithoutOrderInput[]
+  deleteMany?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
+}
+
 export type EnumPayoutStatusFieldUpdateOperationsInput = {
   set?: $Enums.PayoutStatus
 }
@@ -573,10 +639,12 @@ export type PayoutCreateWithoutSellerInput = {
   payoutDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  order: Prisma.OrderCreateNestedOneWithoutPayoutsInput
 }
 
 export type PayoutUncheckedCreateWithoutSellerInput = {
   id?: string
+  orderId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: $Enums.PayoutStatus
@@ -620,6 +688,7 @@ export type PayoutScalarWhereInput = {
   OR?: Prisma.PayoutScalarWhereInput[]
   NOT?: Prisma.PayoutScalarWhereInput | Prisma.PayoutScalarWhereInput[]
   id?: Prisma.StringFilter<"Payout"> | string
+  orderId?: Prisma.StringFilter<"Payout"> | string
   sellerId?: Prisma.StringFilter<"Payout"> | string
   amount?: Prisma.DecimalFilter<"Payout"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Payout"> | string
@@ -633,8 +702,65 @@ export type PayoutScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Payout"> | Date | string
 }
 
+export type PayoutCreateWithoutOrderInput = {
+  id?: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  status?: $Enums.PayoutStatus
+  method?: $Enums.PaymentMethod
+  transferId?: string | null
+  failureReason?: string | null
+  note?: string | null
+  payoutDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  seller: Prisma.SellerCreateNestedOneWithoutPayoutsInput
+}
+
+export type PayoutUncheckedCreateWithoutOrderInput = {
+  id?: string
+  sellerId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  status?: $Enums.PayoutStatus
+  method?: $Enums.PaymentMethod
+  transferId?: string | null
+  failureReason?: string | null
+  note?: string | null
+  payoutDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PayoutCreateOrConnectWithoutOrderInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutOrderInput, Prisma.PayoutUncheckedCreateWithoutOrderInput>
+}
+
+export type PayoutCreateManyOrderInputEnvelope = {
+  data: Prisma.PayoutCreateManyOrderInput | Prisma.PayoutCreateManyOrderInput[]
+  skipDuplicates?: boolean
+}
+
+export type PayoutUpsertWithWhereUniqueWithoutOrderInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  update: Prisma.XOR<Prisma.PayoutUpdateWithoutOrderInput, Prisma.PayoutUncheckedUpdateWithoutOrderInput>
+  create: Prisma.XOR<Prisma.PayoutCreateWithoutOrderInput, Prisma.PayoutUncheckedCreateWithoutOrderInput>
+}
+
+export type PayoutUpdateWithWhereUniqueWithoutOrderInput = {
+  where: Prisma.PayoutWhereUniqueInput
+  data: Prisma.XOR<Prisma.PayoutUpdateWithoutOrderInput, Prisma.PayoutUncheckedUpdateWithoutOrderInput>
+}
+
+export type PayoutUpdateManyWithWhereWithoutOrderInput = {
+  where: Prisma.PayoutScalarWhereInput
+  data: Prisma.XOR<Prisma.PayoutUpdateManyMutationInput, Prisma.PayoutUncheckedUpdateManyWithoutOrderInput>
+}
+
 export type PayoutCreateManySellerInput = {
   id?: string
+  orderId: string
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   status?: $Enums.PayoutStatus
@@ -659,10 +785,12 @@ export type PayoutUpdateWithoutSellerInput = {
   payoutDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  order?: Prisma.OrderUpdateOneRequiredWithoutPayoutsNestedInput
 }
 
 export type PayoutUncheckedUpdateWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
@@ -677,6 +805,67 @@ export type PayoutUncheckedUpdateWithoutSellerInput = {
 
 export type PayoutUncheckedUpdateManyWithoutSellerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  transferId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PayoutCreateManyOrderInput = {
+  id?: string
+  sellerId: string
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  status?: $Enums.PayoutStatus
+  method?: $Enums.PaymentMethod
+  transferId?: string | null
+  failureReason?: string | null
+  note?: string | null
+  payoutDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PayoutUpdateWithoutOrderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  transferId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  seller?: Prisma.SellerUpdateOneRequiredWithoutPayoutsNestedInput
+}
+
+export type PayoutUncheckedUpdateWithoutOrderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
+  method?: Prisma.EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+  transferId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  failureReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payoutDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PayoutUncheckedUpdateManyWithoutOrderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  sellerId?: Prisma.StringFieldUpdateOperationsInput | string
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
@@ -693,6 +882,7 @@ export type PayoutUncheckedUpdateManyWithoutSellerInput = {
 
 export type PayoutSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  orderId?: boolean
   sellerId?: boolean
   amount?: boolean
   currency?: boolean
@@ -704,11 +894,13 @@ export type PayoutSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   payoutDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  orderId?: boolean
   sellerId?: boolean
   amount?: boolean
   currency?: boolean
@@ -720,11 +912,13 @@ export type PayoutSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   payoutDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  orderId?: boolean
   sellerId?: boolean
   amount?: boolean
   currency?: boolean
@@ -736,11 +930,13 @@ export type PayoutSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   payoutDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["payout"]>
 
 export type PayoutSelectScalar = {
   id?: boolean
+  orderId?: boolean
   sellerId?: boolean
   amount?: boolean
   currency?: boolean
@@ -754,24 +950,29 @@ export type PayoutSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "sellerId" | "amount" | "currency" | "status" | "method" | "transferId" | "failureReason" | "note" | "payoutDate" | "createdAt" | "updatedAt", ExtArgs["result"]["payout"]>
+export type PayoutOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "sellerId" | "amount" | "currency" | "status" | "method" | "transferId" | "failureReason" | "note" | "payoutDate" | "createdAt" | "updatedAt", ExtArgs["result"]["payout"]>
 export type PayoutInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }
 export type PayoutIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }
 export type PayoutIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   seller?: boolean | Prisma.SellerDefaultArgs<ExtArgs>
 }
 
 export type $PayoutPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Payout"
   objects: {
+    order: Prisma.$OrderPayload<ExtArgs>
     seller: Prisma.$SellerPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    orderId: string
     sellerId: string
     amount: runtime.Decimal
     currency: string
@@ -1177,6 +1378,7 @@ readonly fields: PayoutFieldRefs;
  */
 export interface Prisma__PayoutClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  order<T extends Prisma.OrderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderDefaultArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   seller<T extends Prisma.SellerDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SellerDefaultArgs<ExtArgs>>): Prisma.Prisma__SellerClient<runtime.Types.Result.GetResult<Prisma.$SellerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1208,6 +1410,7 @@ export interface Prisma__PayoutClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface PayoutFieldRefs {
   readonly id: Prisma.FieldRef<"Payout", 'String'>
+  readonly orderId: Prisma.FieldRef<"Payout", 'String'>
   readonly sellerId: Prisma.FieldRef<"Payout", 'String'>
   readonly amount: Prisma.FieldRef<"Payout", 'Decimal'>
   readonly currency: Prisma.FieldRef<"Payout", 'String'>
