@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
+import { api } from '../../config/api'
 import { useNavigate } from 'react-router-dom'
 import {
 	ArrowForward,
@@ -21,41 +22,7 @@ type Payout = {
 	method: string
 	note: string
 }
-
-const PAYOUTS: Payout[] = [
-	{
-		id: 'P-1001',
-		date: 'Today',
-		amount: '$2,480.00',
-		status: 'Processing',
-		method: 'Bank Transfer',
-		note: 'Pending bank confirmation',
-	},
-	{
-		id: 'P-1002',
-		date: 'Yesterday',
-		amount: '$1,860.00',
-		status: 'Paid',
-		method: 'Bank Transfer',
-		note: 'Sent to account ending 8821',
-	},
-	{
-		id: 'P-1003',
-		date: '2 days ago',
-		amount: '$760.00',
-		status: 'Scheduled',
-		method: 'UPI',
-		note: 'Scheduled for Friday morning',
-	},
-	{
-		id: 'P-1004',
-		date: '4 days ago',
-		amount: '$1,290.00',
-		status: 'On hold',
-		method: 'Bank Transfer',
-		note: 'Verify tax details to release',
-	},
-]
+// Removed hardcoded PAYOUTS, we will use dynamic data instead
 
 const FILTERS: Array<'All' | PayoutStatus> = ['All', 'Scheduled', 'Processing', 'Paid', 'On hold']
 
@@ -86,6 +53,38 @@ const SellerPayoutPage = () => {
 	const navigate = useNavigate()
 	const [search, setSearch] = useState('')
 	const [filter, setFilter] = useState<(typeof FILTERS)[number]>('All')
+	const [payoutsData, setPayoutsData] = useState<Payout[]>([])
+	const [loading, setLoading] = useState(true)
+
+	useEffect(() => {
+		const fetchPayouts = async () => {
+			try {
+				const response = await api.get('/seller/payout')
+				const fetchedData = response.data.data.map((p: any) => {
+					let mappedStatus: PayoutStatus = 'Scheduled'
+					if (p.status === 'PROCESSING') mappedStatus = 'Processing'
+					else if (p.status === 'COMPLETED') mappedStatus = 'Paid'
+					else if (p.status === 'FAILED' || p.status === 'CANCELLED') mappedStatus = 'On hold'
+
+					return {
+						id: p.id,
+						date: new Date(p.createdAt).toLocaleDateString(),
+						amount: `₹${p.amount}`,
+						status: mappedStatus,
+						method: p.method,
+						note: p.note || (mappedStatus === 'Paid' ? 'Transfer successful' : 'Pending transfer'),
+					}
+				})
+				setPayoutsData(fetchedData)
+			} catch (error) {
+				console.error('Error fetching payouts:', error)
+			} finally {
+				setLoading(false)
+			}
+		}
+
+		fetchPayouts()
+	}, [])
 
 	const metrics = useMemo(
 		() => [
@@ -122,7 +121,7 @@ const SellerPayoutPage = () => {
 	)
 
 	const filteredPayouts = useMemo(() => {
-		return PAYOUTS.filter((payout) => {
+		return payoutsData.filter((payout) => {
 			const searchText = `${payout.id} ${payout.amount} ${payout.method} ${payout.note}`.toLowerCase()
 			const matchesSearch = searchText.includes(search.toLowerCase())
 			const matchesFilter = filter === 'All' ? true : payout.status === filter

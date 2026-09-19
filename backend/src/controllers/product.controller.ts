@@ -88,5 +88,14 @@ class productController{
 
     res.status(200).json(new apiResponse(200, {}, 'Product archived successfully'));
   })
+
+
+  allProducts = asyncHandler(async(req,res)=>{
+    const products = await productServiceInstance.allProducts()
+    
+    res
+    .status(200)
+    .json(new apiResponse(200,products,"successfully Fetch the products"))
+  })  
 }
 export const productControllerInstance = new productController

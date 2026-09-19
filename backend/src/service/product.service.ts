@@ -371,6 +371,22 @@ class productService {
     return archivedProduct;
   }
 
+  async allProducts(){
+    const products = await prisma.product.findMany({
+      where:{
+        status:{
+          not:"ARCHIVED",
+        }
+      },
+      include:{
+        images:true,
+        variants:true,
+      }
+    })
+
+    return products
+  }
+
 }
 
 export const productServiceInstance = new productService();

@@ -14,5 +14,5 @@ productRouter.patch('/product/:productId/archive', authMiddleware, productContro
 
 productRouter.post("/product/categoryProducts", authMiddleware, productControllerInstance.getCategoryProducts)
 productRouter.get("/product/getProductByProductId", authMiddleware, productControllerInstance.getProductById)
-
+productRouter.get("/product/allProducts", authMiddleware, productControllerInstance.allProducts)
 export {productRouter}

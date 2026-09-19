@@ -20,7 +20,7 @@ class SellerService {
   }) {
 
     const{seller,sellerAddress,business,businessAddress,bank} = sellerData
-
+    console.log("sellerData",sellerAddress);
     const hashPassword = await bcrypt.hash(seller.password,10);
     
     // create a new seller and store it in data base
@@ -105,6 +105,7 @@ class SellerService {
         },
       })
 
+      
       return createSeller;
     })
 
@@ -152,6 +153,27 @@ class SellerService {
   }
   return seller;
   
+  }
+
+  async sellerPayout(userId:string){
+    const seller = await prisma.seller.findUnique({
+      where: { userId }
+    });
+
+    if (!seller) {
+      throw new apiError(404, 'Seller not found');
+    }
+
+    const payout = await prisma.payout.findMany({
+      where: {
+        sellerId: seller.id,
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+    console.log("payout",payout)
+    return payout;
   }
 
 }

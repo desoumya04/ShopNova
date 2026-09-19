@@ -169,7 +169,7 @@ const sellerSlice = createSlice({
     })
     .addCase(sellerDetails.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload as string;
+      state.error = (action.payload as any)?.response?.data?.message ?? 'Registration failed';
     })
     .addCase(loginSeller.pending, (state) => {
       state.loading = true;

@@ -62,7 +62,7 @@ class paymentService {
 
 
     async verifyPayment(orderId: string, razorpay_order_id: string, razorpay_payment_id: string, razorpay_signature: string) {
-
+        console.log("verifyPayment",orderId)
         const orderData = await prisma.payment.findUnique({
             where: {
                 orderId: orderId,
@@ -125,7 +125,7 @@ class paymentService {
             
             // get the all productId of the items that sucessfully paid
             const purchesedProducts:string[]= items.map((item) => item.productId).filter((id):id is string=> id!=null)
-
+            console.log("purchesedProducts",purchesedProducts)
             // remove items from cart
             const cart = await prisma.cart.findUnique({
             where: { userId: orderData.userId }

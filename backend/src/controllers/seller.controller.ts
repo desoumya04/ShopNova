@@ -11,28 +11,29 @@ import { JWTProviderInstance } from "../utils/jwtProvider.js";
 class SellerController {
   
   createSeller = asyncHandler(async (req,res) =>{
-   
+    console.log("req.body",req.body)
     const safeSllerDataParse = sellerSignupSchema.safeParse(req.body.seller)
     const safeSellerAddressParse = sellerAddressSchema.safeParse(req.body.sellerAddress)
     const safeBusinessParse = sellerBusinessSchema.safeParse(req.body.business)
     const safeBusinessAddressParse = sellerBusinessAddressSchema.safeParse(req.body.businessAddress)
     const safeBankParse = sellerBankSchema.safeParse(req.body.bank)
-
+    
     if(!safeSllerDataParse.success){
-      throw new apiError(400, 'Invalid seller data')
+      throw new apiError(400, 'Invalid seller data: ' + safeSllerDataParse.error.issues[0].message)
     }
     if(!safeSellerAddressParse.success){
-      throw new apiError(400, 'Invalid seller address data')
+      throw new apiError(400, 'Invalid seller address data: ' + safeSellerAddressParse.error.issues[0].message)
     }
     if(!safeBusinessParse.success){
-      throw new apiError(400, 'Invalid business data')
+      throw new apiError(400, 'Invalid business data: ' + safeBusinessParse.error.issues[0].message)
     }
     if(!safeBusinessAddressParse.success){
-      throw new apiError(400, 'Invalid business address data')
+      throw new apiError(400, 'Invalid business address data: ' + safeBusinessAddressParse.error.issues[0].message)
     }
     if(!safeBankParse.success){
-      throw new apiError(400, 'Invalid bank data')
+      throw new apiError(400, 'Invalid bank data: ' + safeBankParse.error.issues[0].message)
     }
+
 
     const userId = req.user?.id
     if (!userId) {
@@ -91,6 +92,19 @@ class SellerController {
 
     res.status(200).json(
       new apiResponse(200, seller, 'Seller details fetched successfully')
+    )
+  })
+
+
+  sellerPayout = asyncHandler(async(req,res)=>{
+    const userId = req.user?.id;
+    if(!userId){
+      throw new apiError(401, 'Unauthorized: User ID missing');
+    }
+    const payouts = await sellerService.sellerPayout(userId);
+
+    res.status(200).json(
+      new apiResponse(200, payouts, 'Seller payouts fetched successfully')
     )
   })
 }

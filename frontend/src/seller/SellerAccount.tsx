@@ -1,4 +1,5 @@
-import {  type FormEvent } from 'react'
+import { type FormEvent } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../Redux_toolkit/store'
 import { sellerDetails, updateBank ,resetSeller} from '../Redux_toolkit/seller/seller'
@@ -15,20 +16,27 @@ const SellerAccount = () => {
 	const sellerData = useAppSelector((state) => state.seller)
 
 const handleAccountSubmit = async (
-  event: FormEvent<HTMLFormElement>
+  event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
 ) => {
   event.preventDefault();
 
-  console.log("Submitting:", sellerData);
+  // Only send the data fields, not Redux meta (loading, error, role)
+  const payload = {
+    seller: { password: sellerData.seller.password },
+    sellerAddress: sellerData.sellerAddress,
+    business: sellerData.business,
+    businessAddress: sellerData.businessAddress,
+    bank: sellerData.bank,
+  };
+
+  console.log("[handleAccountSubmit] payload:", payload);
 
   try {
-    await dispatch(sellerDetails(sellerData)).unwrap();
-
-    dispatch(resetSeller());
-
+    await dispatch(sellerDetails(payload)).unwrap();
     navigate("/seller", { replace: true });
+    dispatch(resetSeller());
   } catch (error) {
-    console.error(error);
+    console.error("[handleAccountSubmit] error:", error);
   }
 };
 
@@ -126,12 +134,8 @@ const handleAccountSubmit = async (
 											Back
 										</button>
 										<button
-											type="submit"
-											onClick={async (event) => {
-												event.preventDefault();
-												dispatch(sellerDetails(sellerData));
-												navigate("/seller", { replace: true });
-											}}
+											type="button"
+											onClick={handleAccountSubmit}
 											className="flex-1 rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
 										>
 											Complete onboarding

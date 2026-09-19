@@ -3,6 +3,7 @@ import ElectronicCategory from './ElectromicCatagary/ElectronicCatagory'
 import Grid from './Grid/Grid'
 import Deal from './deal/Deal'
 import Homecategory from './Homecategory/homecategory'
+import SuggestedItem from './suggestedItems/sugestedItem'
 const home = () => {
   return (
     <div>
@@ -15,6 +16,11 @@ const home = () => {
      <div>
       <h2 className="text-2xl font-bold text-center p-17">Shop By Category </h2>
       <Homecategory/>
+     </div>
+     
+     <div className="my-15">
+      <h2 className="text-2xl font-bold text-center p-10">Suggested For You</h2>
+      <SuggestedItem />
      </div>
     
     </div>

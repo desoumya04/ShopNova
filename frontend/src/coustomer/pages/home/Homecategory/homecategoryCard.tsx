@@ -1,12 +1,13 @@
-
+import { useNavigate } from 'react-router-dom';
 const homecategoryCard = ({item}: any) => {
+  const navigate = useNavigate();
+
   return (
-    <div className='flex gap-5 flex-col justify-center items-center group cursor-pointer'>
+    <div onClick={() => navigate(`/products/${item.categoryId}`)} className='flex gap-5 flex-col justify-center items-center group cursor-pointer'>
       <div className='custom-border w-150 lg:w-62.25 h-150 lg:h-62.25 rounded-full bg-teal-400'>
-        <img className='group-hover:scale-95 transition-transform duration-700 object-cover object-top w-full h-full rounded-full' src={item.image} alt="" />
+        <img className='group-hover:scale-95 transition-transform duration-700 object-cover object-top w-full h-full rounded-full' src={item.image} alt={item.name} />
       </div>
       <h1 className=' font-medium'>{item.name}</h1>
-
     </div>
   )
 }

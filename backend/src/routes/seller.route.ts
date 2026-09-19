@@ -10,7 +10,7 @@ const sellerRouter = express.Router();
 sellerRouter.post('/seller/register',authMiddleware, sellerController.createSeller)
 sellerRouter.post('/seller/login', authMiddleware,sellerController.sellerLogin)
 sellerRouter.get('/seller/profile',authMiddleware,sellerController.sellerDetails)
-
+sellerRouter.get('/seller/payout',authMiddleware,sellerController.sellerPayout)
 
 
 export {sellerRouter}

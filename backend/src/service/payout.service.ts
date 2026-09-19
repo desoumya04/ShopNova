@@ -42,14 +42,16 @@ export async function calculateAndCreatePayouts(orderId: string) {
         const payoutPromises = sellerEntries.map(([sellerId, grossAmount]) => {
             const commission = grossAmount* Platform_Commission
             const netAmount = grossAmount - commission
+            console.log("commission",commission)
+            console.log("netAmount",netAmount);
             return tx.payout.create({
                 data: {
                     sellerId: sellerId,
-                    orderId:orderId,
                     amount: netAmount,
                     currency:'INR',
                     status:"PENDING",
                     note:`Earnings for Order #${orderId}`,
+                    orderId:orderId,
                 }
             })
         })

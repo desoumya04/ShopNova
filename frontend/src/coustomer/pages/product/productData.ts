@@ -31,29 +31,34 @@ const catalog: Record<string, ProductSection> = {
     title: "Fashion",
     subtitle: "Fresh styles for everyday wear and special occasions." 
   },
+  books: {
+    title: "Books",
+    subtitle: "Explore bestselling books, new releases, and timeless classics.",
+  },
+
   grocery: {
     title: "Grocery",
-    subtitle: "Daily essentials and pantry picks for your home." 
+    subtitle: "Daily essentials and pantry picks for your home.",
   },
-  laptop: {
-    title: "Laptops",
-    subtitle: "Portable and powerful machines for work and study.",
+
+  beauty: {
+    title: "Beauty",
+    subtitle: "Discover skincare, makeup, haircare, and personal care essentials.",
   },
-  mobile: {
-    title: "Mobiles",
-    subtitle: "Phones with modern features and long battery life.",
+
+  sports: {
+    title: "Sports",
+    subtitle: "Gear up with equipment, apparel, and essentials for every game.",
   },
-  tv: {
-    title: "TV",
-    subtitle: "Big-screen entertainment for your living room.",   
+
+  homeAppliances: {
+    title: "Home Appliances",
+    subtitle: "Smart and reliable appliances to make everyday living easier.",
   },
-  headphone: {
-    title: "Headphones",
-    subtitle: "Wireless and wired audio for music, calls, and gaming.", 
-  },
-  camera: {
-    title: "Camera",
-    subtitle: "Creator tools for photos, video, and content work.",
+
+  toys: {
+    title: "Toys",
+    subtitle: "Fun, creative, and exciting toys for kids of all ages.",
   },
 };
 
