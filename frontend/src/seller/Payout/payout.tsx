@@ -54,7 +54,7 @@ const SellerPayoutPage = () => {
 	const [search, setSearch] = useState('')
 	const [filter, setFilter] = useState<(typeof FILTERS)[number]>('All')
 	const [payoutsData, setPayoutsData] = useState<Payout[]>([])
-	const [loading, setLoading] = useState(true)
+	const [_,setLoading] = useState(true)
 
 	useEffect(() => {
 		const fetchPayouts = async () => {

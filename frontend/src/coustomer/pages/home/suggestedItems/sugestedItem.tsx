@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import SuggestedItemCard from './cart';
 import { api } from '../../../../config/api';
 
