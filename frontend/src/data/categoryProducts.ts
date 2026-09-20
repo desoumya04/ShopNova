@@ -552,7 +552,7 @@ export const CATEGORY_PRODUCT_NAMES: Record<string, string[]> = {
     "Wheat Flour",
     "Yogurt",
   ],
-  HomeAppliances: [
+  "Home Appliances": [
     "Air Conditioner",
     "Air Purifier",
     "Blender",

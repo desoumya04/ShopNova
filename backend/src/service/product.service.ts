@@ -158,7 +158,8 @@ class productService {
       beauty: "Beauty",
       sports: "Sports",
       toys: "Toys",
-      home_appliances: "Home Appliances"
+      home_appliances: "Home Appliances",
+      homeappliances: "Home Appliances"
     };
 
     const categoryName = categoryMap[category.trim().toLowerCase()];

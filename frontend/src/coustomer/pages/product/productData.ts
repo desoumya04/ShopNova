@@ -1,3 +1,4 @@
+
 export type ProductSeller = {
   businessDetails: {
     businessName: string;
@@ -51,7 +52,7 @@ const catalog: Record<string, ProductSection> = {
     subtitle: "Gear up with equipment, apparel, and essentials for every game.",
   },
 
-  homeAppliances: {
+  homeappliances: {
     title: "Home Appliances",
     subtitle: "Smart and reliable appliances to make everyday living easier.",
   },
